@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign</title>
+    <style>
+        div{
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button type="button" onclick ="location.href='{% url 'log' %}'"> Salir </button>
+</div>
+
+<H2>Crear reporte de una base de datos </H2>
+
+<form action="/post_create/" method="post">
+    {% csrf_token %}
+    Nombre de la base de datos:
+    <input type="text" name ="nameDataSet" required><br><br>
+    Url:
+    <input type="text" name ="url" required><br><br>
+    Usuario :
+    <input type="text" name ="user" required><br><br>
+    Contraseña:
+    <input type="password" name ="pass" required><br><br>
+    <input type="submit" value = "Submit">
+</form>
+</body>
+</html>
