@@ -1,4 +1,4 @@
-from django.shortcuts import  render
+from ..configuracion import *
 
 def signIn(request):
     return render(request, "signIn.html")

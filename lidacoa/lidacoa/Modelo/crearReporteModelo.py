@@ -6,4 +6,7 @@ def create_report(request):
     a = a['users']
     a = a[0]
     a = a['localId']
-    return a
+
+    datos= database.child('users').child(a).child('reports').get().val()['nameDataSet']
+
+    return render(request,'createReport.html')

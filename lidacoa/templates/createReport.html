@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}GENERAR REPORTE{% endblock %}
+        </title>
+    <style>
+        div{
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button type="button" onclick ="location.href='{% url 'log' %}'"> Salir </button>
+</div>
+Bienvenido {{e}}
+
+<!--    {% block content %}-->
+<select>
+    {% for post in arreglo %}
+           <option>
+               {{ post }}
+           </option>
+    {% endfor %}
+</select>
+
+ <!--   {% endblock %}-->
+
+<button type="button" onclick="location.href='{% url 'create' %}'"> Agregar base de datos </button>
+<button type="button" onclick="location.href='{% url 'postcreateReport' %}'"> Crear reporte </button>
+</body>
+</html>

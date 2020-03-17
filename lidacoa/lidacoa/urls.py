@@ -24,6 +24,7 @@ from .Modelo import registroModelo
 from .Modelo import InicioSesionModelo
 from .Modelo import añadirBDModelo
 from .Modelo import crearReporteModelo
+from .controlador import crearRegistroBDControlador
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -34,5 +35,6 @@ urlpatterns = [
     url(r'^postsignup/',registroModelo.postsignup,name='postsignup'),
     url(r'^create/',añadirBDControlador.create,name='create'),
     url(r'^post_create/',añadirBDModelo.post_create,name='pos_create'),
-    url(r'^createReport/', crearReporteModelo.create_report, name='createReport'),
+    url(r'^createReport/', crearRegistroBDControlador.create_report, name='createReport'),
+    url(r'^postcreateReport/', crearReporteModelo.create_report, name='postcreateReport'),
 ]
