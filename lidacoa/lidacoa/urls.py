@@ -13,17 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
 from django.conf.urls import url
 from django.contrib import admin
-from . import views
+from .controlador import InicioSesionControlador
+from .controlador import cerrarSesionControlador
+from .controlador import registroControlador
+from .controlador import añadirBDControlador
+from .Modelo import registroModelo
+from .Modelo import InicioSesionModelo
+from .Modelo import añadirBDModelo
+from .Modelo import crearReporteModelo
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.signIn),
-    url(r'^postsign/',views.postsign),
-    url(r'^logout/',views.logout,name="log"),
-    url(r'^signUp/',views.signUp,name='signup'),
-    url(r'^postsignup/',views.postsignup,name='postsignup'),
-    url(r'^create/',views.create,name='create'),
-    url(r'^post_create/',views.post_create,name='pos_create'),
+    url(r'^$', InicioSesionControlador.signIn),
+    url(r'^postsign/',InicioSesionModelo.postsign),
+    url(r'^logout/',cerrarSesionControlador.logout,name="log"),
+    url(r'^signUp/',registroControlador.signUp,name='signup'),
+    url(r'^postsignup/',registroModelo.postsignup,name='postsignup'),
+    url(r'^create/',añadirBDControlador.create,name='create'),
+    url(r'^post_create/',añadirBDModelo.post_create,name='pos_create'),
+    url(r'^createReport/', crearReporteModelo.create_report, name='createReport'),
 ]

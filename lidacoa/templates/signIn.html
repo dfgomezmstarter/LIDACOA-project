@@ -8,14 +8,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign</title>
+    <title>SigIn</title>
 </head>
 <body>
 <form action="/postsign/" method="post">
     {% csrf_token %}
-    Email :
+    Usuario :
     <input type="email" name ="email"><br><br>
-    Password:
+    Contraseña :
     <input type="password" name ="pass"><br><br>
     <input type="submit" value = "SignUp">
     <button type="button" onclick="location.href='{% url 'signup'%}'"> Registrarse  </button>
