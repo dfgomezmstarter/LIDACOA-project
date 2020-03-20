@@ -20,10 +20,12 @@ from .controlador import InicioSesionControlador
 from .controlador import cerrarSesionControlador
 from .controlador import registroControlador
 from .controlador import añadirBDControlador
+from .controlador import agregarBaseDatosControlador
 from .Modelo import registroModelo
 from .Modelo import InicioSesionModelo
 from .Modelo import añadirBDModelo
 from .Modelo import crearReporteModelo
+from .Modelo import agregarBaseDatosModelo
 from .controlador import crearRegistroBDControlador
 
 urlpatterns = [
@@ -37,4 +39,6 @@ urlpatterns = [
     url(r'^post_create/',añadirBDModelo.post_create,name='pos_create'),
     url(r'^createReport/', crearRegistroBDControlador.create_report, name='createReport'),
     url(r'^postcreateReport/', crearReporteModelo.create_report, name='postcreateReport'),
+    url(r'^agregarBaseDatos/', agregarBaseDatosControlador.agregarBaseDatos, name='agregarBaseDatos'),
+    url(r'^formularioAgregarBaseDatos/', agregarBaseDatosModelo.agregarBaseDatos, name='formularioAgregarBaseDatos'),
 ]

@@ -17,14 +17,12 @@
 <div>
     <button type="button" onclick ="location.href='{% url 'log' %}'"> Salir </button>
 </div>
-Bienvenido {{e}}
+Bienvenido: {{e}}
 <form action="/postcreateReport/" method="post">
-<select>
-    {% for post in arreglo %}
-           <option>
+<select name="nombreBaseDatos">
+    {% for post in arregloBasesDatos %}
+           <option value="{{ post }}">
                {{ post }}
-               {% with post as action %}
-               {% endwith %}
            </option>
     {% endfor %}
 </select>
@@ -42,10 +40,10 @@ if (op.selectedIndex==5)tt.value="QUE";
 if (op.selectedIndex==6)tt.value="PNC";
 }
 </script>
-<select name="no_conformidad" id="no_conformidad" onchange="selecOp()">
-<option>Selecciona una Opcion</option>
-<option>Evaluación de Clima Laboral</option>
-<option>Analisis de Indicadores</option>
+<select name="formato" id="no_conformidad" onchange="selecOp()">
+<option value="">Selecciona una Opcion</option>
+<option value="ECL">Evaluación de Clima Laboral</option>
+<option value="ANI">Analisis de Indicadores</option>
 <option>Auditoria de Servicio</option>
 <option>Auditoria de Calidad</option>
 <option>Queja de cliente</option>

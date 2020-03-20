@@ -6,10 +6,15 @@ def create_report(request):
     a = a['users']
     a = a[0]
     a = a['localId']
+    # database.child('bases_Datos').child("d0oIsERZMEMziEvqotmB6bBFjsu2").remove() Para eliminar un registro
 
-    datos = database.child('users').child(a).child('reports').get().val()['nameDataSet']
+    basesDatos=database.child('bases_Datos').get()
+    nombreBasesDatos=[]
+    for i in basesDatos.each():
+        informacionBaseDatos=i.val()
+        nombre=informacionBaseDatos.get('nameDataBase')
+        nombreBasesDatos.append(nombre)
+
     name=database.child('users').child(a).child('details').get().val()['name']
-    arreglo=[]
-    arreglo.append(datos)
-    e=name
-    return render(request,"createReport.html",{"arreglo":arreglo,"e":e})
+    e = name
+    return render(request,"createReport.html",{"arregloBasesDatos":nombreBasesDatos,"e":e})

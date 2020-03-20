@@ -1,7 +1,7 @@
 from ..configuracion import *
 
-def post_create(request):
-    name =request.POST.get('nameDataSet')
+def agregarBaseDatos(request):
+    name =request.POST.get('nameDataBase')
     url = request.POST.get('url')
     user = request.POST.get('user')
     passw = request.POST.get('pass')
@@ -9,16 +9,14 @@ def post_create(request):
     idToken = request.session['uid']
     a = authe.get_account_info(idToken)
     a =a['users']
-    print("Puta: " + str(a))
     a =a[0]
-    print()
     a =a['localId']
     data = {
-        "nameDataSet":name,
+        "nameDataBase":name,
         'url':url,
         'user':user,
         'pass':passw
     }
-    database.child('users').child(a).child('reports').push(data)
+    database.child('bases_Datos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
     return render(request,'welcome.html',{"e":email})
