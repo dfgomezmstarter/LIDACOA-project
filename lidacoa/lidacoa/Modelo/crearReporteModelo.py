@@ -10,7 +10,7 @@ def create_report(requets):
         help = requets.POST.get(valor)
         if str(help) == "1":
             arreglo.append(valor)
-    print("Arreglo: " +str(arreglo)) # Mostrar el arreglo de las bdb que se seleccionaron
+    print("Arreglo de base de datos: " +str(arreglo)) # Mostrar el arreglo de las bdb que se seleccionaron
     email = requets.POST.get('formato')
     #bd = requets.POST.get('basesDeDatos')
     print("formato: " + str(email))
@@ -19,6 +19,7 @@ def create_report(requets):
     a = a['users']
     a = a[0]
     a = a['localId']
+
 
 
     #datos= database.child('bases_Datos').child(a).get().val()['nameDataSet']
