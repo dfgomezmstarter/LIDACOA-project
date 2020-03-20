@@ -43,7 +43,7 @@ if (op.selectedIndex==6)tt.value="PNC";
 </script>
 <select name="formato" id="no_conformidad" onchange="selecOp()">
 <option value="">Selecciona una Opcion</option>
-<option value="ECL">Evaluación de Clima Laboral</option>
+<option value="tr_j1">Solicitudes de diario	</option>
 <option value="ANI">Analisis de Indicadores</option>
 <option>Auditoria de Servicio</option>
 <option>Auditoria de Calidad</option>
@@ -51,6 +51,10 @@ if (op.selectedIndex==6)tt.value="PNC";
 <option>Planeacion de No Conformidades</option></select>
     <input type="text" name="nameDataSet" id="text" size="4">
     {% csrf_token %}
+    Fecha inicial
+    <input type="text" name ="fechaInicial" required><br><br>
+    Fecha final
+    <input type="text" name ="fechaFinal" required><br><br>
     <input type="submit" value = "Submit">
 
 </form>
