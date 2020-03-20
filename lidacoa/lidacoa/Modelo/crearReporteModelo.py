@@ -1,9 +1,19 @@
 from ..configuracion import *
 
 def create_report(requets):
+    aux = requets.POST.get('aux')
+    aux = aux[0:len(aux)-1]
+    aux = aux.split(",")
+    arreglo=[]
+    for i in aux:
+        valor=i[2:len(i)-1]
+        help = requets.POST.get(valor)
+        if str(help) == "1":
+            arreglo.append(valor)
+    print("Arreglo: " +str(arreglo)) # Mostrar el arreglo de las bdb que se seleccionaron
     email = requets.POST.get('formato')
-    bd = requets.POST.get('basesDeDatos')
-    print("formato: " + str(email) + " bd: " + str(bd))
+    #bd = requets.POST.get('basesDeDatos')
+    print("formato: " + str(email))
     idToken = requets.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']

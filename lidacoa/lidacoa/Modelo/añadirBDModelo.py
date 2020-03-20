@@ -9,9 +9,7 @@ def post_create(request):
     idToken = request.session['uid']
     a = authe.get_account_info(idToken)
     a =a['users']
-    print("Puta: " + str(a))
     a =a[0]
-    print()
     a =a['localId']
     data = {
         "nameDataSet":name,

@@ -22,7 +22,8 @@ Bienvenido: {{e}}
 <form action="/postcreateReport/" method="post">
 
     {% for post in arregloBasesDatos %}
-        <input type="checkbox" name="basesDeDatos"> {{post}}<br>
+        <input type="text" name="aux" value="{{arregloBasesDatos}}">
+        <input type="checkbox" name="{{post}}" value="1"> {{post}}<br>
     {% endfor %}
 
 
