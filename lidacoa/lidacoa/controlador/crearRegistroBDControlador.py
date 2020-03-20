@@ -16,5 +16,4 @@ def create_report(request):
         nombreBasesDatos.append(nombre)
 
     name=database.child('users').child(a).child('details').get().val()['name']
-    e = name
-    return render(request,"createReport.html",{"arregloBasesDatos":nombreBasesDatos,"e":e})
+    return render(request,"createReport.html",{"arregloBasesDatos":nombreBasesDatos,"e":name})

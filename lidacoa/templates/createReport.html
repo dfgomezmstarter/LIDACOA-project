@@ -17,15 +17,15 @@
 <div>
     <button type="button" onclick ="location.href='{% url 'log' %}'"> Salir </button>
 </div>
+
 Bienvenido: {{e}}
 <form action="/postcreateReport/" method="post">
-<select name="nombreBaseDatos">
+
     {% for post in arregloBasesDatos %}
-           <option value="{{ post }}">
-               {{ post }}
-           </option>
+        <input type="checkbox" name="basesDeDatos"> {{post}}<br>
     {% endfor %}
-</select>
+
+
     <script type="text/javascript">
 function selecOp()
 {
