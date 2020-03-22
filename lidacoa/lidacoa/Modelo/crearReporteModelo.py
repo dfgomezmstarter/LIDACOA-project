@@ -35,12 +35,10 @@ def create_report(requets):
                 end_date = requets.POST.get('fechaFinal')
                 platform = BD.val()['platform']
                 informacionUso = pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato)
-                #print(informacionUso)
-                print("---------------------------------------------------------------------------")
-                print()
-
-    #datos= database.child('bases_Datos').child(a).get().val()['nameDataSet']
-    #print(datos)
+                nombreBaseDatos=BD.val()['nameDataBase']
+                consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
+                database.child('Consulta').push(consultaRealizada)
+                return render(requets, 'createReport.html')
 
     return render(requets, 'welcome.html')
 
@@ -65,3 +63,25 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     webpage = urlopen(peticion).read()
     decoded = json.loads(webpage)
     return decoded
+
+def organizarReporte(archivoJson, begin_date, end_date, formato,nombreBaseDatos):
+    totalReporte = 0
+    for informacion in archivoJson['Report_Items']:
+        performance = informacion['Performance']
+        for i in performance:
+            for j in i['Instance']:
+                if j['Metric_Type'] == "Total_Item_Requests":
+                    cantidad = j['Count']
+                    print(i)
+                    totalReporte = totalReporte + cantidad
+    print("Contador: " + str(totalReporte))
+    consultaRealizada={
+        "nombreBaseDatos":nombreBaseDatos,
+        "formatoConsulta":formato,
+        "fechaInicio":begin_date,
+        "fechaFinal":end_date,
+        "totalReporte":totalReporte
+    }
+    return consultaRealizada
+
+

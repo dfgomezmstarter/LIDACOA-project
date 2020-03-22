@@ -20,14 +20,30 @@
 
 <form action="/formularioAgregarBaseDatos/" method="post">
     {% csrf_token %}
-    Nombre de la base de datos:
-    <input type="text" name ="nameDataBase" required><br><br>
-    URL:
-    <input type="text" name ="url" required><br><br>
-    Usuario :
-    <input type="text" name ="user" required><br><br>
-    Contraseña:
-    <input type="password" name ="pass" required><br><br>
+    <label style="width: 200px; height: 10px; padding: 10px">api key</label><br>
+    <input type="text" name="api_key" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">customer_id</label><br>
+    <input type="text" name="customer_id" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">name</label><br>
+    <input type="text" name="nameDataBase" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">passw</label><br>
+    <input type="password" name="pass" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">platform</label><br>
+    <input type="text" name="platform" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">requestor_id</label><br>
+    <input type="text" name="requestor_id" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">url</label><br>
+    <input type="text" name="url" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">User</label><br>
+    <input type="text" name="user" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
     <input type="submit" value = "Submit">
 </form>
 </body>

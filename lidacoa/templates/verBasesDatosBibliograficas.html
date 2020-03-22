@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Bases de Datos Bibliograficas</title>
+</head>
+<body>
+<form action="/opcionesBaseDatos/" method="post">
+    {% csrf_token %}
+    <input type="text" name="aux" value="{{arregloBasesDatos}}" style="background:white; border:none; color: #fff;">
+    <table>
+        <tr>
+            <th>Nombre Base de Datos</th>
+            <th>Actualizar</th>
+            <th>Eliminar</th>
+        </tr>
+        {% for baseDatos in arregloBasesDatos %}
+            <tr>
+                <th><input type="text" name="{{baseDatos}}" value="{{baseDatos}}"></th>
+                <th><input type="radio" name="{{baseDatos}}" value="ACTUALIZAR"></th>
+                <th><input type="radio" name="{{baseDatos}}" value="ELIMINAR"></th>
+            </tr>
+        {% endfor %}
+    </table>
+    <input type="submit" value = "Submit">
+</form>
+
+</body>
+</html>

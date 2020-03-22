@@ -17,15 +17,18 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from .controlador import InicioSesionControlador
+from .controlador import menuBasesDatosBibliograficasControlador
 from .controlador import cerrarSesionControlador
 from .controlador import registroControlador
 from .controlador import añadirBDControlador
 from .controlador import agregarBaseDatosControlador
+from .controlador import verBaseDatosControlador
 from .Modelo import registroModelo
 from .Modelo import InicioSesionModelo
 from .Modelo import añadirBDModelo
 from .Modelo import crearReporteModelo
 from .Modelo import agregarBaseDatosModelo
+from .Modelo import actualizarBaseDatosModelo
 from .controlador import crearRegistroBDControlador
 
 urlpatterns = [
@@ -41,4 +44,11 @@ urlpatterns = [
     url(r'^postcreateReport/', crearReporteModelo.create_report, name='postcreateReport'),
     url(r'^agregarBaseDatos/', agregarBaseDatosControlador.agregarBaseDatos, name='agregarBaseDatos'),
     url(r'^formularioAgregarBaseDatos/', agregarBaseDatosModelo.agregarBaseDatos, name='formularioAgregarBaseDatos'),
+    url(r'^menuBasesDatos/', menuBasesDatosBibliograficasControlador.menuBaseDatosBibliograficas, name='menuBasesDatos'),
+    url(r'^verBasesDatos/', verBaseDatosControlador.verBaseDatos, name='verBasesDatos'),
+    url(r'^actualizarBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='actualizarBaseDatos'),
+    url(r'^opcionesBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='opcionesBaseDatos'),
+    url(r'^confirmarActualizacion/', actualizarBaseDatosModelo.actualizar, name='confirmarActualizacion'),
+
+
 ]

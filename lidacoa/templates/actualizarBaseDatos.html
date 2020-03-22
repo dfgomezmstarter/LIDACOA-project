@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Base de Datos</title>
+</head>
+<body>
+<form action="/confirmarActualizacion/" method="post">
+    {% csrf_token %}
+    <label style="width: 200px; height: 10px; padding: 10px">Id</label><br>
+    <input type="text" name="id" value="{{idDataBase}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">api_key</label><br>
+    <input type="text" name="api_key" value="{{api_key}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">customer_id</label><br>
+    <input type="text" name="customer_id" value="{{customer_id}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">name</label><br>
+    <input type="text" name="nameDataBase" value="{{nameDataBase}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">passw</label><br>
+    <input type="text" name="pass" value="{{passw}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">platform</label><br>
+    <input type="text" name="platform" value="{{platform}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">requestor_id</label><br>
+    <input type="text" name="requestor_id" value="{{requestor_id}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">url</label><br>
+    <input type="text" name="url" value="{{url}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">User</label><br>
+    <input type="text" name="user" value="{{user}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <input type="submit" value="ACTUALIZAR">
+
+</form>
+
+</body>
+</html>
