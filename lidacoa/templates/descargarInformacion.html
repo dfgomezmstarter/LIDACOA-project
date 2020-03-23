@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Descargar Informacion Base de Datos</title>
+</head>
+<body>
+<form action="/formularioDescargar/" method="post">
+
+<select name="nombreBaseDatos">
+    {% for post in arregloBasesDatos %}
+    <option value="{{nombreBaseDatos}}">{{nombreBaseDatos}}</option>
+    {% endfor %}
+</select>
+
+
+<select name="formato" id="no_conformidad">
+<option value="">Selecciona una Opcion</option>
+<option value="tr_j1">Solicitudes de diario	</option>
+<option value="ANI">Analisis de Indicadores</option>
+<option>Auditoria de Servicio</option>
+<option>Auditoria de Calidad</option>
+<option>Queja de cliente</option>
+<option>Planeacion de No Conformidades</option>
+</select>
+
+</form>
+</body>
+</html>

@@ -22,6 +22,7 @@ from .controlador import cerrarSesionControlador
 from .controlador import registroControlador
 from .controlador import añadirBDControlador
 from .controlador import agregarBaseDatosControlador
+from .controlador import descargarInformacionControlador
 from .controlador import verBaseDatosControlador
 from .Modelo import registroModelo
 from .Modelo import InicioSesionModelo
@@ -29,6 +30,7 @@ from .Modelo import añadirBDModelo
 from .Modelo import crearReporteModelo
 from .Modelo import agregarBaseDatosModelo
 from .Modelo import actualizarBaseDatosModelo
+from .Modelo import descargarInformacionModelo
 from .controlador import crearRegistroBDControlador
 
 urlpatterns = [
@@ -49,6 +51,7 @@ urlpatterns = [
     url(r'^actualizarBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='actualizarBaseDatos'),
     url(r'^opcionesBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='opcionesBaseDatos'),
     url(r'^confirmarActualizacion/', actualizarBaseDatosModelo.actualizar, name='confirmarActualizacion'),
-
+    url(r'^descargarInformacion/', descargarInformacionControlador.descargar, name='descargarInformacion'),
+    url(r'^formularioDescargar/', descargarInformacionModelo.descargar, name='formularioDescargar'),
 
 ]
