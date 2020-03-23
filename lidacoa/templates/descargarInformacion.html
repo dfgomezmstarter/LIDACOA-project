@@ -6,10 +6,10 @@
 </head>
 <body>
 <form action="/formularioDescargar/" method="post">
-
+{% csrf_token %}
 <select name="nombreBaseDatos">
     {% for post in arregloBasesDatos %}
-    <option value="{{nombreBaseDatos}}">{{nombreBaseDatos}}</option>
+    <option value="{{post}}">{{post}}</option>
     {% endfor %}
 </select>
 
