@@ -14,7 +14,7 @@ def descargar(request):
     print(str(nombre_BaseDatos) + str(fechaInicial) + str(fechaFinal) + str(formato))
 
     consultas = database.child('Consulta').get()
-    for i in consultas:
+    for i in consultas.each():
         if i.val()['fechaInicio'] == fechaInicial and i.val()['fechaFinal'] == fechaFinal and i.val()['nombreBaseDatos'] == nombre_BaseDatos and i.val()['formatoConsulta'] == formato:
             data = {
                 'Base_Datos': i.val()['nombreBaseDatos'],
