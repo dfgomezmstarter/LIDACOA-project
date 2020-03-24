@@ -1,5 +1,6 @@
 from ..configuracion import *
 import pandas as pd
+import xlsxwriter
 
 
 def descargar(request):
@@ -14,19 +15,25 @@ def descargar(request):
 
     consultas = database.child('Consulta').get()
     for i in consultas:
-        if consultas.val()['fechaInicio'] == fechaInicial and consultas.val()['fechaFinal'] == fechaFinal and consultas.val()['nombreBaseDatos'] == nombre_BaseDatos and consultas.val()['formatoConsulta'] == formato:
+        if i.val()['fechaInicio'] == fechaInicial and i.val()['fechaFinal'] == fechaFinal and i.val()['nombreBaseDatos'] == nombre_BaseDatos and i.val()['formatoConsulta'] == formato:
             data = {
-                'Base_Datos': consultas.val()['nombreBaseDatos'],
-                'Fecha Inicial': consultas.val()['fechaInicio'],
-                'Fecha Final': consultas.val()['fechaFinal'],
-                'Formato': consultas.val()['formatoConsulta'],
-                'Total': consultas.val()['totalReporte']
+                'Base_Datos': i.val()['nombreBaseDatos'],
+                'Fecha Inicial': i.val()['fechaInicio'],
+                'Fecha Final': i.val()['fechaFinal'],
+                'Formato': i.val()['formatoConsulta'],
+                'Total': i.val()['totalReporte']
             }
-    print(str(data))
+    print(data)
     file_to_Excel(data)
+    return render(request, 'welcome.html')
 
 
 def file_to_Excel(file):
-    df = pd.DataFrame(file, columns=['Base_Datos', 'Fecha Inicial', 'Fecha Final', 'Formato', 'Total'])
-    # df['Total'].sum()
-    df.to_excel('Reporte Consultas', sheet_name='registro')
+    df = pd.DataFrame.from_dict(file, orient="index")
+    print(df)
+    outfile = r'C:\Users\MSI\Desktop\Resultado_1.xlsx'
+    writer = pd.ExcelWriter(outfile, engine="xlsxwriter")
+    df.to_excel(writer, sheet_name="Hola")
+    #print("Exporta")
+    writer.save()
+
