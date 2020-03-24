@@ -14,19 +14,16 @@ def descargar(request):
 
     consultas = database.child('Consulta').get()
     for i in consultas:
-        if i.val()['fechaInicio'] == fechaInicial and i.val()['fechaFinal'] == fechaFinal and i.val()['nombreBaseDatos'] == nombre_BaseDatos and i.val()['formatoConsulta'] == formato:
+        if consultas.val()['fechaInicio'] == fechaInicial and consultas.val()['fechaFinal'] == fechaFinal and consultas.val()['nombreBaseDatos'] == nombre_BaseDatos and consultas.val()['formatoConsulta'] == formato:
             data = {
-                'Base_Datos': i.val()['nombreBaseDatos'],
-                'Fecha Inicial': i.val()['fechaInicio'],
-                'Fecha Final': i.val()['fechaFinal'],
-                'Formato': i.val()['formatoConsulta'],
-                'Total': i.val()['totalReporte']
+                'Base_Datos': consultas.val()['nombreBaseDatos'],
+                'Fecha Inicial': consultas.val()['fechaInicio'],
+                'Fecha Final': consultas.val()['fechaFinal'],
+                'Formato': consultas.val()['formatoConsulta'],
+                'Total': consultas.val()['totalReporte']
             }
     print(str(data))
-    df = pd.DataFrame(data, columns=['Base_Datos', 'Fecha Inicial', 'Fecha Final', 'Formato', 'Total'])
-    # df['Total'].sum()
-    df.to_excel('Reporte Consultas', sheet_name='registro')
-    #file_to_Excel(data)
+    file_to_Excel(data)
 
 
 def file_to_Excel(file):
