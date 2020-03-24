@@ -12,7 +12,6 @@ def create_report(requets):
         help = requets.POST.get(valor)
         if str(help) == "1":
             arreglo.append(valor)
-    print("Arreglo de base de datos: " +str(arreglo)) # Mostrar el arreglo de las bdb que se seleccionaron
     formato = requets.POST.get('formato')
     #bd = requets.POST.get('basesDeDatos')
     #print("formato: " + str(formato))
@@ -38,8 +37,6 @@ def create_report(requets):
                 nombreBaseDatos=BD.val()['nameDataBase']
                 consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
                 database.child('Consulta').push(consultaRealizada)
-                return render(requets, 'createReport.html')
-
     return render(requets, 'welcome.html')
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
@@ -58,7 +55,6 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
         formato+= "platform="+str(platform)
     if (formato[len(formato)-1]=='&'):
         formato=formato[0:len(formato)-1]
-    print(formato)
     peticion=Request(formato, headers={'User-Agent': 'Mozilla/5.0'})
     webpage = urlopen(peticion).read()
     decoded = json.loads(webpage)
@@ -72,9 +68,7 @@ def organizarReporte(archivoJson, begin_date, end_date, formato,nombreBaseDatos)
             for j in i['Instance']:
                 if j['Metric_Type'] == "Total_Item_Requests":
                     cantidad = j['Count']
-                    print(i)
                     totalReporte = totalReporte + cantidad
-    print("Contador: " + str(totalReporte))
     consultaRealizada={
         "nombreBaseDatos":nombreBaseDatos,
         "formatoConsulta":formato,
