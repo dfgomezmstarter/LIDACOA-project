@@ -20,36 +20,18 @@
 
 Bienvenido: {{e}}
 <form action="/postcreateReport/" method="post">
-
+<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>
+    <label> Seleccione la BDB que desea </label><br>
     {% for post in arregloBasesDatos %}
-        <input type="text" name="aux" value="{{arregloBasesDatos}}">
+
         <input type="checkbox" name="{{post}}" value="1"> {{post}}<br>
     {% endfor %}
 
 
-    <script type="text/javascript">
-function selecOp()
-{
-var op=document.getElementById("no_conformidad");
-var tt=document.getElementById("text");
-if (op.selectedIndex==0)tt.value="";
-if (op.selectedIndex==1)tt.value="ECL";
-if (op.selectedIndex==2)tt.value="ANI";
-if (op.selectedIndex==3)tt.value="AUS";
-if (op.selectedIndex==4)tt.value="AUC";
-if (op.selectedIndex==5)tt.value="QUE";
-if (op.selectedIndex==6)tt.value="PNC";
-}
-</script>
 <select name="formato" id="no_conformidad" onchange="selecOp()">
 <option value="">Selecciona una Opcion</option>
 <option value="tr_j1">Solicitudes de diario	</option>
-<option value="ANI">Analisis de Indicadores</option>
-<option>Auditoria de Servicio</option>
-<option>Auditoria de Calidad</option>
-<option>Queja de cliente</option>
-<option>Planeacion de No Conformidades</option></select>
-    <input type="text" name="nameDataSet" id="text" size="4">
+</select><br><br>
     {% csrf_token %}
     Fecha inicial
     <input type="text" name ="fechaInicial" required><br><br>
@@ -58,7 +40,5 @@ if (op.selectedIndex==6)tt.value="PNC";
     <input type="submit" value = "Submit">
 
 </form>
-<button type="button" onclick="location.href='{% url 'create' %}'"> Agregar base de datos </button>
-<button type="button" onclick="location.href='{% url 'postcreateReport' %}'"> Crear reporte </button>
 </body>
 </html>

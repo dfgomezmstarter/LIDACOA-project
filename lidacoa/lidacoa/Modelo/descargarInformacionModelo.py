@@ -31,7 +31,7 @@ def descargar(request):
 def file_to_Excel(file):
     df = pd.DataFrame.from_dict(file, orient="index")
     print(df)
-    outfile = r'C:\Users\MSI\Desktop\Resultado_1.xlsx'
+    outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
     writer = pd.ExcelWriter(outfile, engine="xlsxwriter")
     df.to_excel(writer, sheet_name="Hola")
     #print("Exporta")
