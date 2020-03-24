@@ -8,11 +8,17 @@
 <form action="/formularioDescargar/" method="post">
 {% csrf_token %}
 <select name="nombreBaseDatos">
+    <option value="">Selecciona una Opcion</option>
     {% for post in arregloBasesDatos %}
     <option value="{{post}}">{{post}}</option>
     {% endfor %}
-</select>
+</select><br><br>
 
+    Fecha inicial
+    <input type="text" name ="fechaInicial" required><br><br>
+    Fecha final
+    <input type="text" name ="fechaFinal" required><br><br>
+    <br>
 
 <select name="formato" id="no_conformidad">
 <option value="">Selecciona una Opcion</option>
@@ -22,8 +28,9 @@
 <option>Auditoria de Calidad</option>
 <option>Queja de cliente</option>
 <option>Planeacion de No Conformidades</option>
-</select>
-
+</select><br><br>
+<button type="submit" > Descargar </button>
 </form>
+
 </body>
 </html>
