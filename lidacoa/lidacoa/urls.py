@@ -48,10 +48,10 @@ urlpatterns = [
     url(r'^formularioAgregarBaseDatos/', agregarBaseDatosModelo.agregarBaseDatos, name='formularioAgregarBaseDatos'),
     url(r'^menuBasesDatos/', menuBasesDatosBibliograficasControlador.menuBaseDatosBibliograficas, name='menuBasesDatos'),
     url(r'^verBasesDatos/', verBaseDatosControlador.verBaseDatos, name='verBasesDatos'),
-    url(r'^actualizarBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='actualizarBaseDatos'),
-    url(r'^opcionesBaseDatos/', actualizarBaseDatosModelo.actualizarBaseDatos, name='opcionesBaseDatos'),
     url(r'^confirmarActualizacion/', actualizarBaseDatosModelo.actualizar, name='confirmarActualizacion'),
     url(r'^descargarInformacion/', descargarInformacionControlador.descargar, name='descargarInformacion'),
     url(r'^formularioDescargar/', descargarInformacionModelo.descargar, name='formularioDescargar'),
+    url(r'^actualizarBDB/', actualizarBaseDatosModelo.prueba, name='actualizarBDB'),
+    url(r'^eliminarBDB/', actualizarBaseDatosModelo.eliminarBaseDatos, name='eliminarBDB'),
 
 ]

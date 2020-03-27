@@ -1,6 +1,7 @@
 from ..configuracion import *
 
 def actualizarBaseDatos(request):
+    print("Entra puta mierda")
     aux=request.POST.get('aux')
     aux = aux[0:len(aux) - 1]
     aux = aux.split(",")
@@ -48,3 +49,32 @@ def actualizar(request):
     }
     database.child("bases_Datos").child(request.POST.get('id')).update(nuevaInformacion)
     return render(request, 'welcome.html')
+
+def eliminarBaseDatos(request):
+    dataBaseSelected = request.GET.get('bbd')
+    basesDatos = database.child("bases_Datos").get()
+    for baseDatos in basesDatos:
+        if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
+            idDataBase = baseDatos.key()
+            database.child("bases_Datos").child(idDataBase).remove()
+            return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+        else:
+            None
+
+def prueba(request):
+    dataBaseSelected=request.GET.get('bbd')
+    basesDatos = database.child("bases_Datos").get()
+    for baseDatos in basesDatos:
+        if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
+            idDataBase = baseDatos.key()
+            api_key = baseDatos.val()['api_key']
+            customer_id = baseDatos.val()['customer_id']
+            nameDataBase = baseDatos.val()['nameDataBase']
+            passw = baseDatos.val()['pass']
+            platform = baseDatos.val()['platform']
+            requestor_id = baseDatos.val()['requestor_id']
+            url = baseDatos.val()['url']
+            user = baseDatos.val()['user']
+            return render(request, 'actualizarBaseDatos.html', {"idDataBase": idDataBase, "api_key": api_key, "customer_id": customer_id, "nameDataBase": nameDataBase, "passw": passw, "platform": platform, "requestor_id": requestor_id, "url": url, "user": user})
+        else:
+            None
