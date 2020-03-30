@@ -51,7 +51,7 @@ urlpatterns = [
     url(r'^confirmarActualizacion/', actualizarBaseDatosModelo.actualizar, name='confirmarActualizacion'),
     url(r'^descargarInformacion/', descargarInformacionControlador.descargar, name='descargarInformacion'),
     url(r'^formularioDescargar/', descargarInformacionModelo.descargar, name='formularioDescargar'),
-    url(r'^actualizarBDB/', actualizarBaseDatosModelo.prueba, name='actualizarBDB'),
+    url(r'^actualizarBDB/', actualizarBaseDatosModelo.agregar, name='actualizarBDB'),
     url(r'^eliminarBDB/', actualizarBaseDatosModelo.eliminarBaseDatos, name='eliminarBDB'),
 
 ]
