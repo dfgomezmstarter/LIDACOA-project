@@ -1,7 +1,6 @@
 from ..configuracion import *
 
 def actualizarBaseDatos(request):
-    print("Entra puta mierda")
     aux=request.POST.get('aux')
     aux = aux[0:len(aux) - 1]
     aux = aux.split(",")
@@ -10,7 +9,6 @@ def actualizarBaseDatos(request):
         nameDataBase = i[2:len(i) - 1]
         help = request.POST.get(nameDataBase)
         if str(help) == "ACTUALIZAR":
-            print("Entra actualizar")
             basesDatos=database.child("bases_Datos").get()
             for baseDatos in basesDatos:
                 if str(baseDatos.val()['nameDataBase']) == str(nameDataBase):

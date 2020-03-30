@@ -20,29 +20,111 @@
 
 <form action="/formularioAgregarBaseDatos/" method="post">
     {% csrf_token %}
-    <label style="width: 200px; height: 10px; padding: 10px">api key</label><br>
-    <input type="text" name="api_key" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">customer_id</label><br>
-    <input type="text" name="customer_id" style="width: 200px; height: 10px; padding: 10px"><br><br>
 
     <label style="width: 200px; height: 10px; padding: 10px">name</label><br>
     <input type="text" name="nameDataBase" style="width: 200px; height: 10px; padding: 10px"><br><br>
 
+    <label style="width: 200px; height: 10px; padding: 10px">url</label><br>
+    <input type="text" name="url" id="url" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">customer_id</label><br>
+    <input type="text" name="customer_id" id="customerId" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">requestor_id</label><br>
+    <input type="text" name="requestor_id" id="requestorId" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">api key</label><br>
+    <input type="text" name="api_key" id="apiKey" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()" ><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">platform</label><br>
+    <input type="text" name="platform" id="platform" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+
     <label style="width: 200px; height: 10px; padding: 10px">passw</label><br>
     <input type="password" name="pass" style="width: 200px; height: 10px; padding: 10px"><br><br>
 
-    <label style="width: 200px; height: 10px; padding: 10px">platform</label><br>
-    <input type="text" name="platform" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">requestor_id</label><br>
-    <input type="text" name="requestor_id" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">url</label><br>
-    <input type="text" name="url" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
     <label style="width: 200px; height: 10px; padding: 10px">User</label><br>
     <input type="text" name="user" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px"> Url a Ingresar </label><br>
+    <input type="text" name="nameDataSet" id="urlFinal" contenteditable="true" size="250" onchange="ponerURL()"> <br><br>
+
+    <script>
+        var urlPeticion = "";
+function crearURL() {
+    //this.value la variable de la funcion en HTML
+    urlPeticion="";
+    var apiKey=document.getElementById("apiKey").value;
+    var customerId=document.getElementById("customerId").value;
+    var platform=document.getElementById("platform").value;
+    var requestorId=document.getElementById("requestorId").value;
+    var url=document.getElementById("url").value;
+    var urlFinal=document.getElementById("urlFinal");
+
+    if (""!=url) {
+        urlPeticion += url + "/reports/TipoFormato?";
+    }
+     if (""!=customerId) {
+        urlPeticion += "customer_id=" + customerId;
+    }
+    if (""!=requestorId) {
+        urlPeticion += "&requestor_id=" + requestorId;
+    }
+    if (""!=apiKey) {
+        urlPeticion += "&api_key=" + apiKey;
+    }
+    if (""!=platform) {
+        urlPeticion += "&platform=" + platform;
+    }
+    urlFinal.value = urlPeticion;
+
+}
+function ponerURL() {
+    var apiKey=document.getElementById("apiKey");
+    var customerId=document.getElementById("customerId");
+    var platform=document.getElementById("platform");
+    var requestorId=document.getElementById("requestorId");
+    var url=document.getElementById("url");
+    var urlFinal=document.getElementById("urlFinal").value;
+    var temp = urlFinal;
+
+    var elementos = ["&customer_id=","&requestor_id=","&api_key=","&platform="];
+    var booelemnetos = [0,0,0,0];
+    var count=0;
+
+    if (temp.indexOf("https://")+1){
+        url.value = temp.substring(temp.indexOf("https://"),temp.indexOf("/reports/TipoFormato?"));
+        temp = temp.substring(temp.indexOf("/reports/TipoFormato?")+21);
+    }
+    if (temp.indexOf("customer_id=")+1){
+        temp = temp.substring(temp.indexOf("&customer_id=")+13);
+        if (temp.indexOf("&")+1){
+            customerId.value = temp.substring(0,temp.indexOf("&"));
+        }else {
+            customerId.value = temp.substring(0,temp.length);
+        }
+    }
+    if(temp.indexOf("&requestor_id=")+1){
+        temp = temp.substring(temp.indexOf("&requestor_id=")+14);
+        if (temp.indexOf("&")+1){
+            requestorId.value = temp.substring(0,temp.indexOf("&"));
+        }else {
+            requestorId.value = temp.substring(0,temp.length);
+        }
+    }
+    if (temp.indexOf("&api_key=")+1){
+        temp = temp.substring(temp.indexOf("&api_key=")+9);
+        if (temp.indexOf("&")+1){
+            apiKey.value = temp.substring(0,temp.indexOf("&"));
+        }
+        else {
+            apiKey.value = temp.substring(0,temp.length);
+        }
+    }
+    if(temp.indexOf("&platform=")+1){
+        platform.value = temp.substring(temp.indexOf("&platform=")+10,temp.length);
+    }
+}
+</script>
 
     <input type="submit" value = "Submit">
 </form>
