@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizacion de Información</title>
+</head>
+<body>
+{% block content %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre Base de datos</th>
+            <th>Formato de Consulta</th>
+            <th>Fecha Inicial Consulta</th>
+            <th>Fecha Final Consulta</th>
+            <th>Total de reporte</th>
+        </tr>
+    </thead>
+    {% for consulta in registros %}
+        <tr>
+            {% for key, value in consulta.items %}
+                <th>{{value}}</th>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+<button type="submit" > Descargar </button>
+{% endblock %}
+</body>
+</html>

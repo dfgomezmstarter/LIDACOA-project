@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Formato</title>
+</head>
+<body>
+<form action="/confirmarActualizacionFormato/" method="post">
+    {% csrf_token %}
+    <label style="width: 200px; height: 10px; padding: 10px">Id</label><br>
+    <input type="text" name="id" value="{{idFormatoBD}}"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">Report_Id</label><br>
+    <input type="text" name="reporteID" value="{{idFormatoActualizar}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">Report_Id</label><br>
+    <input type="text" name="name" value="{{nombreFormato}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">Descripcion</label><br>
+    <input type="textarea" name="details" value="{{descripcionFormato}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <input type="submit" value="ACTUALIZAR">
+
+</form>
+
+</body>
+</html>

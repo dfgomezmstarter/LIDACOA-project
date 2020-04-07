@@ -18,6 +18,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from .controlador import InicioSesionControlador
 from .controlador import menuBasesDatosBibliograficasControlador
+from .controlador import menuFormatosControlador
 from .controlador import cerrarSesionControlador
 from .controlador import registroControlador
 from .controlador import añadirBDControlador
@@ -29,7 +30,9 @@ from .Modelo import InicioSesionModelo
 from .Modelo import añadirBDModelo
 from .Modelo import crearReporteModelo
 from .Modelo import agregarBaseDatosModelo
+from .Modelo import agregarFormularioModelo
 from .Modelo import actualizarBaseDatosModelo
+from .Modelo import actualizarFormatoModelo
 from .Modelo import descargarInformacionModelo
 from .controlador import crearRegistroBDControlador
 
@@ -45,13 +48,20 @@ urlpatterns = [
     url(r'^createReport/', crearRegistroBDControlador.create_report, name='createReport'),
     url(r'^postcreateReport/', crearReporteModelo.create_report, name='postcreateReport'),
     url(r'^agregarBaseDatos/', agregarBaseDatosControlador.agregarBaseDatos, name='agregarBaseDatos'),
+    url(r'^agregarFormato/', menuFormatosControlador.agregarFormato, name='agregarFormato'),
     url(r'^formularioAgregarBaseDatos/', agregarBaseDatosModelo.agregarBaseDatos, name='formularioAgregarBaseDatos'),
+    url(r'^formularioAgregarFormato/', agregarFormularioModelo.agregarFormulario, name='formularioAgregarFormato'),
     url(r'^menuBasesDatos/', menuBasesDatosBibliograficasControlador.menuBaseDatosBibliograficas, name='menuBasesDatos'),
+    url(r'^menuFormatos/', menuFormatosControlador.menuFormatos, name='menuFormatos'),
     url(r'^verBasesDatos/', verBaseDatosControlador.verBaseDatos, name='verBasesDatos'),
+    url(r'^verFormatos/', menuFormatosControlador.verFormatos, name='verFormatos'),
     url(r'^confirmarActualizacion/', actualizarBaseDatosModelo.actualizar, name='confirmarActualizacion'),
+    url(r'^confirmarActualizacionFormato/', actualizarFormatoModelo.actualizar, name='confirmarActualizacionFormato'),
     url(r'^descargarInformacion/', descargarInformacionControlador.descargar, name='descargarInformacion'),
-    url(r'^formularioDescargar/', descargarInformacionModelo.descargar, name='formularioDescargar'),
+    url(r'^formularioDescargar/', descargarInformacionModelo.verReporte, name='formularioDescargar'),
     url(r'^actualizarBDB/', actualizarBaseDatosModelo.agregar, name='actualizarBDB'),
     url(r'^eliminarBDB/', actualizarBaseDatosModelo.eliminarBaseDatos, name='eliminarBDB'),
+    url(r'^actualizarFormato/', actualizarFormatoModelo.agregar, name='actualizarFormato'),
+    url(r'^eliminarFormato/', actualizarFormatoModelo.eliminarFormato, name='eliminarFormato'),
 
 ]

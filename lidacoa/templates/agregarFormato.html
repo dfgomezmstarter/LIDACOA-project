@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Formato</title>
+    <style>
+        div{
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button type="button" onclick ="location.href='{% url 'log' %}'"> Salir </button>
+</div>
+
+<H2>Agregar un nuevo Formato</H2>
+
+<form action="/formularioAgregarFormato/" method="post">
+    {% csrf_token %}
+
+    <label style="width: 200px; height: 10px; padding: 10px">Report ID</label><br>
+    <input type="text" name="reporteID" style="text-transform:uppercase;"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">Report Name</label><br>
+    <input type="text" name="name" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px">Details</label><br>
+    <input type="textarea" name="details" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <input type="submit" value = "Guardar">
+</form>
+</body>
+</html>

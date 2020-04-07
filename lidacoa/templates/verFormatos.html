@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Bases de Datos Bibliograficas</title>
+</head>
+<body>
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Formato</th>
+            <th colspan="2">OPCIONES</th>
+        </tr>
+        {% for formato in arregloformatos %}
+            <tr>
+                <th><p>{{formato}}</p></th>
+                <th><a href="/actualizarFormato?idFormato={{formato}}" style="text-decoration:none; color:black; padding: 10px">ACTUALIZAR</a></th>
+                <th><a href="/eliminarFormato?idFormato={{formato}}" style="text-decoration:none; color:black; padding: 10px">ELIMINAR</a></th>
+            </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
