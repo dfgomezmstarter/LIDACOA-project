@@ -6,15 +6,13 @@
 </head>
 <body>
 <form action="/formularioDescargar/" method="post">
-    <label>Seleccione una Base de datos</label><br><br>
 {% csrf_token %}
-<select name="nombreBaseDatos">
-    <option value="">Selecciona una Opcion</option>
+    <label> Seleccione la BDB que desea </label><br>
     {% for post in arregloBasesDatos %}
-    <option value="{{post}}">{{post}}</option>
+        <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br><br>
     {% endfor %}
-</select><br><br>
 
+    <input type="checkbox" name="allDataBase" id="allDataBase" value="1">Buscar Todas las Bases de Datos<br><br>
     Fecha inicial
     <input type="text" name ="fechaInicial" required><br><br>
     Fecha final
