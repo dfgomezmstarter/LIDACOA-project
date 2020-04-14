@@ -1,8 +1,10 @@
 from ..configuracion import *
 from urllib.request import Request, urlopen
 import json
+from time import time
 
 def create_report(requets):
+    tiempoInicial = time()
     arregloConsultas=[]
     aux = requets.POST.get('aux')
     aux = aux[0:len(aux)-1]
@@ -57,6 +59,8 @@ def create_report(requets):
                                 arregloConsultas.append(consultaRealizada)
                 #consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
                 #database.child('Consulta').push(consultaRealizada)
+    tiempoFinal = time()
+    print("Tiempo: " + str(tiempoFinal - tiempoInicial))
     return render(requets, 'verConsulta.html',context={"consultaRealizada":arregloConsultas})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
@@ -104,3 +108,95 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     return consultaRealizada"""
 
 
+
+"""
+Metodo para la consulta, sin un ciclo... Pero se demora más asi que que gonorrea pas
+tiempoInicial = time()
+    arregloConsultas = []
+    formato = "PR_P1"
+    # formato = requets.POST.get('formato')
+    # bd = requets.POST.get('basesDeDatos')
+    # print("formato: " + str(formato))
+    idToken = requets.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    listaBD = database.child('bases_Datos').get()
+
+    if requets.POST.get('seleccionarTodas') == "1":
+        for BD in listaBD.each():
+            nombreBaseDatos = BD.val()['nameDataBase']
+            url = BD.val()['url']
+            customer_id = BD.val()['customer_id']
+            requestor_id = BD.val()['requestor_id']
+            api_key = BD.val()['api_key']
+            begin_date = requets.POST.get('fechaInicial')
+            end_date = requets.POST.get('fechaFinal')
+            platform = BD.val()['platform']
+            informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date, platform, formato)
+            # print("Informacion: " + str(informacionUso))
+            nombreBaseDatos = BD.val()['nameDataBase']
+            for informacion in informacionUso['Report_Items']:
+                performance = informacion['Performance']
+                for i in performance:
+                    fechaInicio = i['Period']['Begin_Date']
+                    fechaFinal = i['Period']['End_Date']
+                    for j in i['Instance']:
+                        if j['Metric_Type'] == "Total_Item_Requests":
+                            totalMes = j['Count']
+                            consultaRealizada = {
+                                "nombreBaseDatos": nombreBaseDatos,
+                                "formatoConsulta": formato,
+                                "fechaInicio": fechaInicio,
+                                "fechaFinal": fechaFinal,
+                                "totalMes": totalMes
+                            }
+                            database.child('Consulta').push(consultaRealizada)
+                            arregloConsultas.append(consultaRealizada)
+            # consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
+            # database.child('Consulta').push(consultaRealizada)
+        tiempoFinal = time()
+        print("Tiempo: " + str(tiempoFinal-tiempoInicial))
+        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+
+    else:
+        for BD in listaBD.each():
+            nombreBaseDatos = BD.val()['nameDataBase']
+
+
+            if requets.POST.get(nombreBaseDatos) == "1":
+                url = BD.val()['url']
+                customer_id = BD.val()['customer_id']
+                requestor_id = BD.val()['requestor_id']
+                api_key = BD.val()['api_key']
+                begin_date = requets.POST.get('fechaInicial')
+                end_date = requets.POST.get('fechaFinal')
+                platform = BD.val()['platform']
+                informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date, platform,
+                                              formato)
+                # print("Informacion: " + str(informacionUso))
+                nombreBaseDatos = BD.val()['nameDataBase']
+                for informacion in informacionUso['Report_Items']:
+                    performance = informacion['Performance']
+                    for i in performance:
+                        fechaInicio = i['Period']['Begin_Date']
+                        fechaFinal = i['Period']['End_Date']
+                        for j in i['Instance']:
+                            if j['Metric_Type'] == "Total_Item_Requests":
+                                totalMes = j['Count']
+                                consultaRealizada = {
+                                    "nombreBaseDatos": nombreBaseDatos,
+                                    "formatoConsulta": formato,
+                                    "fechaInicio": fechaInicio,
+                                    "fechaFinal": fechaFinal,
+                                    "totalMes": totalMes
+                                }
+                                database.child('Consulta').push(consultaRealizada)
+                                arregloConsultas.append(consultaRealizada)
+                # consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
+                # database.child('Consulta').push(consultaRealizada)
+        tiempoFinal = time()
+        print("Tiempo: " + str(tiempoFinal - tiempoInicial))
+        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+"""
