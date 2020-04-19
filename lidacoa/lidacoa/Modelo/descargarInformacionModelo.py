@@ -6,7 +6,13 @@ import xlsxwriter
 
 
 def descargar(request):
-    print("entro")
+    print("entra Prueba")
+    arregloAux=request.GET.get('informacion')
+    print(str(arregloAux))
+
+
+
+
     data = {}
     nombre_BaseDatos = request.POST.get('nombreBaseDatos')
     fechaInicial = request.POST.get('fechaInicial')
