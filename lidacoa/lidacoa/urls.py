@@ -63,6 +63,5 @@ urlpatterns = [
     url(r'^eliminarBDB/', actualizarBaseDatosModelo.eliminarBaseDatos, name='eliminarBDB'),
     url(r'^actualizarFormato/', actualizarFormatoModelo.agregar, name='actualizarFormato'),
     url(r'^eliminarFormato/', actualizarFormatoModelo.eliminarFormato, name='eliminarFormato'),
-    url(r'^descargarInformacion/', descargarInformacionModelo.descargar, name='descargarInformacion'),
-
+    url(r'^downloadInformacion/', descargarInformacionModelo.descargar, name='downloadInformacion'),
 ]

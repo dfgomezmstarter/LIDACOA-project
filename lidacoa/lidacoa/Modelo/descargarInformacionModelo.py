@@ -1,49 +1,45 @@
 from ..configuracion import *
 import pandas as pd
 from datetime import datetime
-
 import xlsxwriter
 
 
 def descargar(request):
     print("entra Prueba")
     arregloAux=request.GET.get('informacion')
-    print(str(arregloAux))
+
+    aux = eval(arregloAux)
+
+    nombre_BaseDatos = []
+    fechaInicial = []
+    fechaFinal = []
+    formato = []
+    Total = []
+
+    for i in aux:
+        print("Prueba Arreglo")
+        nombre_BaseDatos.append(i['Base de Datos'])
+        fechaInicial.append(i['Fecha de Inicio'])
+        fechaFinal.append(i['Fecha de Fin'])
+        formato.append(i['Formato'])
+        Total.append(i['Total'])
 
 
+    data = pd.DataFrame({
+        'Base de Datos' : nombre_BaseDatos,
+        'Formato' : formato,
+        'Fecha de Inicio' : fechaInicial,
+        'Fecha de Fin' : fechaFinal,
+        'Total' : Total
+    })
 
-
-    data = {}
-    nombre_BaseDatos = request.POST.get('nombreBaseDatos')
-    fechaInicial = request.POST.get('fechaInicial')
-    fechaFinal = request.POST.get('fechaFinal')
-    formato = request.POST.get('formato')
-
-    print(str(nombre_BaseDatos) + str(fechaInicial) + str(fechaFinal) + str(formato))
-
-    consultas = database.child('Consulta').get()
-    for i in consultas.each():
-        if i.val()['fechaInicio'] == fechaInicial and i.val()['fechaFinal'] == fechaFinal and i.val()['nombreBaseDatos'] == nombre_BaseDatos and i.val()['formatoConsulta'] == formato:
-            data = {
-                'Base_Datos': i.val()['nombreBaseDatos'],
-                'Fecha Inicial': i.val()['fechaInicio'],
-                'Fecha Final': i.val()['fechaFinal'],
-                'Formato': i.val()['formatoConsulta'],
-                'Total': i.val()['totalReporte']
-            }
     print(data)
-    file_to_Excel(data)
-    return render(request, 'welcome.html')
-
-
-def file_to_Excel(file):
-    df = pd.DataFrame.from_dict(file, orient="index")
-    print(df)
-    outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
-    writer = pd.ExcelWriter(outfile, engine="xlsxwriter")
-    df.to_excel(writer, sheet_name="Hola")
-    #print("Exporta")
+    outfile = r'C:\Users\MSI\Desktop\Resultado_1.xlsx'
+    writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
+    data.to_excel(writer, sheet_name="Hola", index=None)
+    # print("Exporta")
     writer.save()
+    return render(request, 'welcome.html')
 
 
 def verReporte(request):
@@ -126,6 +122,7 @@ def verReporte(request):
                             }
                             arreglodeConsultas.append(visualizacionConsulta)
 
+        #print(arreglodeConsultas)
         return render(request,'visualizacion.html',{"registros":arreglodeConsultas})
     else:
         return render(request, 'visualizacion.html', {"registros": arreglodeConsultas})
