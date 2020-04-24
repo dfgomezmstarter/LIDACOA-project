@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="favicon.ico">
-   {% load bootstrap4 %}
+    {% load bootstrap4 %}
     {% bootstrap_css %}
     <title>Actualizar Base de Datos</title>
 </head>
@@ -36,6 +36,15 @@
 
     <label style="width: 200px; height: 10px; padding: 10px">User</label><br>
     <input type="text" name="user" value="{{user}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+
+    <label style="width: 200px; height: 10px; padding: 10px"> Formatos de Base de datos </label><br>
+    {% for formato in arregloFormatos %}
+        {% if formato in arregloFormatosBaseDatos %}
+            <input type="checkbox" name="{{formato}}" value="1" checked> {{formato}}<br><br>
+        {% else %}
+            <input type="checkbox" name="{{formato}}" value="1"> {{formato}}<br><br>
+        {% endif %}
+    {% endfor %}
 
     <input type="submit" value="ACTUALIZAR">
 

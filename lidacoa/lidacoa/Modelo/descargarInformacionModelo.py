@@ -34,7 +34,7 @@ def descargar(request):
     })
 
     print(data)
-    outfile = r'C:\Users\MSI\Desktop\Resultado_1.xlsx'
+    outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
     writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
     data.to_excel(writer, sheet_name="Hola", index=None)
     # print("Exporta")

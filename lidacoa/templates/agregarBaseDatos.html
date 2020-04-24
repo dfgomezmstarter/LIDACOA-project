@@ -51,6 +51,12 @@
     <label style="width: 200px; height: 10px; padding: 10px"> Url a Ingresar </label><br>
     <input type="text" name="nameDataSet" id="urlFinal" contenteditable="true" size="250" onchange="ponerURL()"> <br><br>
 
+    <label style="width: 200px; height: 10px; padding: 10px"> Formatos de Base de datos </label><br>
+    {% for formato in arregloFormatos %}
+        <input type="checkbox" name="{{formato}}" value="1"> {{formato}}<br><br>
+    {% endfor %}
+
+
     <script>
         var urlPeticion = "";
 function crearURL() {

@@ -6,6 +6,13 @@ def agregarBaseDatos(request):
     a =a['users']
     a =a[0]
     a =a['localId']
+    arregloFormatos=[]
+    formatos = database.child('formatos').get()
+    for formato in formatos.each():
+        nombreFormato=formato.val()['Report_Id']
+        if request.POST.get(nombreFormato) == "1":
+            arregloFormatos.append(nombreFormato)
+
     data = {
         "api_key": request.POST.get('api_key'),
         "customer_id": request.POST.get('customer_id'),
@@ -14,7 +21,8 @@ def agregarBaseDatos(request):
         "platform": request.POST.get('platform'),
         "requestor_id": request.POST.get('requestor_id'),
         "url": request.POST.get('url'),
-        "user": request.POST.get('user')
+        "user": request.POST.get('user'),
+        "formatos" : arregloFormatos,
     }
 
     database.child('bases_Datos').push(data)
