@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="favicon.ico">
-   {% load bootstrap4 %}
+    {% load bootstrap4 %}
     {% bootstrap_css %}
     <title>Menu Formatos</title>
 
@@ -24,9 +24,10 @@
     <style>
         #agregarNuevoFormato{
             display: none;
-            wight: auto;
-            height: auto;
-            margin-left: 45%;
+            wight: 100px;
+            height: 100px;
+            margin-left: 10%;
+            margin-top: 25%;
         }
 
         .buttonMenu{
@@ -139,30 +140,30 @@
 <div style="width: 100%; height: 100px; float: left; background: #000066" id="nombre_software">
     <h6 style="font-family: Arial; color: white; margin-left: 15%; margin-top: 30px; font-size:40px">LIDACOA Library Data Collection Analytic</h6>
 </div>
-<br>
+
 <nav class="navbar navbar-expand-lg" style="background-color: #000066; wight: 100%; height: 80px">
   <div class="collapse navbar-collapse" id="navbarNav" style="height: 100%">
     <ul class="navbar-nav" style="margin-left: 14.5%; height: 100%; margin-right: 13%; width: 100%">
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%;">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: auto">Reporte</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: 25px">Reporte</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: auto">Control Bases de Datos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: 25px">Control Bases de Datos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: auto">Control Formatos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: 25px">Control Formatos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Visualización Reporte</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: 25px">Visualización Reporte</p></button>
       </li>
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
     </ul>
   </div>
 </nav>
+<br>
+<br>
 
-<br>
-<br>
 
 <div id="opciones" class="menuDesplegable">
   <div class="labelCrearReporte">
@@ -174,19 +175,9 @@
 
 <span class="desplegarMenu" onclick="openNav()">&#10132;</span>
 
-<br>
-<br>
 <div id="agregarNuevoFormato">
     {% include 'agregarFormato.html' %}
 </div>
-
-<nav>
-    <ul>
-        <li><a onclick="location.href='{% url 'agregarFormato' %}'">Agregar nuevo Formato</a></li>
-        <!--<li><a onclick="location.href='{% url 'verFormatos' %}'">Ver Formatos</a></li>-->
-    </ul>
-</nav>
-
 
 
 </body>
