@@ -6,14 +6,20 @@
     {% load bootstrap4 %}
     {% bootstrap_css %}
     <title>Menu Formatos</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         function openNav() {
           document.getElementById("opciones").style.width = "400px";
         }
 
         function mostrarFormulario() {
+          document.getElementById("verReporte").style.display = "none";
           document.getElementById("agregarNuevoFormato").style.display = "block";
+        }
+       function verFormato() {
+          document.getElementById("agregarNuevoFormato").style.display = "none";
+          document.getElementById("verFormatos").style.display = "block";
+          $("#verFormatos").load("/verFormatos");
         }
 
         function closeNav() {
@@ -26,10 +32,14 @@
             display: none;
             wight: 100px;
             height: 100px;
-            margin-left: 10%;
-            margin-top: 25%;
+            margin-left: 40%;
         }
-
+        #verFormatos{
+            display: none;
+            wight: 100px;
+            height: 100px;
+            margin-left: 40%;
+        }
         .buttonMenu{
             background: #169BD5;
             color: white;
@@ -146,23 +156,21 @@
     <ul class="navbar-nav" style="margin-left: 14.5%; height: 100%; margin-right: 13%; width: 100%">
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%;">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: 25px">Reporte</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: auto">Reporte</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: 25px">Control Bases de Datos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: auto">Control Bases de Datos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: 25px">Control Formatos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: auto">Control Formatos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: 25px">Visualización Reporte</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Visualización Reporte</p></button>
       </li>
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
     </ul>
   </div>
 </nav>
-<br>
-<br>
 
 
 <div id="opciones" class="menuDesplegable">
@@ -171,6 +179,7 @@
   </div>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a class="opcion1" href="#" onclick="mostrarFormulario()">Agregar Nuevo Formato</a>
+    <a class="opcion1" href="#" onclick="verFormato()">Ver Formatos</a>
 </div>
 
 <span class="desplegarMenu" onclick="openNav()">&#10132;</span>
@@ -179,6 +188,9 @@
     {% include 'agregarFormato.html' %}
 </div>
 
+<div id="verFormatos">
+
+</div>
 
 </body>
 </html>
