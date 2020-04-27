@@ -6,6 +6,7 @@
    {% load bootstrap4 %}
     {% bootstrap_css %}
     <title>Menu Bases de Datos Bibliograficas</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         function openNav() {
           document.getElementById("opciones").style.width = "400px";
@@ -17,6 +18,7 @@
 
         function VerBaseDeDatos() {
           document.getElementById("VerBaseDeDatos").style.display = "block";
+          $("#VerBaseDeDatos").load("/verBasesDatos");
         }
 
         function BuscarBaseDeDatos() {
@@ -205,7 +207,8 @@
 </div>
 
 <div id="VerBaseDeDatos">
-  <li><a onclick="location.href='{% url 'verBasesDatos' %}'">Ver Bases de Datos Bibliograficas</a></li>
+
+  <!---<li><a onclick="location.href='{% url 'verBasesDatos' %}'">Ver Bases de Datos Bibliograficas</a></li>-->
 </div>
 
 
