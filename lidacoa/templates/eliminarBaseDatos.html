@@ -8,8 +8,10 @@
     <title>Base de Datos Eliminada</title>
 </head>
 <body>
+<form action="/menuBasesDatos/" method="post">
 {% csrf_token %}
 <h1>Se elimino de manera exitosa la base de datos: {{nombre}}</h1>
-
+    <button type="submit" class="btn btn-primary" value = "Submit">OK</button>
+</form>
 </body>
 </html>

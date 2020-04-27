@@ -8,21 +8,25 @@
     <title>Ver Bases de Datos Bibliograficas</title>
 </head>
 <body>
-    {% csrf_token %}
     <input type="text" name="aux" value="{{arregloBasesDatos}}" style="background:white; border:none; color: #fff;">
-    <table>
-        <tr>
+    {% csrf_token %}
+    <table class="table table-bordered">
+  <thead>
+    <tr>
             <th>NOMBRE DE BASE DE DATOS</th>
             <th colspan="2">OPCIONES</th>
-        </tr>
-        {% for baseDatos in arregloBasesDatos %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for baseDatos in arregloBasesDatos %}
             <tr>
                 <th><p>{{baseDatos}}</p></th>
                 <th><a href="/actualizarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black; padding: 10px">ACTUALIZAR</a></th>
                 <th><a href="/eliminarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black; padding: 10px">ELIMINAR</a></th>
             </tr>
         {% endfor %}
-    </table>
+  </tbody>
+</table>
 
 </body>
 </html>

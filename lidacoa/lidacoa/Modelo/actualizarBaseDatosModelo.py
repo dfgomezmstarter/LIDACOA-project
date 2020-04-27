@@ -24,7 +24,8 @@ def actualizar(request):
 def eliminarBaseDatos(request):
     dataBaseSelected = request.GET.get('bbd')
     basesDatos = database.child("bases_Datos").get()
-    for baseDatos in basesDatos:
+    print(basesDatos)
+    for baseDatos in basesDatos.each():
         if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
             idDataBase = baseDatos.key()
             database.child("bases_Datos").child(idDataBase).remove()
@@ -40,7 +41,7 @@ def agregar(request):
     for formato in formatos.each():
         arregloFormatos.append(formato.val()['Report_Id'])
 
-    for baseDatos in basesDatos:
+    for baseDatos in basesDatos.each():
         if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
             idDataBase = baseDatos.key()
             api_key = baseDatos.val()['api_key']
