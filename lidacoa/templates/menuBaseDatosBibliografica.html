@@ -14,10 +14,13 @@
         }
 
         function AgregarBaseDeDatos() {
+          document.getElementById("VerBaseDeDatos").style.display = "none";
           document.getElementById("AgregarBaseDeDatos").style.display = "block";
+          $("#AgregarBaseDeDatos").load("/agregarBaseDatos");
         }
 
         function VerBaseDeDatos() {
+          document.getElementById("AgregarBaseDeDatos").style.display = "none";
           document.getElementById("VerBaseDeDatos").style.display = "block";
           $("#VerBaseDeDatos").load("/verBasesDatos");
         }
@@ -52,7 +55,6 @@
             height: 100px;
             margin-left: 20%;
         }
-
         .buttonMenu{
             background: #169BD5;
             color: white;
@@ -150,15 +152,14 @@
             cursor:pointer;
             background-color: orange;
             border-radius: 0px 5px 5px 0px;
-
+            width: 30px;
         }
 
         .desplegarMenu:hover{
             background-color: #169BD5;
 
         }
-
-    </style>
+     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -184,19 +185,16 @@
     <ul class="navbar-nav" style="margin-left: 14.5%; height: 100%; margin-right: 13%; width: 100%">
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%;">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: auto">Control Bases de Datos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: auto">Reporte</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: auto">Control de Formatos</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuBasesDatos' %}'"><p style="font-family: Arial; font-size: auto">Control Bases de Datos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: auto">Realizar Consulta</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'menuFormatos' %}'"><p style="font-family: Arial; font-size: auto">Control Formatos</p></button>
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Ver Reporte</p></button>
-      </li>
-        <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
-        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Control de Usuarios</p></button>
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Visualización Reporte</p></button>
       </li>
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
     </ul>
@@ -220,7 +218,6 @@
 <span class="desplegarMenu" onclick="openNav()" id="abrir">&#10132;</span>
 
 <div id="AgregarBaseDeDatos">
-    {% include 'agregarBaseDatos.html' %}
 </div>
 
 <div id="VerBaseDeDatos">

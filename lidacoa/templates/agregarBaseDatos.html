@@ -5,6 +5,7 @@
     <link rel="icon" href="favicon.ico">
    {% load bootstrap4 %}
     {% bootstrap_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Crear Base de Datos Bibliográfica</title>
 
 </head>
@@ -15,38 +16,65 @@
 <form action="/formularioAgregarBaseDatos/" method="post">
     {% csrf_token %}
 
-    <label style="width: 200px; height: 10px; padding: 10px">name</label><br>
-    <input type="text" name="nameDataBase" style="width: 200px; height: 10px; padding: 10px"><br><br>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Name</label>
+      <input type="text" name="nameDataBase" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Url</label>
+      <input type="text" name="url" id="url" class="form-control" onchange="crearURL()">
+    </div>
+  </div>
 
-    <label style="width: 200px; height: 10px; padding: 10px">url</label><br>
-    <input type="text" name="url" id="url" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+   <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Customer_id</label>
+      <input type="text" name="customer_id" id="customerId" class="form-control" onchange="crearURL()">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Requestor_id</label>
+      <input type="text" name="requestor_id" id="requestorId" class="form-control" onchange="crearURL()">
+    </div>
+  </div>
 
-    <label style="width: 200px; height: 10px; padding: 10px">customer_id</label><br>
-    <input type="text" name="customer_id" id="customerId" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Api_key</label>
+      <input type="text" name="api_key" id="apiKey" class="form-control" onchange="crearURL()">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Platform</label>
+      <input type="text" name="platform" id="platform" class="form-control" onchange="crearURL()">
+    </div>
+  </div>
 
-    <label style="width: 200px; height: 10px; padding: 10px">requestor_id</label><br>
-    <input type="text" name="requestor_id" id="requestorId" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
+   <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Passw</label>
+      <input type="text" name="pass" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label>User</label>
+      <input type="text" name="user" class="form-control">
+    </div>
+  </div>
 
-    <label style="width: 200px; height: 10px; padding: 10px">api key</label><br>
-    <input type="text" name="api_key" id="apiKey" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()" ><br><br>
+    <div class="form-group">
+    <label for="urlFinal">Url a Ingresar</label>
+    <input type="text" name="nameDataSet" class="form-control" id="urlFinal" contenteditable="true" size="250" onchange="ponerURL()">
+  </div>
 
-    <label style="width: 200px; height: 10px; padding: 10px">platform</label><br>
-    <input type="text" name="platform" id="platform" style="width: 200px; height: 10px; padding: 10px" onchange="crearURL()"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">passw</label><br>
-    <input type="password" name="pass" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">User</label><br>
-    <input type="text" name="user" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px"> Url a Ingresar </label><br>
-    <input type="text" name="nameDataSet" id="urlFinal" contenteditable="true" size="250" onchange="ponerURL()"> <br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px"> Formatos de Base de datos </label><br>
-    {% for formato in arregloFormatos %}
-        <input type="checkbox" name="{{formato}}" value="1"> {{formato}}<br><br>
-    {% endfor %}
-
+   <div class="form-group row">
+    <div class="col-sm-2">Formatos de Base de datos</div>
+    <div class="col-sm-10">
+      <div class="form-check">
+        {% for formato in arregloFormatos %}
+        <input class="form-check-input" type="checkbox" name="{{formato}}" value="1"> {{formato}}<br><br>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
 
     <script>
         var urlPeticion = "";
@@ -126,7 +154,8 @@ function ponerURL() {
 }
 </script>
 
-    <input type="submit" value = "Submit">
+
+    <button type="submit" class="btn btn-primary" value = "Submit">Agregar base de datos</button>
 </form>
 </body>
 </html>

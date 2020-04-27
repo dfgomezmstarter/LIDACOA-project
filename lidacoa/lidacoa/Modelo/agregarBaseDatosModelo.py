@@ -27,4 +27,4 @@ def agregarBaseDatos(request):
 
     database.child('bases_Datos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'welcome.html',{"e":email})
+    return render(request,'menuBaseDatosBibliografica.html',{"e":email})
