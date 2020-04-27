@@ -10,6 +10,7 @@
     <script>
         function openNav() {
           document.getElementById("opciones").style.width = "400px";
+          document.getElementById("abrir").style.display = "none";
         }
 
         function AgregarBaseDeDatos() {
@@ -27,6 +28,7 @@
 
         function closeNav() {
           document.getElementById("opciones").style.width = "0";
+          document.getElementById("abrir").style.display = "block";
         }
     </script>
      <style>
@@ -91,7 +93,22 @@
             border: solid 1px #CCCECE;
         }
 
+        .menuDesplegable .opcion2 {
+            width: 75%;
+            height: auto;
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: black;
+            display: block;
+            border: solid 1px #CCCECE;
+        }
+
         .menuDesplegable .opcion1:hover {
+            background-color: #F7F7F7;
+        }
+
+        .menuDesplegable .opcion2:hover {
             background-color: #F7F7F7;
         }
 
@@ -108,7 +125,7 @@
             font-size: 36px;
             color: black;
             display: block;
-            margin-top: 5%;
+            margin-top: 10%;
             background: orange;
             border-radius: 0px 5px 5px 0px;
         }
@@ -195,12 +212,12 @@
   </div>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a class="opcion1" href="#" onclick="VerBaseDeDatos()">Ver Base De Datos</a>
-  <a class="opcion1" href="#" onclick="AgregarBaseDeDatos()">Agregar Base De Datos</a>
+  <a class="opcion2" href="#" onclick="AgregarBaseDeDatos()">Agregar Base De Datos</a>
 
-    <a class="opcion1" href="#" onclick="BuscarBaseDeDatos()">Buscar Base De Datos</a>
+    <a class="opcion2" href="#" onclick="BuscarBaseDeDatos()">Buscar Base De Datos</a>
 </div>
 
-<span class="desplegarMenu" onclick="openNav()">&#10132;</span>
+<span class="desplegarMenu" onclick="openNav()" id="abrir">&#10132;</span>
 
 <div id="AgregarBaseDeDatos">
     {% include 'agregarBaseDatos.html' %}
