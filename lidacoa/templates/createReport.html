@@ -8,7 +8,7 @@
     <title>
         {% block title %}GENERAR REPORTE{% endblock %}
     </title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         function openNav() {
           document.getElementById("opciones").style.width = "400px";
@@ -16,15 +16,40 @@
 
         function mostrarFormulario() {
           document.getElementById("crearReporteForm").style.display = "block";
+          document.getElementById("reporteBusqueda").style.display = "none";
         }
 
         function closeNav() {
           document.getElementById("opciones").style.width = "0";
         }
 
+        function buscarBaseDatos(){
+            document.getElementById("reporteBusqueda").style.display = "block";
+            document.getElementById("crearReporteForm").style.display = "none";
+        }
+
     </script>
     <style>
+        #reporteBusqueda{
+            display: none;
+        }
+
+        #abrir{
+            display: block;
+        }
+
+        #opciones{
+            width: 400px;
+        }
+
         #crearReporteForm{
+            display: none;
+            wight: auto;
+            height: auto;
+            margin-left: 45%;
+        }
+
+        #reporteBusqueda{
             display: none;
             wight: auto;
             height: auto;
@@ -67,11 +92,26 @@
             font-size: 25px;
             color: black;
             display: block;
-            margin-top: 3%;
+            margin-top: 7%;
+            border: solid 1px #CCCECE;
+        }
+
+        .menuDesplegable .opcion2 {
+            width: 75%;
+            height: auto;
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: black;
+            display: block;
             border: solid 1px #CCCECE;
         }
 
         .menuDesplegable .opcion1:hover {
+            background-color: #F7F7F7;
+        }
+
+        .menuDesplegable .opcion2:hover {
             background-color: #F7F7F7;
         }
 
@@ -88,7 +128,7 @@
             font-size: 36px;
             color: black;
             display: block;
-            margin-top: 5%;
+            margin-top: 8%;
             background: orange;
             border-radius: 0px 5px 5px 0px;
         }
@@ -113,7 +153,7 @@
             cursor:pointer;
             background-color: orange;
             border-radius: 0px 5px 5px 0px;
-
+            width: 30px;
         }
 
         .desplegarMenu:hover{
@@ -165,11 +205,12 @@
 <br>
 
 <div id="opciones" class="menuDesplegable">
-  <div class="labelCrearReporte">
+    <div class="labelCrearReporte">
       <p style="margin-left:34px; margin-top: 1%">Reporte</p>
-  </div>
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a class="opcion1" href="#" onclick="mostrarFormulario()">Crear Reporte</a>
+    </div>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a class="opcion1" href="#" onclick="mostrarFormulario()">Crear Reporte</a>
+    <a class="opcion2" href="#" onclick="buscarBaseDatos()">Reporte por Busqueda de Base de Datos</a>
 </div>
 
 <span class="desplegarMenu" onclick="openNav()">&#10132;</span>
@@ -177,29 +218,48 @@
 <br>
 <br>
 <div id="crearReporteForm">
-<form action="/postcreateReport/" method="post">
-<!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
-    <label> Seleccione la BDB que desea </label><br><br>
-    {% for post in arregloBasesDatos %}
+    <form action="/postcreateReport/" method="post">
+    <!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
+        <label> Seleccione la BDB que desea </label><br><br>
+        {% for post in arregloBasesDatos %}
+            <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br>
+        {% endfor %}
+        <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br>
+        <br>
+        <br>
+        <select name="formato">
+            <option value="">Selecciona una Opcion</option>
+            <option value="tr_j1">Solicitudes de diario	</option>
+        </select>
+        <br><br>
+        {% csrf_token %}
+        Fecha inicial
+        <input type="text" name ="fechaInicial" required><br><br>
+        Fecha final
+        <input type="text" name ="fechaFinal" required><br><br>
+        <input type="submit" value = "Submit">
 
-        <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br>
-    {% endfor %}
+    </form>
+</div>
 
-    <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br>
-<br>
-<br>
-<select name="formato" id="no_conformidad" onchange="selecOp()">
-<option value="">Selecciona una Opcion</option>
-<option value="tr_j1">Solicitudes de diario	</option>
-</select><br><br>
-    {% csrf_token %}
-    Fecha inicial
-    <input type="text" name ="fechaInicial" required><br><br>
-    Fecha final
-    <input type="text" name ="fechaFinal" required><br><br>
-    <input type="submit" value = "Submit">
-
-</form>
-    </div>
+<div id="reporteBusqueda">
+    <form action="/reporteBaseDatosEspecifica/" method="post">
+    <!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
+        <label> Seleccione la BDB que desea </label><br><br>
+        <input type="text" name ="baseDatos" required><br><br>
+        <br>
+        <br>
+        <select name="formato">
+            <option value="">Selecciona una Opcion</option>
+            <option value="tr_j1">Solicitudes de diario	</option>
+        </select>
+        <br><br>
+        Fecha inicial
+        <input type="text" name ="fechaInicial" required><br><br>
+        Fecha final
+        <input type="text" name ="fechaFinal" required><br><br>
+        <input type="submit" value = "Submit">
+    </form>
+</div>
 </body>
 </html>

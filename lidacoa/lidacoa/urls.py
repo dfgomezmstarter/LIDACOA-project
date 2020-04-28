@@ -65,5 +65,8 @@ urlpatterns = [
     url(r'^eliminarFormato/', actualizarFormatoModelo.eliminarFormato, name='eliminarFormato'),
     url(r'^downloadInformacion/', descargarInformacionModelo.descargar, name='downloadInformacion'),
     url(r'^consultaBaseDatos/', verBaseDatosControlador.verBaseDatosConsulta, name='consultaBaseDatos'),
+    url(r'^reporteBaseDatosEspecifica/', crearReporteModelo.create_report, name='reporteBaseDatosEspecifica'),
+    url(r'^consultaFormato/', menuFormatosControlador.verFormatoConsulta, name='consultaFormato'),
+
 
 ]

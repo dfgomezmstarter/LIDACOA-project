@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Base de Datos</title>
+    <link rel="icon" href="favicon.ico">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function mostrarFormatos() {
+            var formato=document.getElementById("formato").value;
+            document.getElementById("resultado").style.display = "block";
+            var url = "/consultaFormato?form=" + formato
+            $("#resultado").load(url);
+        }
+    </script>
+    <style>
+        #resultado{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<H2>Buscar Base de Datos Bibliográfica</H2>
+<form method="post" action="#">
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label>Busqueda de Formatos</label>
+            <input type="text" name="formato" id="formato" class="form-control" placeholder="Nombre Formato">
+            <br>
+            <a class="btn btn-primary" href="#" onclick="mostrarFormatos()">Buscar</a>
+        </div>
+    </div>
+</form>
+
+<div id="resultado" style="width: 100%">
+
+</div>
+
+</body>
+</html>

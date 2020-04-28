@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <title>Ver Formatos</title>
+</head>
+<body>
+    {% csrf_token %}
+    <table class="table table-bordered table-striped" style="text-align: center; width: 100%">
+        <thead>
+            <tr>
+                <th>FORMATO</th>
+                <th colspan="2">OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th><p>{{nombreFormato}}</p></th>
+            <th><a href="/actualizarFormato?idFormato={{nombreFormato}}" style="text-decoration:none; color:black;">ACTUALIZAR</a></th>
+            <th><a href="/eliminarFormato?idFormato={{nombreFormato}}" style="text-decoration:none; color:black;">ELIMINAR</a></th>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
