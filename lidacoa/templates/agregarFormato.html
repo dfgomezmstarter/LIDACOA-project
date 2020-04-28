@@ -14,16 +14,21 @@
 <form action="/formularioAgregarFormato/" method="post">
     {% csrf_token %}
 
-    <label style="width: 200px; height: 10px; padding: 10px">Report ID</label><br>
-    <input type="text" name="reporteID" style="text-transform:uppercase;"><br><br>
+    <div class="form-group col-md-6">
+        <label for="exampleFormControlInput1">Report ID</label><br>
+       <input type="text" name="reporteID" class="form-control" id="exampleFormControlInput1" placeholder="Report ID"><br><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="exampleFormControlInput2">Report Name</label><br>
+        <input type="text" name="name" class="form-control" id="exampleFormControlInput2" placeholder="Report Name"><br><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="exampleFormControlInput3">Details</label><br>
+        <input type="text" name="details" class="form-control" id="exampleFormControlInput3" placeholder="Details"><br><br>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2" value="Submit">Guardar</button>
 
-    <label style="width: 200px; height: 10px; padding: 10px">Report Name</label><br>
-    <input type="text" name="name" style="width: 200px; height: 10px; padding: 10px"><br><br>
 
-    <label style="width: 200px; height: 10px; padding: 10px">Details</label><br>
-    <input type="textarea" name="details" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <input type="submit" value = "Guardar">
 </form>
 </body>
 </html>

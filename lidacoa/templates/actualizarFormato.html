@@ -10,19 +10,25 @@
 <body>
 <form action="/confirmarActualizacionFormato/" method="post">
     {% csrf_token %}
-    <label style="width: 200px; height: 10px; padding: 10px">Id</label><br>
-    <input type="text" name="id" value="{{idFormatoBD}}"><br><br>
 
-    <label style="width: 200px; height: 10px; padding: 10px">Report_Id</label><br>
-    <input type="text" name="reporteID" value="{{idFormatoActualizar}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
+    <div class="form-group col-md-6">
+        <label >Id</label><br>
+       <input type="text" name="id" value="{{idFormatoBD}}"  class="form-control" ><br><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label>Report ID</label><br>
+       <input type="text" name="reporteID"  value="{{idFormatoActualizar}}" class="form-control"  ><br><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label>Report Name</label><br>
+        <input type="text" name="name" value="{{nombreFormato}}" class="form-control"  ><br><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label>Details</label><br>
+        <input type="text" name="details" value="{{descripcionFormato}}" class="form-control" ><br><br>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2" value="Submit">Actualizar</button>
 
-    <label style="width: 200px; height: 10px; padding: 10px">Report_Id</label><br>
-    <input type="text" name="name" value="{{nombreFormato}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <label style="width: 200px; height: 10px; padding: 10px">Descripcion</label><br>
-    <input type="textarea" name="details" value="{{descripcionFormato}}" style="width: 200px; height: 10px; padding: 10px"><br><br>
-
-    <input type="submit" value="ACTUALIZAR">
 
 </form>
 
