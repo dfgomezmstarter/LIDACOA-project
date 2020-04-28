@@ -3,57 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="favicon.ico">
-   {% load bootstrap4 %}
+    {% load bootstrap4 %}
     {% bootstrap_css %}
     <title>Menu Bases de Datos Bibliograficas</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         function openNav() {
-          document.getElementById("opciones").style.width = "400px";
-          document.getElementById("abrir").style.display = "none";
+            document.getElementById("opciones").style.width = "400px";
+            document.getElementById("abrir").style.display = "none";
         }
 
         function AgregarBaseDeDatos() {
-          document.getElementById("VerBaseDeDatos").style.display = "none";
-          document.getElementById("AgregarBaseDeDatos").style.display = "block";
-          $("#AgregarBaseDeDatos").load("/agregarBaseDatos");
+            document.getElementById("BuscarBaseDeDatos").style.display = "none";
+            document.getElementById("VerBaseDeDatos").style.display = "none";
+            document.getElementById("AgregarBaseDeDatos").style.display = "block";
+            $("#AgregarBaseDeDatos").load("/agregarBaseDatos");
         }
 
         function VerBaseDeDatos() {
-          document.getElementById("AgregarBaseDeDatos").style.display = "none";
-          document.getElementById("VerBaseDeDatos").style.display = "block";
-          $("#VerBaseDeDatos").load("/verBasesDatos");
+            document.getElementById("BuscarBaseDeDatos").style.display = "none";
+            document.getElementById("AgregarBaseDeDatos").style.display = "none";
+            document.getElementById("VerBaseDeDatos").style.display = "block";
+            $("#VerBaseDeDatos").load("/verBasesDatos");
         }
 
         function BuscarBaseDeDatos() {
-          document.getElementById("BuscarBaseDeDatos").style.display = "block";
+            document.getElementById("BuscarBaseDeDatos").style.display = "block";
+            document.getElementById("AgregarBaseDeDatos").style.display = "none";
+            document.getElementById("VerBaseDeDatos").style.display = "none";
         }
 
         function closeNav() {
-          document.getElementById("opciones").style.width = "0";
-          document.getElementById("abrir").style.display = "block";
+            document.getElementById("opciones").style.width = "0";
+            document.getElementById("abrir").style.display = "block";
         }
     </script>
      <style>
+        #abrir{
+            display: none;
+        }
+
+        #opciones{
+            width: 400px;
+        }
+
         #AgregarBaseDeDatos{
             display: none;
-            wight: 100px;
-            height: 100px;
-            margin-left: 20%;
+            width: 70%;
+            height: auto;
+            margin-left: 25%;
         }
 
         #VerBaseDeDatos{
             display: none;
-            wight: 100px;
-            height: 100px;
-            margin-left: 20%;
+            width: 70%;
+            height: auto;
+            margin-left: 30%;
         }
 
         #BuscarBaseDeDatos{
             display: none;
-            wight: 100px;
-            height: 100px;
-            margin-left: 20%;
+            width: 30%;
+            height: auto;
+            margin-left: 40%;
+            margin-top: 2%;
         }
         .buttonMenu{
             background: #169BD5;
@@ -205,13 +218,12 @@
 <br>
 
 <div id="opciones" class="menuDesplegable">
-  <div class="labelCrearReporte">
-      <p style="margin-left:34px; margin-top: 1%">Reporte</p>
-  </div>
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a class="opcion1" href="#" onclick="VerBaseDeDatos()">Ver Base De Datos</a>
-  <a class="opcion2" href="#" onclick="AgregarBaseDeDatos()">Agregar Base De Datos</a>
-
+    <div class="labelCrearReporte">
+      <p style="margin-left:34px; margin-top: 1%">Control Bases de Datos</p>
+    </div>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a class="opcion1" href="#" onclick="VerBaseDeDatos()">Ver Base De Datos</a>
+    <a class="opcion2" href="#" onclick="AgregarBaseDeDatos()">Agregar Base De Datos</a>
     <a class="opcion2" href="#" onclick="BuscarBaseDeDatos()">Buscar Base De Datos</a>
 </div>
 
@@ -221,9 +233,12 @@
 </div>
 
 <div id="VerBaseDeDatos">
-
-  <!---<li><a onclick="location.href='{% url 'verBasesDatos' %}'">Ver Bases de Datos Bibliograficas</a></li>-->
 </div>
+
+<div id="BuscarBaseDeDatos">
+    {% include 'buscarBaseDatos.html'%}
+</div>
+<br><br>
 
 
 </body>

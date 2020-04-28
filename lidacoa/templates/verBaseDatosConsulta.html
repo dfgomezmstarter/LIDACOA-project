@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <title>Ver Bases de Datos Bibliograficas</title>
+</head>
+<body>
+    {% csrf_token %}
+    <table class="table table-bordered table-striped" style="text-align: center; width: 100%">
+        <thead>
+            <tr>
+                <th>NOMBRE DE BASE DE DATOS</th>
+                <th colspan="2">OPCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th><p>{{nombreBaseDatos}}</p></th>
+            <th><a href="/actualizarBDB?bbd={{nombreBaseDatos}}" style="text-decoration:none; color:black;">ACTUALIZAR</a></th>
+            <th><a href="/eliminarBDB?bbd={{nombreBaseDatos}}" style="text-decoration:none; color:black;">ELIMINAR</a></th>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

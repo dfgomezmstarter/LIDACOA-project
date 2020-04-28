@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Base de Datos</title>
+    <link rel="icon" href="favicon.ico">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function mostrarBaseDatos() {
+            var baseDatos=document.getElementById("dataBase").value;
+            document.getElementById("resultado").style.display = "block";
+            var url = "/consultaBaseDatos?bd=" + baseDatos
+            $("#resultado").load(url);
+        }
+    </script>
+    <style>
+        #resultado{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<H2>Buscar Base de Datos Bibliográfica</H2>
+<form method="post" action="#">
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label>Busqueda de Base de Datos</label>
+            <input type="text" name="dataBase" id="dataBase" class="form-control" placeholder="Nombre Base de datos">
+            <br>
+            <a class="btn btn-primary" href="#" onclick="mostrarBaseDatos()">Buscar</a>
+        </div>
+    </div>
+</form>
+
+<div id="resultado" style="width: 100%">
+
+</div>
+
+</body>
+</html>
