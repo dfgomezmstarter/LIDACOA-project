@@ -65,30 +65,32 @@ def create_report(requets):
                 begin_date = requets.POST.get('fechaInicial')
                 end_date = requets.POST.get('fechaFinal')
                 platform = BD.val()['platform']
-                informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date,
-                                                  platform,
-                                                  formato)
-                # print("Informacion: " + str(informacionUso))
-                nombreBaseDatos = BD.val()['nameDataBase']
-                for informacion in informacionUso['Report_Items']:
-                    performance = informacion['Performance']
-                    for i in performance:
-                        fechaInicio = i['Period']['Begin_Date']
-                        fechaFinal = i['Period']['End_Date']
-                        for j in i['Instance']:
-                            if j['Metric_Type'] == "Total_Item_Requests":
-                                totalMes = j['Count']
-                                consultaRealizada = {
-                                    "nombreBaseDatos": nombreBaseDatos,
-                                    "formatoConsulta": formato,
-                                    "fechaInicio": fechaInicio,
-                                    "fechaFinal": fechaFinal,
-                                    "totalMes": totalMes
-                                }
-                                database.child('Consulta').push(consultaRealizada)
-                                arregloConsultas.append(consultaRealizada)
-                # consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
-                # database.child('Consulta').push(consultaRealizada)
+                if (agregar(diccionario,url, begin_date,end_date)):
+                    informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date,
+                                                      platform,
+                                                      formato)
+                    # print("Informacion: " + str(informacionUso))
+                    nombreBaseDatos = BD.val()['nameDataBase']
+                    for informacion in informacionUso['Report_Items']:
+                        performance = informacion['Performance']
+                        for i in performance:
+                            fechaInicio = i['Period']['Begin_Date']
+                            fechaFinal = i['Period']['End_Date']
+                            for j in i['Instance']:
+                                if j['Metric_Type'] == "Total_Item_Requests":
+                                    totalMes = j['Count']
+                                    consultaRealizada = {
+                                        "nombreBaseDatos": nombreBaseDatos,
+                                        "formatoConsulta": formato,
+                                        "fechaInicio": fechaInicio,
+                                        "fechaFinal": fechaFinal,
+                                        "totalMes": totalMes
+                                    }
+                                    database.child('Consulta').push(consultaRealizada)
+                                    arregloConsultas.append(consultaRealizada)
+                    # consultaRealizada=organizarReporte(informacionUso, begin_date, end_date, formato,nombreBaseDatos)
+                    # database.child('Consulta').push(consultaRealizada)
+                    print(diccionario)
         tiempoFinal = time()
         print("Tiempo: " + str(tiempoFinal - tiempoInicial))
         return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
@@ -178,6 +180,16 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     decoded = json.loads(webpage)
     return decoded
 
+def agregar(diccionario,baseDeDatos,fechaInicial,fechaFinal):
+    arregloTemp =[]
+    arregloLlaves = diccionario.keys()
+    if (not(baseDeDatos in arregloLlaves)):
+        for i in range(int(fechaInicial[-5:-3]),int(fechaFinal[-5:-3])+1):
+            arregloTemp.append(str("2019-"+str(i)+"-30"))
+        diccionario[baseDeDatos] = arregloTemp
+    else:
+        return False
+    return True
 
 """
 Codigo Cesar
