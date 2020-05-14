@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def actualizar(request):
     nuevaInformacion={
@@ -32,4 +32,4 @@ def agregar(request):
             descripcionFormato = formato.val()['descripcion']
             return render(request, 'actualizarFormato.html', {"idFormatoBD": idFormatoBD, "idFormatoActualizar": idFormatoActualizar, "nombreFormato": nombreFormato, "descripcionFormato": descripcionFormato})
         else:
-            None
+            None"""

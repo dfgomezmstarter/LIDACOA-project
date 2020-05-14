@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def agregarFormulario(request):
     idToken = request.session['uid']
@@ -16,4 +16,4 @@ def agregarFormulario(request):
 
     database.child('formatos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'welcome.html',{"e":email})
+    return render(request,'welcome.html',{"e":email})"""

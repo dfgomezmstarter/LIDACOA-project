@@ -1,0 +1,129 @@
+from ..configuracion import *
+
+def agregarBaseDatos(request):
+    formatos = database.child('formatos').get()
+    arregloFormatos=[]
+    for formato in formatos.each():
+        arregloFormatos.append(formato.val()['Report_Id'])
+    return render(request,"agregarBaseDatos.html",{"arregloFormatos" : arregloFormatos})
+
+def menuBaseDatosBibliograficas(request):
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    email = database.child('users').child(a).child('details').get().val()['name']
+    return render(request,"menuBaseDatosBibliografica.html",{"e":email})
+
+def verBaseDatos(request):
+    basesDatos = database.child('bases_Datos').get()
+    nombreBasesDatos = []
+    idBasesDatos = []
+    for i in basesDatos.each():
+        informacionBaseDatos = i.val()
+        nombre = informacionBaseDatos.get('nameDataBase')
+        nombreBasesDatos.append(nombre)
+        keyBaseDatos = i.key()
+        idBasesDatos.append(keyBaseDatos)
+
+    return render(request, "verBasesDatosBibliograficas.html", {"arregloBasesDatos": nombreBasesDatos, "idBasesDatos": idBasesDatos})
+
+def verBaseDatosConsulta(request):
+    basesDatos = database.child('bases_Datos').get()
+    dataBaseSelected = request.GET.get('bd')
+
+    for i in basesDatos.each():
+        informacionBaseDatos = i.val()
+        if informacionBaseDatos.get('nameDataBase') == str(dataBaseSelected):
+            nombre = dataBaseSelected
+            idBaseDatos = i.key()
+
+    return render(request, "verBaseDatosConsulta.html", {"nombreBaseDatos": nombre, "idBaseDatos": idBaseDatos})
+
+def actualizar(request):
+    arregloFormatos = []
+    formatos = database.child('formatos').get()
+    for formato in formatos.each():
+        nombreFormato = formato.val()['Report_Id']
+        if request.POST.get(nombreFormato) == "1":
+            arregloFormatos.append(nombreFormato)
+    nuevaInformacion={
+        "api_key":request.POST.get('api_key'),
+        "customer_id":request.POST.get('customer_id'),
+        "name":request.POST.get('nameDataBase'),
+        "pass":request.POST.get('pass'),
+        "platform":request.POST.get('platform'),
+        "requestor_id":request.POST.get('requestor_id'),
+        "url":request.POST.get('url'),
+        "user":request.POST.get('user'),
+        "formatos": arregloFormatos,
+    }
+    database.child("bases_Datos").child(request.POST.get('id')).update(nuevaInformacion)
+    return render(request, 'welcome.html')
+
+def eliminarBaseDatos(request):
+    dataBaseSelected = request.GET.get('bbd')
+    basesDatos = database.child("bases_Datos").get()
+    print(basesDatos)
+    for baseDatos in basesDatos.each():
+        if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
+            idDataBase = baseDatos.key()
+            database.child("bases_Datos").child(idDataBase).remove()
+            return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+        else:
+            None
+
+def agregar(request):
+    dataBaseSelected=request.GET.get('bbd')
+    basesDatos = database.child("bases_Datos").get()
+    formatos=database.child("formatos").get()
+    arregloFormatos=[]
+    for formato in formatos.each():
+        arregloFormatos.append(formato.val()['Report_Id'])
+
+    for baseDatos in basesDatos.each():
+        if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
+            idDataBase = baseDatos.key()
+            api_key = baseDatos.val()['api_key']
+            customer_id = baseDatos.val()['customer_id']
+            nameDataBase = baseDatos.val()['nameDataBase']
+            passw = baseDatos.val()['pass']
+            platform = baseDatos.val()['platform']
+            requestor_id = baseDatos.val()['requestor_id']
+            url = baseDatos.val()['url']
+            user = baseDatos.val()['user']
+            arregloFormatosBaseDatos = baseDatos.val()['formatos']
+            return render(request, 'actualizarBaseDatos.html', {"idDataBase": idDataBase, "api_key": api_key, "customer_id": customer_id, "nameDataBase": nameDataBase, "passw": passw, "platform": platform, "requestor_id": requestor_id, "url": url, "user": user, "arregloFormatosBaseDatos": arregloFormatosBaseDatos, "arregloFormatos": arregloFormatos})
+        else:
+            None
+
+
+def agregarBaseDatosFormulario(request):
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a =a['users']
+    a =a[0]
+    a =a['localId']
+    arregloFormatos=[]
+    formatos = database.child('formatos').get()
+    for formato in formatos.each():
+        nombreFormato=formato.val()['Report_Id']
+        if request.POST.get(nombreFormato) == "1":
+            arregloFormatos.append(nombreFormato)
+
+    data = {
+        "api_key": request.POST.get('api_key'),
+        "customer_id": request.POST.get('customer_id'),
+        "nameDataBase": request.POST.get('nameDataBase'),
+        "pass": request.POST.get('pass'),
+        "platform": request.POST.get('platform'),
+        "requestor_id": request.POST.get('requestor_id'),
+        "url": request.POST.get('url'),
+        "user": request.POST.get('user'),
+        "formatos" : arregloFormatos,
+    }
+
+    database.child('bases_Datos').push(data)
+    email=database.child('users').child(a).child('details').get().val()['name']
+    return render(request,'menuBaseDatosBibliografica.html',{"e":email})

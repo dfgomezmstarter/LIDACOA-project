@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def menuBaseDatosBibliograficas(request):
     idToken = request.session['uid']
@@ -7,4 +7,4 @@ def menuBaseDatosBibliograficas(request):
     a = a[0]
     a = a['localId']
     email = database.child('users').child(a).child('details').get().val()['name']
-    return render(request,"menuBaseDatosBibliografica.html",{"e":email})
+    return render(request,"menuBaseDatosBibliografica.html",{"e":email})"""

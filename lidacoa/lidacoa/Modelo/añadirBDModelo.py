@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def post_create(request):
     name =request.POST.get('nameDataSet')
@@ -19,4 +19,4 @@ def post_create(request):
     }
     database.child('users').child(a).child('reports').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'welcome.html',{"e":email})
+    return render(request,'welcome.html',{"e":email})"""

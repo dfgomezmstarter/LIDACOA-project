@@ -1,4 +1,4 @@
-from django.shortcuts import render
+"""from django.shortcuts import render
 from ..configuracion import authe
 
 def postsign(requets):
@@ -11,4 +11,4 @@ def postsign(requets):
         return render(requets,"signIn.html",{"messg":message})
     session_id=user['idToken']
     requets.session['uid']=str(session_id)
-    return render(requets, "welcome.html",{"e":email})
+    return render(requets, "welcome.html",{"e":email})"""

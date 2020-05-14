@@ -1,13 +1,13 @@
-from ..configuracion import *
+"""from ..configuracion import *
 from urllib.request import Request, urlopen
 import json
 from time import time
 
-def create_report(requets):
+def CrearReporte(requets):
     tiempoInicial = time()
     arregloConsultas = []
-    formato = "PR_P1"
-    # formato = requets.POST.get('formato')
+    #formato = "PR_P1"
+    formato = requets.POST.get('formato')
     # bd = requets.POST.get('basesDeDatos')
     # print("formato: " + str(formato))
     idToken = requets.session['uid']
@@ -15,6 +15,7 @@ def create_report(requets):
     a = a['users']
     a = a[0]
     a = a['localId']
+    print("Formato: " + str(formato))
     listaBD = database.child('bases_Datos').get()
 
     if requets.POST.get('seleccionarTodas') == "1":
@@ -95,11 +96,6 @@ def create_report(requets):
         print("Tiempo: " + str(tiempoFinal - tiempoInicial))
         return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
 
-
-
-
-    """"
-    Codigo Daniel 
     tiempoInicial = time()
     arregloConsultas=[]
     aux = requets.POST.get('aux')
@@ -159,7 +155,7 @@ def create_report(requets):
     print("Tiempo: " + str(tiempoFinal - tiempoInicial))
     return render(requets, 'verConsulta.html',context={"consultaRealizada":arregloConsultas})"""
 
-def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
+"""def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
     formato=str(url)+"/reports/"+str(formato)+"?"
     if(requestor_id!=''):
         formato+= "requestor_id="+str(requestor_id)+"&"
@@ -189,7 +185,7 @@ def agregar(diccionario,baseDeDatos,fechaInicial,fechaFinal):
         diccionario[baseDeDatos] = arregloTemp
     else:
         return False
-    return True
+    return True"""
 
 """
 Codigo Cesar

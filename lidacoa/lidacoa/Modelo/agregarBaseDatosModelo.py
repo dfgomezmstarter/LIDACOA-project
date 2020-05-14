@@ -1,6 +1,6 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
-def agregarBaseDatos(request):
+def agregarBaseDatosFormulario(request):
     idToken = request.session['uid']
     a = authe.get_account_info(idToken)
     a =a['users']
@@ -27,4 +27,4 @@ def agregarBaseDatos(request):
 
     database.child('bases_Datos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'menuBaseDatosBibliografica.html',{"e":email})
+    return render(request,'menuBaseDatosBibliografica.html',{"e":email})"""

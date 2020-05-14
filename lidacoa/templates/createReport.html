@@ -227,9 +227,11 @@
         <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br>
         <br>
         <br>
-        <select name="formato">
+        <select name="formato" id="no_conformidad">
             <option value="">Selecciona una Opcion</option>
-            <option value="tr_j1">Solicitudes de diario	</option>
+            {% for formato in arregloFormatos %}
+                <option value="{{formato}}" name="{{formato}}">{{formato}}</option>
+            {% endfor %}
         </select>
         <br><br>
         {% csrf_token %}

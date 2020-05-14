@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def verBaseDatos(request):
     basesDatos = database.child('bases_Datos').get()
@@ -23,4 +23,4 @@ def verBaseDatosConsulta(request):
             nombre = dataBaseSelected
             idBaseDatos = i.key()
 
-    return render(request, "verBaseDatosConsulta.html", {"nombreBaseDatos": nombre, "idBaseDatos": idBaseDatos})
+    return render(request, "verBaseDatosConsulta.html", {"nombreBaseDatos": nombre, "idBaseDatos": idBaseDatos})"""

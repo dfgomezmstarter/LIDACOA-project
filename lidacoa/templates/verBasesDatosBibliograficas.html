@@ -10,22 +10,22 @@
 <body>
     {% csrf_token %}
     <table class="table table-bordered table-striped" style="text-align: center; width: 80%">
-  <thead>
-    <tr>
-            <th>NOMBRE DE BASE DE DATOS</th>
-            <th colspan="2">OPCIONES</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for baseDatos in arregloBasesDatos %}
+        <thead>
             <tr>
-                <th><p>{{baseDatos}}</p></th>
-                <th><a href="/actualizarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black;">ACTUALIZAR</a></th>
-                <th><a href="/eliminarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black;">ELIMINAR</a></th>
+                <th>NOMBRE DE BASE DE DATOS</th>
+                <th colspan="2">OPCIONES</th>
             </tr>
-        {% endfor %}
-  </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for baseDatos in arregloBasesDatos %}
+                <tr>
+                    <th><p>{{baseDatos}}</p></th>
+                    <th><a href="/actualizarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black;">ACTUALIZAR</a></th>
+                    <th><a href="/eliminarBDB?bbd={{baseDatos}}" style="text-decoration:none; color:black;">ELIMINAR</a></th>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </body>
 </html>

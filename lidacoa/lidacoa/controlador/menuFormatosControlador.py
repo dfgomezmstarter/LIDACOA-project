@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def menuFormatos(request):
     return render(request,"menuFormatos.html")
@@ -26,4 +26,4 @@ def verFormatoConsulta(request):
             idFormato = i.key()
 
     print("for: " + str(nombre) )
-    return render(request, "verFormatoConsulta.html", {"nombreFormato": nombre, "idFormato": idFormato})
+    return render(request, "verFormatoConsulta.html", {"nombreFormato": nombre, "idFormato": idFormato})"""

@@ -22,11 +22,14 @@
     <input type="text" name ="fechaFinal" required><br><br>
     <br>
 
-<select name="formato" id="no_conformidad">
-<option value="">Selecciona una Opcion</option>
-<option value="tr_j1">Solicitudes de diario	</option>
-</select><br><br>
-<button type="submit" > Buscar </button>
+    <select name="formato" id="no_conformidad">
+        <option value="">Selecciona una Opcion</option>
+        {% for formato in arregloFormatos %}
+            <option value="{{formato}}" name="{{formato}}">{{formato}}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+    <button type="submit" > Buscar </button>
 </form>
 
 </body>

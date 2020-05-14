@@ -5,5 +5,12 @@ def descargar(request):
     nombreBaseDatos = []
     for i in baseDatos.each():
         nombreBaseDatos.append(i.val()['nameDataBase'])
-    print(nombreBaseDatos)
-    return render(request,"descargarInformacion.html",{"arregloBasesDatos" : nombreBaseDatos})
+
+    formatos = database.child('formatos').get()
+    nombreFormatos = []
+    for i in formatos.each():
+        informacionFormato = i.val()
+        nombreFormato = informacionFormato.get('Report_Id')
+        nombreFormatos.append(nombreFormato)
+
+    return render(request,"descargarInformacion.html",{"arregloBasesDatos" : nombreBaseDatos, "arregloFormatos":nombreFormatos})

@@ -1,4 +1,4 @@
-from ..configuracion import *
+"""from ..configuracion import *
 
 def actualizar(request):
     arregloFormatos = []
@@ -55,4 +55,4 @@ def agregar(request):
             arregloFormatosBaseDatos = baseDatos.val()['formatos']
             return render(request, 'actualizarBaseDatos.html', {"idDataBase": idDataBase, "api_key": api_key, "customer_id": customer_id, "nameDataBase": nameDataBase, "passw": passw, "platform": platform, "requestor_id": requestor_id, "url": url, "user": user, "arregloFormatosBaseDatos": arregloFormatosBaseDatos, "arregloFormatos": arregloFormatos})
         else:
-            None
+            None"""
