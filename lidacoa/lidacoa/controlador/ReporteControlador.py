@@ -93,7 +93,7 @@ def CrearReporte(requets):
                 begin_date = requets.POST.get('fechaInicial')
                 end_date = requets.POST.get('fechaFinal')
                 platform = BD.val()['platform']
-                if (agregar(diccionario,url, begin_date,end_date)):
+                if (agregarConfiguracion(diccionario,nombreBaseDatos, begin_date,end_date,formato)):
                     informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date, platform, formato)
                     nombreBaseDatos = BD.val()['nameDataBase']
                     for informacion in informacionUso['Report_Items']:
@@ -142,18 +142,6 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     webpage = urlopen(peticion).read()
     decoded = json.loads(webpage)
     return decoded
-
-def agregar(diccionario,baseDeDatos,fechaInicial,fechaFinal):
-    arregloTemp =[]
-    arregloLlaves = diccionario.keys()
-    if (not(baseDeDatos in arregloLlaves)):
-        for i in range(int(fechaInicial[-5:-3]),int(fechaFinal[-5:-3])+1):
-            arregloTemp.append(str("2019-"+str(i)+"-30"))
-        diccionario[baseDeDatos] = arregloTemp
-    else:
-        return False
-    return True
-
 
 def descargar(request):
     arregloAux=request.GET.get('informacion')
