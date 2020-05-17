@@ -16,15 +16,16 @@ def postsign(requets):
     email = requets.POST.get('email')
     passw = requets.POST.get("pass")
     consultas = database.child('Consulta').get()
-    print(consultas)
-    for i in consultas.each():
-        agregarConfiguracion(diccionario, i.val()['Base de Datos'], i.val()['Fecha de Inicio'], i.val()['Fecha de Fin'],i.val()['Formato'])
     try:
-        user= authe.sign_in_with_email_and_password(email,passw)
-        print(diccionario)
+        for i in consultas.each():
+            agregarConfiguracion(arregloFaltantes,diccionario, i.val()['Base de Datos'], i.val()['Fecha de Inicio'], i.val()['Fecha de Fin'],i.val()['Formato'])
+        user = authe.sign_in_with_email_and_password(email, passw)
     except:
-        message= "credencial invalida"
-        return render(requets,"signIn.html",{"messg":message})
+        try:
+            user= authe.sign_in_with_email_and_password(email,passw)
+        except:
+            message= "credencial invalida"
+            return render(requets,"signIn.html",{"messg":message})
     session_id=user['idToken']
     requets.session['uid']=str(session_id)
     return render(requets, "welcome.html",{"e":email})

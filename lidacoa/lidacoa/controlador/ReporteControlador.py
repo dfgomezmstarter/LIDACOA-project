@@ -34,9 +34,7 @@ def create_report(request):
 
 def CrearReporte(requets):
     arregloConsultas = []
-    #formato = "PR_P1"
     formato = requets.POST.get('formato')
-    # bd = requets.POST.get('basesDeDatos')
     idToken = requets.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']
@@ -47,6 +45,7 @@ def CrearReporte(requets):
     if requets.POST.get('seleccionarTodas') == "1":
         for BD in listaBD.each():
             arregloAux = []
+            arregloFaltantes = []
             url = BD.val()['url']
             customer_id = BD.val()['customer_id']
             requestor_id = BD.val()['requestor_id']
@@ -54,47 +53,16 @@ def CrearReporte(requets):
             begin_date = requets.POST.get('fechaInicial')
             end_date = requets.POST.get('fechaFinal')
             platform = BD.val()['platform']
-            informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date, platform,
-                                              formato)
             nombreBaseDatos = BD.val()['nameDataBase']
-            for informacion in informacionUso['Report_Items']:
-                performance = informacion['Performance']
-                for i in performance:
-                    fechaInicio = i['Period']['Begin_Date']
-                    fechaFinal = i['Period']['End_Date']
-                    for j in i['Instance']:
-                        if j['Metric_Type'] == "Total_Item_Requests":
-                            totalMes = j['Count']
-                            consultaRealizada = {
-                                "Base de Datos": nombreBaseDatos,
-                                "Formato": formato,
-                                "Fecha de Inicio": fechaInicio,
-                                "Fecha de Fin": fechaFinal,
-                                "Total": totalMes
-                            }
-                            database.child('Consulta').push(consultaRealizada)
-                            arregloAux.append(consultaRealizada)
-            for i in range(0, len(arregloAux) - 1):
-                for j in range(i + 1, len(arregloAux)):
-                    if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
-                        arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
-            for i in arregloAux:
-                 arregloConsultas.append(i)
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
-    else:
-        for BD in listaBD.each():
-            arregloAux = []
-            nombreBaseDatos = BD.val()['nameDataBase']
-            if requets.POST.get(nombreBaseDatos) == "1":
-                url = BD.val()['url']
-                customer_id = BD.val()['customer_id']
-                requestor_id = BD.val()['requestor_id']
-                api_key = BD.val()['api_key']
-                begin_date = requets.POST.get('fechaInicial')
-                end_date = requets.POST.get('fechaFinal')
-                platform = BD.val()['platform']
-                if (agregarConfiguracion(diccionario,nombreBaseDatos, begin_date,end_date,formato)):
-                    informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, begin_date, end_date, platform, formato)
+            if (agregarConfiguracion(arregloFaltantes, diccionario, nombreBaseDatos, begin_date, end_date, formato)):
+                for k in arregloFaltantes:
+                    fecha1 = k[:-3]
+                    fecha1 += str("-01")
+                    separador = str(k).index('-') + 1
+                    diaFinMes = FinDeMes[str(k[separador:-3])]
+                    fecha2 = str(k[0:5]) + str(k[separador:-3]) + diaFinMes
+                    informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, fecha1, fecha2, platform,
+                                                      formato)
                     nombreBaseDatos = BD.val()['nameDataBase']
                     for informacion in informacionUso['Report_Items']:
                         performance = informacion['Performance']
@@ -111,15 +79,88 @@ def CrearReporte(requets):
                                         "Fecha de Fin": fechaFinal,
                                         "Total": totalMes
                                     }
+                                    print("")
                                     database.child('Consulta').push(consultaRealizada)
-                                    arregloAux.append(consultaRealizada)
-                for i in range(0, len(arregloAux) - 1):
-                    for j in range(i + 1, len(arregloAux)):
+                                    # arregloTemp.append(consultaRealizada)
+                                    # arregloAux.append(consultaRealizada)
+            Consultas = database.child('Consulta').get()
+            for consulta in Consultas.each():
+                if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
+                    if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
+                        consultaRealizada = {
+                            "Base de Datos": consulta.val()['Base de Datos'],
+                            "Formato": consulta.val()['Formato'],
+                            "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                            "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                            "Total": consulta.val()['Total']
+                        }
+                        arregloAux.append(consultaRealizada)
+            for i in range(0, len(arregloAux)):
+                for j in range(i + 1, len(arregloAux) - 1):
+                    if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                        arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+            for i in arregloAux:
+                arregloConsultas.append(i)
+        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+    else:
+        for BD in listaBD.each():
+            arregloFaltantes=[]
+            arregloAux = []
+            nombreBaseDatos = BD.val()['nameDataBase']
+            if requets.POST.get(nombreBaseDatos) == "1":
+                url = BD.val()['url']
+                customer_id = BD.val()['customer_id']
+                requestor_id = BD.val()['requestor_id']
+                api_key = BD.val()['api_key']
+                begin_date = requets.POST.get('fechaInicial')
+                end_date = requets.POST.get('fechaFinal')
+                platform = BD.val()['platform']
+                if (agregarConfiguracion(arregloFaltantes,diccionario,nombreBaseDatos, begin_date,end_date,formato)):
+                    for k in arregloFaltantes:
+                        fecha1 = k[:-3]
+                        fecha1 += str("-01")
+                        separador = str(k).index('-') +1
+                        diaFinMes = FinDeMes[str(k[separador:-3])]
+                        fecha2 = str(k[0:5])+str(k[separador:-3])+diaFinMes
+                        informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, fecha1, fecha2, platform, formato)
+                        nombreBaseDatos = BD.val()['nameDataBase']
+                        for informacion in informacionUso['Report_Items']:
+                            performance = informacion['Performance']
+                            for i in performance:
+                                fechaInicio = i['Period']['Begin_Date']
+                                fechaFinal = i['Period']['End_Date']
+                                for j in i['Instance']:
+                                    if j['Metric_Type'] == "Total_Item_Requests":
+                                        totalMes = j['Count']
+                                        consultaRealizada = {
+                                            "Base de Datos": nombreBaseDatos,
+                                            "Formato": formato,
+                                            "Fecha de Inicio": fechaInicio,
+                                            "Fecha de Fin": fechaFinal,
+                                            "Total": totalMes
+                                        }
+                                        print("")
+                                        database.child('Consulta').push(consultaRealizada)
+                                        #arregloTemp.append(consultaRealizada)
+                                        #arregloAux.append(consultaRealizada)
+                Consultas = database.child('Consulta').get()
+                for consulta in Consultas.each():
+                    if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
+                        if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
+                            consultaRealizada = {
+                                "Base de Datos": consulta.val()['Base de Datos'],
+                                "Formato": consulta.val()['Formato'],
+                                "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                                "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                                "Total": consulta.val()['Total']
+                            }
+                            arregloAux.append(consultaRealizada)
+                for i in range(0, len(arregloAux)):
+                    for j in range(i + 1, len(arregloAux)-1):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
                 for i in arregloAux:
                     arregloConsultas.append(i)
-                    print(diccionario)
         return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
@@ -155,7 +196,6 @@ def descargar(request):
     Total = []
 
     for i in aux:
-        print(i['Base de Datos'])
         nombre_BaseDatos.append(i['Base de Datos'])
         fechaInicial.append(i['Fecha de Inicio'])
         fechaFinal.append(i['Fecha de Fin'])
