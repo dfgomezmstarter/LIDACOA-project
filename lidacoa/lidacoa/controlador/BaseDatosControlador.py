@@ -64,15 +64,24 @@ def actualizar(request):
 
 def eliminarBaseDatos(request):
     dataBaseSelected = request.GET.get('bbd')
+    basesDatosNombre = dataBaseSelected
     basesDatos = database.child("bases_Datos").get()
-    print(basesDatos)
-    for baseDatos in basesDatos.each():
+    reportes = database.child("Consulta").get()
+    for baseDatos in basesDatos.each(): # Se elimina la BD bibliográfica de la BD
         if str(baseDatos.val()['nameDataBase']) == str(dataBaseSelected):
+            for consultas in reportes.each():  # Se eliminan las consultas que se hallan hecho con esa BD bibliografica.
+                idConsulta = consultas.key()
+                if str(consultas.val()['Base de Datos']) == str(basesDatosNombre):
+                    database.child("Consulta").child(idConsulta).remove()
             idDataBase = baseDatos.key()
+            eliminarReportesDiccionario(database.child("bases_Datos").child(idDataBase).get().val()['nameDataBase'])
             database.child("bases_Datos").child(idDataBase).remove()
-            return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
-        else:
-            None
+    return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+
+def eliminarReportesDiccionario (nombreBD):
+    for i in diccionario:
+        if nombreBD in i:
+            diccionario[i] = []
 
 def agregar(request):
     dataBaseSelected=request.GET.get('bbd')
