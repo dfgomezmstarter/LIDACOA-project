@@ -1,5 +1,7 @@
 from django.shortcuts import  render
 import pyrebase
+import time
+from datetime import datetime
 from django.contrib import auth
 
 
@@ -21,8 +23,15 @@ database = firebase.database()
 
 
 diccionario ={}
+diccionarioFechas = {}
 FinDeMes = {'01':'-31','02':'-28','03':'-31','04':'-30','05':'-31','06':'-30','07':'-31','08':'-31','09':'-30','10':'-31','11':'-30','12':'-31'}
 arregloFaltantes = []
+diccionario['Cual Quier Cosa']=["kbsrjvajsv","nvsbbasbdkbsa"]
+
+def fechaDeConsulta():
+    now = datetime.now()
+    format = str(now.strftime('Día :%d, Mes: %m, Año: %Y, Hora: %H, Minutos: %M, Segundos: %S'))
+    return format
 
 def limpiarArreglo():
     arregloFaltantes=[]

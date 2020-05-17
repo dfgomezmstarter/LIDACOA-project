@@ -63,8 +63,8 @@ urlpatterns = [
     url(r'^actualizarFormato/', FormatosControlador.agregar, name='actualizarFormato'),
     url(r'^eliminarFormato/', FormatosControlador.eliminarFormato, name='eliminarFormato'),
     url(r'^confirmarActualizacionFormato/', FormatosControlador.actualizar, name='confirmarActualizacionFormato'),
-    url(r'^reporteBaseDatosEspecifica/', ReporteControlador.CrearReporte, name='reporteBaseDatosEspecifica'),
-    url(r'^postcreateReport/', ReporteControlador.CrearReporte, name='postcreateReport'),
+    url(r'^reporteBaseDatosEspecifica/', ReporteControlador.AntesCrearReporte, name='reporteBaseDatosEspecifica'),
+    url(r'^postcreateReport/', ReporteControlador.AntesCrearReporte, name='postcreateReport'),
     url(r'^formularioDescargar/', ReporteControlador.verReporte, name='formularioDescargar'),
     url(r'^downloadInformacion/', ReporteControlador.descargar, name='downloadInformacion'),
 

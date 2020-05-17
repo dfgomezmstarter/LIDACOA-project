@@ -31,6 +31,15 @@ def create_report(request):
     name=database.child('users').child(a).child('details').get().val()['name']
     return render(request,"createReport.html",{"arregloBasesDatos":nombreBasesDatos,"e":name, "arregloFormatos":nombreFormatos})
 
+def AntesCrearReporte(request):
+    consultas = database.child('Consulta').get()
+    try:
+        for i in consultas.each():
+            agregarConfiguracion(arregloFaltantes, diccionario, i.val()['Base de Datos'], i.val()['Fecha de Inicio'],
+                                 i.val()['Fecha de Fin'], i.val()['Formato'])
+        return CrearReporte(request)
+    except:
+        return CrearReporte(request)
 
 def CrearReporte(requets):
     arregloConsultas = []
@@ -95,6 +104,15 @@ def CrearReporte(requets):
                             "Total": consulta.val()['Total']
                         }
                         arregloAux.append(consultaRealizada)
+                        anexarFechasNombre = {
+                            "Ultima consulta": fechaDeConsulta()
+                        }
+                        try:
+                            database.child('Fechas').child(consulta.val()['Base de Datos']).child(
+                                consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).update(
+                                anexarFechasNombre)
+                        except:
+                            database.child('Fechas').child(consulta.val()['Base de Datos']).child(consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).push(anexarFechasNombre)
             for i in range(0, len(arregloAux)):
                 for j in range(i + 1, len(arregloAux) - 1):
                     if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
