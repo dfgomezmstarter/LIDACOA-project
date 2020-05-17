@@ -76,7 +76,13 @@ def eliminarBaseDatos(request):
             idDataBase = baseDatos.key()
             eliminarReportesDiccionario(database.child("bases_Datos").child(idDataBase).get().val()['nameDataBase'])
             database.child("bases_Datos").child(idDataBase).remove()
-    return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+    consultas2 = database.child('Consulta').get()
+    try:
+        for i in consultas2.each():
+            agregarConfiguracion(arregloFaltantes,diccionario, i.val()['Base de Datos'], i.val()['Fecha de Inicio'], i.val()['Fecha de Fin'],i.val()['Formato'])
+        return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+    except:
+        return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
 
 def eliminarReportesDiccionario (nombreBD):
     for i in diccionario:
