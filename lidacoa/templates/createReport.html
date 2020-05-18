@@ -220,27 +220,43 @@
 <div id="crearReporteForm">
     <form action="/postcreateReport/" method="post">
     <!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
-        <label> Seleccione la BDB que desea </label><br><br>
-        {% for post in arregloBasesDatos %}
-            <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br>
-        {% endfor %}
-        <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br>
-        <br>
-        <br>
-        <select name="formato" id="no_conformidad">
-            <option value="">Selecciona una Opcion</option>
-            {% for formato in arregloFormatos %}
-                <option value="{{formato}}" name="{{formato}}">{{formato}}</option>
-            {% endfor %}
-        </select>
-        <br><br>
-        {% csrf_token %}
-        Fecha inicial
-        <input type="text" name ="fechaInicial" required><br><br>
-        Fecha final
-        <input type="text" name ="fechaFinal" required><br><br>
-        <input type="submit" value = "Submit">
 
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label> Seleccione la BDB que desea </label><br><br>
+            <div class="col-sm-10">
+                <div class="form-check">
+                {% for post in arregloBasesDatos %}
+                    <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br>
+                {% endfor %}
+                    <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group"> <br><br>
+            <label for="no_conformidad">Selecciona una Opcion</label>
+            <select class="form-control" name="formato" id="no_conformidad">
+                <option class="form-control" value="">Selecciona una Opcion</option>
+                {% for formato in arregloFormatos %}
+                <option class="form-control" value="{{formato}}" name="{{formato}}">{{formato}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            {% csrf_token %}
+            <div class="form-group col-md-6">
+                <label>Fecha inicial</label>
+                <input type="text" name="fechaInicial" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Fecha final</label>
+                <input type="text" name="fechaFinal" class="form-control">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-2y">Realizar consulta</button>
     </form>
 </div>
 

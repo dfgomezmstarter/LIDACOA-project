@@ -7,22 +7,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="icon" href="favicon.ico">
-   {% load bootstrap4 %}
+    {% load bootstrap4 %}
     {% bootstrap_css %}
-    <title>Sign</title>
+    <style>
+        .buttonMenu{
+            background: #169BD5;
+            color: white;
+        }
+        .buttonMenu:hover {
+            background: transparent;
+            color: white;
+        }
+        .buttonMenu p{
+            color: #BBF4F9;
+        }
+        .buttonMenu:hover p{
+            color: white;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Sign up</title>
 </head>
 <body>
-<form action="/postsignup/" method="post">
-    {% csrf_token %}
-    Name:
-    <input type="text" name="name"><br><br>
-    Email :
-    <input type="email" name ="email"><br><br>
-    Password:
-    <input type="password" name ="pass"><br><br>
-    <input type="submit" value = "SignUp">
-</form>
+
+<div style="width: 100%; height: 100px;" id="barra_de_logo">
+    <div style="width: 180px; height: 100%; margin-left: 15%; float: left" id="logo">
+        <img src="/logoEAFIT.png" height="400" class="img-fluid">
+    </div>
+</div>
+
+<div style="width: 100%; height: 100px; float: left; background: #000066" id="nombre_software">
+    <h6 style="font-family: Arial; color: white; margin-left: 15%; margin-top: 30px; font-size:40px">LIDACOA Library Data Collection Analytic</h6>
+</div>
+<br>
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Registrar usario</h5>
+             <form action="/postsignup/" method="post">
+              {% csrf_token %}
+              <div class="form-label-group">
+                  <label for="inputName">Nombre</label>
+                <input type="text" id="inputName" class="form-control" name="name"  placeholder="Nombre completa" required autofocus>
+                  <br>
+              </div>
+                 <div class="form-label-group">
+                  <label for="inputEmail">Correo</label>
+                <input type="email" id="inputEmail" class="form-control" name="email"  placeholder="Correo electrónico" required autofocus>
+                  <br>
+              </div>
+              <div class="form-label-group">
+                  <label for="inputPassword">Contraseña</label>
+                <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Contraseña" required>
+                  <br>
+              </div>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"> Registrarse  </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

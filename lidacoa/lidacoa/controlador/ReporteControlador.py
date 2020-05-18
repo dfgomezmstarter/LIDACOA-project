@@ -173,6 +173,17 @@ def CrearReporte(requets):
                                 "Total": consulta.val()['Total']
                             }
                             arregloAux.append(consultaRealizada)
+                            anexarFechasNombre = {
+                                "Ultima consulta": fechaDeConsulta()
+                            }
+                            try:
+                                database.child('Fechas').child(consulta.val()['Base de Datos']).child(
+                                    consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).update(
+                                    anexarFechasNombre)
+                            except:
+                                database.child('Fechas').child(consulta.val()['Base de Datos']).child(
+                                    consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).push(
+                                    anexarFechasNombre)
                 for i in range(0, len(arregloAux)):
                     for j in range(i + 1, len(arregloAux)-1):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
