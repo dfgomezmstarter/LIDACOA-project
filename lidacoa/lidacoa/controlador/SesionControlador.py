@@ -46,4 +46,4 @@ def postsignup(request):
     data = {"name": name}
     database.child("users").child(uid).child("details").set(data)
 
-    return render(request, "signIn.html")
+    return render(request, "welcome.html")

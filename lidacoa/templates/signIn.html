@@ -51,21 +51,23 @@
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">Inicio de sesión</h5>
+              <div>
+                  <h6 style="font-family: Arial; color: #00C1FF; font-size:40px" class="card-title text-center">Inicio de sesión</h6>
+                  <br>
+              </div>
              <form action="/postsign/" method="post">
               {% csrf_token %}
               <div class="form-label-group">
-                  <label for="inputEmail">Usuario</label>
+                  <h3 for="inputEmail" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Usuario(*)</h3>
                 <input type="email" id="inputEmail" class="form-control" name="email"  placeholder="Correo electrónico" required autofocus>
                   <br>
               </div>
               <div class="form-label-group">
-                  <label for="inputPassword">Contraseña</label>
+                  <h3 for="inputPassword" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Contraseña(*)</h3>
                 <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Contraseña" required>
                   <br>
               </div>
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Ingresar</button>
-                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick="location.href='{% url 'signup'%}'"> Registrarse  </button>
             </form>
           </div>
         </div>

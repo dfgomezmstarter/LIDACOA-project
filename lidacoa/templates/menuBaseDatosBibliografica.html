@@ -182,10 +182,10 @@
         <img src="img/logoEAFIT.jpg">
     </div>
     <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
-        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
+        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px"> Usuario {{e}}</h6>
     </div>
     <div style="width: 180px; height: 100%; margin-right: 15%; float: right" id="salir">
-        <button type="button" class="btn btn-default" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
+        <button type="button" class="btn btn-primary" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
     </div>
 
 </div>
@@ -209,6 +209,9 @@
       </li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
         <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'descargarInformacion' %}'"><p style="font-family: Arial; font-size: auto">Visualización Reporte</p></button>
+      </li>
+      <li class="nav-item active buttonMenu" style="height: 80%; width: 100%">
+        <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%" onclick="location.href='{% url 'signup'%}'"><p style="font-family: Arial; font-size: auto">Registrar Usuario</p></button>
       </li>
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
     </ul>
