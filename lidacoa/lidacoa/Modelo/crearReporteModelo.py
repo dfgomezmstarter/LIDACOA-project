@@ -53,7 +53,7 @@ def CrearReporte(requets):
             # database.child('Consulta').push(consultaRealizada)
         tiempoFinal = time()
         print("Tiempo: " + str(tiempoFinal - tiempoInicial))
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+        return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
 
     else:
         for BD in listaBD.each():
@@ -94,7 +94,7 @@ def CrearReporte(requets):
                     print(diccionario)
         tiempoFinal = time()
         print("Tiempo: " + str(tiempoFinal - tiempoInicial))
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+        return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
 
     tiempoInicial = time()
     arregloConsultas=[]
@@ -153,7 +153,7 @@ def CrearReporte(requets):
                 #database.child('Consulta').push(consultaRealizada)
     tiempoFinal = time()
     print("Tiempo: " + str(tiempoFinal - tiempoInicial))
-    return render(requets, 'verConsulta.html',context={"consultaRealizada":arregloConsultas})"""
+    return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada":arregloConsultas})"""
 
 """def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
     formato=str(url)+"/reports/"+str(formato)+"?"
@@ -236,7 +236,7 @@ tiempoInicial = time()
             # database.child('Consulta').push(consultaRealizada)
         tiempoFinal = time()
         print("Tiempo: " + str(tiempoFinal-tiempoInicial))
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+        return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
 
     else:
         for BD in listaBD.each():
@@ -274,5 +274,5 @@ tiempoInicial = time()
                 # database.child('Consulta').push(consultaRealizada)
         tiempoFinal = time()
         print("Tiempo: " + str(tiempoFinal - tiempoInicial))
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+        return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
 """

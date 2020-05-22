@@ -1,10 +1,8 @@
 from ..configuracion import *
 from urllib.request import Request, urlopen
 import json
-from time import time
 import pandas as pd
 from datetime import datetime
-import xlsxwriter
 
 def create_report(request):
     idToken = request.session['uid']
@@ -12,7 +10,6 @@ def create_report(request):
     a = a['users']
     a = a[0]
     a = a['localId']
-    # database.child('bases_Datos').child("d0oIsERZMEMziEvqotmB6bBFjsu2").remove() Para eliminar un registro
 
     basesDatos=database.child('bases_Datos').get()
     nombreBasesDatos=[]
@@ -73,36 +70,63 @@ def CrearReporte(requets):
                     informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, fecha1, fecha2, platform,
                                                       formato)
                     nombreBaseDatos = BD.val()['nameDataBase']
-                    for informacion in informacionUso['Report_Items']:
-                        performance = informacion['Performance']
-                        for i in performance:
-                            fechaInicio = i['Period']['Begin_Date']
-                            fechaFinal = i['Period']['End_Date']
-                            for j in i['Instance']:
-                                if j['Metric_Type'] == "Total_Item_Requests":
-                                    totalMes = j['Count']
-                                    consultaRealizada = {
-                                        "Base de Datos": nombreBaseDatos,
-                                        "Formato": formato,
-                                        "Fecha de Inicio": fechaInicio,
-                                        "Fecha de Fin": fechaFinal,
-                                        "Total": totalMes
-                                    }
-                                    print("")
-                                    database.child('Consulta').push(consultaRealizada)
-                                    # arregloTemp.append(consultaRealizada)
-                                    # arregloAux.append(consultaRealizada)
+                    if "PR_P" in formato:
+                        for informacion in informacionUso['Report_Items']:
+                            performance = informacion['Performance']
+                            for i in performance:
+                                fechaInicio = i['Period']['Begin_Date']
+                                fechaFinal = i['Period']['End_Date']
+                                for j in i['Instance']:
+                                    if j['Metric_Type'] == "Total_Item_Requests":
+                                        totalMes = j['Count']
+                                        consultaRealizada = {
+                                            "Base de Datos": nombreBaseDatos,
+                                            "Formato": formato,
+                                            "Fecha de Inicio": fechaInicio,
+                                            "Fecha de Fin": fechaFinal,
+                                            "Total": totalMes
+                                        }
+                                        database.child('Consulta').push(consultaRealizada)
+                    elif "TR_J" in formato:
+                        for informacion in informacionUso['Report_Items']:
+                            performance = informacion['Performance']
+                            titulo = informacion['Title']
+                            for i in performance:
+                                fechaInicio = i['Period']['Begin_Date']
+                                fechaFinal = i['Period']['End_Date']
+                                for j in i['Instance']:
+                                    if j['Metric_Type'] == "Total_Item_Requests":
+                                        totalMes = j['Count']
+                                        consultaRealizada = {
+                                            "Base de Datos": nombreBaseDatos,
+                                            "Titulo": titulo,
+                                            "Formato": formato,
+                                            "Fecha de Inicio": fechaInicio,
+                                            "Fecha de Fin": fechaFinal,
+                                            "Total": totalMes
+                                        }
+                                        database.child('Consulta').push(consultaRealizada)
             Consultas = database.child('Consulta').get()
             for consulta in Consultas.each():
                 if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
                     if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
-                        consultaRealizada = {
-                            "Base de Datos": consulta.val()['Base de Datos'],
-                            "Formato": consulta.val()['Formato'],
-                            "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
-                            "Fecha de Fin": consulta.val()['Fecha de Fin'],
-                            "Total": consulta.val()['Total']
-                        }
+                        if "PR_P" in formato:
+                            consultaRealizada = {
+                                "Base de Datos": consulta.val()['Base de Datos'],
+                                "Formato": consulta.val()['Formato'],
+                                "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                                "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                                "Total": consulta.val()['Total']
+                            }
+                        elif "TR_J" in formato:
+                            consultaRealizada = {
+                                "Base de Datos": consulta.val()['Base de Datos'],
+                                "Titulo": consulta.val()['Titulo'],
+                                "Formato": consulta.val()['Formato'],
+                                "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                                "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                                "Total": consulta.val()['Total']
+                            }
                         arregloAux.append(consultaRealizada)
                         anexarFechasNombre = {
                             "Ultima consulta": fechaDeConsulta()
@@ -113,13 +137,24 @@ def CrearReporte(requets):
                                 anexarFechasNombre)
                         except:
                             database.child('Fechas').child(consulta.val()['Base de Datos']).child(consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).push(anexarFechasNombre)
-            for i in range(0, len(arregloAux)):
-                for j in range(i + 1, len(arregloAux) - 1):
-                    if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
-                        arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+            if "PR_P" in formato:
+                for i in range(0, len(arregloAux)):
+                    for j in range(i + 1, len(arregloAux) - 1):
+                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+            elif "TR_J" in formato:
+                for i in range(0, len(arregloAux)):
+                    for j in range(i + 1, len(arregloAux) - 1):
+                        if (arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']) and (arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']):
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
             for i in arregloAux:
                 arregloConsultas.append(i)
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+
+        if "PR_P" in formato:
+            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
+        elif "TR_J" in formato:
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas})
     else:
         for BD in listaBD.each():
             arregloFaltantes=[]
@@ -142,36 +177,65 @@ def CrearReporte(requets):
                         fecha2 = str(k[0:5])+str(k[separador:-3])+diaFinMes
                         informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, fecha1, fecha2, platform, formato)
                         nombreBaseDatos = BD.val()['nameDataBase']
-                        for informacion in informacionUso['Report_Items']:
-                            performance = informacion['Performance']
-                            for i in performance:
-                                fechaInicio = i['Period']['Begin_Date']
-                                fechaFinal = i['Period']['End_Date']
-                                for j in i['Instance']:
-                                    if j['Metric_Type'] == "Total_Item_Requests":
-                                        totalMes = j['Count']
-                                        consultaRealizada = {
-                                            "Base de Datos": nombreBaseDatos,
-                                            "Formato": formato,
-                                            "Fecha de Inicio": fechaInicio,
-                                            "Fecha de Fin": fechaFinal,
-                                            "Total": totalMes
-                                        }
-                                        print("")
-                                        database.child('Consulta').push(consultaRealizada)
-                                        #arregloTemp.append(consultaRealizada)
-                                        #arregloAux.append(consultaRealizada)
+
+                        if "PR_P" in formato:
+                            for informacion in informacionUso['Report_Items']:
+                                performance = informacion['Performance']
+                                for i in performance:
+                                    fechaInicio = i['Period']['Begin_Date']
+                                    fechaFinal = i['Period']['End_Date']
+                                    for j in i['Instance']:
+                                        if j['Metric_Type'] == "Total_Item_Requests":
+                                            totalMes = j['Count']
+                                            consultaRealizada = {
+                                                "Base de Datos": nombreBaseDatos,
+                                                "Formato": formato,
+                                                "Fecha de Inicio": fechaInicio,
+                                                "Fecha de Fin": fechaFinal,
+                                                "Total": totalMes
+                                            }
+                                            database.child('Consulta').push(consultaRealizada)
+                        elif "TR_J" in formato:
+                            for informacion in informacionUso['Report_Items']:
+                                performance = informacion['Performance']
+                                titulo = informacion['Title']
+                                for i in performance:
+                                    fechaInicio = i['Period']['Begin_Date']
+                                    fechaFinal = i['Period']['End_Date']
+                                    for j in i['Instance']:
+                                        if j['Metric_Type'] == "Total_Item_Requests":
+                                            totalMes = j['Count']
+                                            consultaRealizada = {
+                                                "Base de Datos": nombreBaseDatos,
+                                                "Titulo": titulo,
+                                                "Formato": formato,
+                                                "Fecha de Inicio": fechaInicio,
+                                                "Fecha de Fin": fechaFinal,
+                                                "Total": totalMes
+                                            }
+                                            print("Puta")
+                                            database.child('Consulta').push(consultaRealizada)
                 Consultas = database.child('Consulta').get()
                 for consulta in Consultas.each():
                     if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
                         if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
-                            consultaRealizada = {
-                                "Base de Datos": consulta.val()['Base de Datos'],
-                                "Formato": consulta.val()['Formato'],
-                                "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
-                                "Fecha de Fin": consulta.val()['Fecha de Fin'],
-                                "Total": consulta.val()['Total']
-                            }
+                            if "PR_P" in formato:
+                                consultaRealizada = {
+                                    "Base de Datos": consulta.val()['Base de Datos'],
+                                    "Formato": consulta.val()['Formato'],
+                                    "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                                    "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                                    "Total": consulta.val()['Total']
+                                }
+                            elif "TR_J" in formato:
+                                consultaRealizada = {
+                                    "Base de Datos": consulta.val()['Base de Datos'],
+                                    "Titulo": consulta.val()['Titulo'],
+                                    "Formato": consulta.val()['Formato'],
+                                    "Fecha de Inicio": consulta.val()['Fecha de Inicio'],
+                                    "Fecha de Fin": consulta.val()['Fecha de Fin'],
+                                    "Total": consulta.val()['Total']
+                                }
                             arregloAux.append(consultaRealizada)
                             anexarFechasNombre = {
                                 "Ultima consulta": fechaDeConsulta()
@@ -190,9 +254,14 @@ def CrearReporte(requets):
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
                 for i in arregloAux:
                     arregloConsultas.append(i)
-        return render(requets, 'verConsulta.html', context={"consultaRealizada": arregloConsultas})
+
+    if "PR_P" in formato:
+        return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas})
+    elif "TR_J" in formato:
+        return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
+    formato = str(formato.lower())
     formato=str(url)+"/reports/"+str(formato)+"?"
     if(requestor_id!=''):
         formato+= "requestor_id="+str(requestor_id)+"&"
@@ -214,35 +283,55 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     return decoded
 
 def descargar(request):
-    arregloAux=request.GET.get('informacion')
-
-    aux = eval(arregloAux)
-
+    formatoConsulta = request.GET.get('formato')
     nombre_BaseDatos = []
+    titulo = []
     fechaInicial = []
     fechaFinal = []
     formato = []
     Total = []
 
-    for i in aux:
-        nombre_BaseDatos.append(i['Base de Datos'])
-        fechaInicial.append(i['Fecha de Inicio'])
-        fechaFinal.append(i['Fecha de Fin'])
-        formato.append(i['Formato'])
-        Total.append(i['Total'])
+    if "PR_P" in formatoConsulta:
+        for i in arregloDescarga:
+            nombre_BaseDatos.append(i['Base de Datos'])
+            fechaInicial.append(i['Fecha de Inicio'])
+            fechaFinal.append(i['Fecha de Fin'])
+            formato.append(i['Formato'])
+            Total.append(i['Total'])
+        data = pd.DataFrame({
+            'Base de Datos': nombre_BaseDatos,
+            'Formato': formato,
+            'Fecha de Inicio': fechaInicial,
+            'Fecha de Fin': fechaFinal,
+            'Total': Total
+        })
+        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
+        writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
+        data.to_excel(writer, sheet_name="Hola", index=None)
+        writer.save()
+    elif "TR_J" in formatoConsulta:
+        for i in arregloDescarga:
+            nombre_BaseDatos.append(i['Base de Datos'])
+            fechaInicial.append(i['Fecha de Inicio'])
+            fechaFinal.append(i['Fecha de Fin'])
+            formato.append(i['Formato'])
+            Total.append(i['Total'])
+            titulo.append(i['Titulo'])
+        data = pd.DataFrame({
+            'Base de Datos': nombre_BaseDatos,
+            'Titulo': titulo,
+            'Formato': formato,
+            'Fecha de Inicio': fechaInicial,
+            'Fecha de Fin': fechaFinal,
+            'Total': Total
+        })
+        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
+        writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
+        data.to_excel(writer, sheet_name="Hola", index=None)
+        writer.save()
 
-    data = pd.DataFrame({
-        'Base de Datos' : nombre_BaseDatos,
-        'Formato' : formato,
-        'Fecha de Inicio' : fechaInicial,
-        'Fecha de Fin' : fechaFinal,
-        'Total' : Total
-    })
-
-    outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
-    writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
-    data.to_excel(writer, sheet_name="Hola", index=None)
-    writer.save()
+    for i in range(0,len(arregloDescarga)):
+        arregloDescarga.pop()
     return render(request, 'welcome.html')
 
 
@@ -276,22 +365,47 @@ def verReporte(request):
                     if yearInicioConsulta >= yearInicial and yearFinalConsulta <= yearFinal:
                         if mesInicioConsulta >= mesInical and mesFinalConsulta <= mesFinal:
                             if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
-                                baseDatos = i.val()['Base de Datos']
-                                total = i.val()['Total']
-                                visualizacionConsulta = {
-                                    "Base de Datos": baseDatos,
-                                    "Formato": formato,
-                                    "Fecha de Inicio": i.val()['Fecha de Inicio'],
-                                    "Fecha de Fin": i.val()['Fecha de Fin'],
-                                    "Total": total
-                                }
+                                if "PR_P" in formato:
+                                    baseDatos = i.val()['Base de Datos']
+                                    total = i.val()['Total']
+                                    visualizacionConsulta = {
+                                        "Base de Datos": baseDatos,
+                                        "Formato": formato,
+                                        "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                        "Fecha de Fin": i.val()['Fecha de Fin'],
+                                        "Total": total
+                                    }
+                                elif "TR_J" in formato:
+                                    baseDatos = i.val()['Base de Datos']
+                                    total = i.val()['Total']
+                                    visualizacionConsulta = {
+                                        "Base de Datos": baseDatos,
+                                        "Titulo": i.val()['Titulo'],
+                                        "Formato": formato,
+                                        "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                        "Fecha de Fin": i.val()['Fecha de Fin'],
+                                        "Total": total
+                                    }
                                 arregloAux.append(visualizacionConsulta)
-            for i in range(0, len(arregloAux) - 1):
-                for j in range(i + 1, len(arregloAux)):
-                    if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
-                        arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+            if "PR_P" in formato:
+                for i in range(0, len(arregloAux) - 1):
+                    for j in range(i + 1, len(arregloAux)):
+                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+            elif "TR_J" in formato:
+                for i in range(0, len(arregloAux) - 1):
+                    for j in range(i + 1, len(arregloAux)):
+                        if (arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']) and (arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']):
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
             for i in arregloAux:
-                    arreglodeConsultas.append(i)
+                arreglodeConsultas.append(i)
+                arregloDescarga.append(i)
+        if "PR_P" in formato:
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+        elif "TR_J" in formato:
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+
     else:
         nombreBasesDatos = database.child('bases_Datos').get()
         for baseDatos in nombreBasesDatos.each():
@@ -309,12 +423,6 @@ def verReporte(request):
                     yearFinalConsulta = fechaFinalConsulta.year
                     mesFinalConsulta = fechaFinalConsulta.month
                     diaFinalConsulta = fechaFinalConsulta.day
-                    print("Fecha Incial consulta: " + str(fechaInicioConsulta) + " dia: " + str(
-                        diaInicioConsulta) + " mes: " + str(
-                        mesInicioConsulta) + " año: " + str(yearInicioConsulta))
-                    print("Fecha Final consulta: " + str(fechaFinalConsulta) + " dia: " + str(
-                        diaFinalConsulta) + " mes: " + str(
-                        mesFinalConsulta) + " año: " + str(yearFinalConsulta))
                     if i.val()['Formato'] == formato:
                         if i.val()['Base de Datos'] == str(nameDataBase):
                             if yearInicioConsulta >= yearInicial and yearFinalConsulta <= yearFinal:
@@ -322,18 +430,46 @@ def verReporte(request):
                                     if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
                                         baseDatos = i.val()['Base de Datos']
                                         total = i.val()['Total']
-                                        visualizacionConsulta = {
-                                            "Base de Datos": baseDatos,
-                                            "Formato": formato,
-                                            "Fecha de Inicio": i.val()['Fecha de Inicio'],
-                                            "Fecha de Fin": i.val()['Fecha de Fin'],
-                                            "Total": total
-                                        }
+
+                                        if "PR_P" in formato:
+                                            visualizacionConsulta = {
+                                                "Base de Datos": baseDatos,
+                                                "Formato": formato,
+                                                "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                                "Fecha de Fin": i.val()['Fecha de Fin'],
+                                                "Total": total
+                                            }
+                                        elif "TR_J" in formato:
+                                            visualizacionConsulta = {
+                                                "Base de Datos": baseDatos,
+                                                "Titulo": i.val()['Titulo'],
+                                                "Formato": formato,
+                                                "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                                "Fecha de Fin": i.val()['Fecha de Fin'],
+                                                "Total": total
+                                            }
                                         arregloAux.append(visualizacionConsulta)
+            if "PR_P" in formato:
                 for i in range(0, len(arregloAux) - 1):
-                        for j in range(i + 1, len(arregloAux)):
-                            if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
-                                arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
-                for i in arregloAux:
-                    arreglodeConsultas.append(i)
-    return render(request, 'visualizacion.html', {"registros": arreglodeConsultas})
+                    for j in range(i + 1, len(arregloAux)):
+                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+            elif "TR_J" in formato:
+                for i in range(0, len(arregloAux) - 1):
+                    for j in range(i + 1, len(arregloAux)):
+                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+                for i in range(0, len(arregloAux) - 1):
+                    for j in range(i + 1, len(arregloAux)):
+                        if arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+            for i in arregloAux:
+                arreglodeConsultas.append(i)
+                arregloDescarga.append(i)
+
+        if "PR_P" in formato:
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+        elif "TR_J" in formato:
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})

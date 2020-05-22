@@ -111,3 +111,11 @@ def crearArregloConfiguracion(fechasFaltantes,diccionario,nombrebaseDeDatos1,fec
                     if(not(fechaIngresar in diccionario[str(nombrebaseDeDatos1)+"/"+str(formato1)])):
                         diccionario[str(nombrebaseDeDatos1)+"/"+str(formato1)].append(fechaIngresar)
                         fechasFaltantes.append(fechaIngresar)
+
+arregloDescarga=[]
+
+def limpiarArregloDescargar():
+    arregloDescarga = []
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(arregloDescarga)
+
