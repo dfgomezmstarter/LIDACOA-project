@@ -39,6 +39,7 @@ def AntesCrearReporte(request):
         return CrearReporte(request)
 
 def CrearReporte(requets):
+    arregloFechas=[]
     arregloConsultas = []
     formato = requets.POST.get('formato')
     idToken = requets.session['uid']
@@ -128,15 +129,24 @@ def CrearReporte(requets):
                                 "Total": consulta.val()['Total']
                             }
                         arregloAux.append(consultaRealizada)
-                        anexarFechasNombre = {
-                            "Ultima consulta": fechaDeConsulta()
-                        }
-                        try:
-                            database.child('Fechas').child(consulta.val()['Base de Datos']).child(
-                                consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).update(
-                                anexarFechasNombre)
-                        except:
-                            database.child('Fechas').child(consulta.val()['Base de Datos']).child(consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).push(anexarFechasNombre)
+                        fechaAux = str(consulta.val()['Base de Datos'])+"/"+str(consulta.val()['Formato'])+"/"+str(consulta.val()['Fecha de Inicio'])
+                        if(not(fechaAux in arregloFechas)):
+                            arregloFechas.append(fechaAux)
+            for fecha3 in arregloFechas:
+                aux = str(fecha3)
+                separador = aux.index("/")
+                nombreBD = aux[0:separador]
+                aux = aux[separador + 1:]
+                separador = aux.index("/")
+                formato2 = aux[0:separador]
+                fecha4 = aux[separador + 1:]
+                anexarFechasNombre = {
+                    "Ultima consulta": fechaDeConsulta()
+                }
+                try:
+                    database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).update(anexarFechasNombre)
+                except:
+                    database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).push(anexarFechasNombre)
 
             if "PR_P" in formato:
                 for i in range(0, len(arregloAux)):
@@ -237,17 +247,25 @@ def CrearReporte(requets):
                                     "Total": consulta.val()['Total']
                                 }
                             arregloAux.append(consultaRealizada)
-                            anexarFechasNombre = {
-                                "Ultima consulta": fechaDeConsulta()
-                            }
-                            try:
-                                database.child('Fechas').child(consulta.val()['Base de Datos']).child(
-                                    consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).update(
-                                    anexarFechasNombre)
-                            except:
-                                database.child('Fechas').child(consulta.val()['Base de Datos']).child(
-                                    consulta.val()['Formato']).child(consulta.val()['Fecha de Inicio']).push(
-                                    anexarFechasNombre)
+                            fechaAux = str(consulta.val()['Base de Datos']) + "/" + str(consulta.val()['Formato']) + "/" + str(consulta.val()['Fecha de Inicio'])
+                            if (not (fechaAux in arregloFechas)):
+                                arregloFechas.append(fechaAux)
+                for fecha3 in arregloFechas:
+                    aux = str(fecha3)
+                    separador = aux.index("/")
+                    nombreBD = aux[0:separador]
+                    aux = aux[separador + 1:]
+                    separador = aux.index("/")
+                    formato2 = aux[0:separador]
+                    fecha4 = aux[separador + 1:]
+                    anexarFechasNombre = {
+                        "Ultima consulta": fechaDeConsulta()
+                    }
+                    try:
+                        database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).update(
+                            anexarFechasNombre)
+                    except:
+                        database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).push(anexarFechasNombre)
                 for i in range(0, len(arregloAux)):
                     for j in range(i + 1, len(arregloAux)-1):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
