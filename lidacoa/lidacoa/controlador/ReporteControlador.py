@@ -351,9 +351,9 @@ def descargar(request):
             'Fecha de Fin': fechaFinal,
             'Total': Total
         })
-        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
+        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
-        data.to_excel(writer, sheet_name="Hola", index=None)
+        data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
     elif "TR_J" in formatoConsulta:
         for i in arregloDescarga:
@@ -371,9 +371,9 @@ def descargar(request):
             'Fecha de Fin': fechaFinal,
             'Total': Total
         })
-        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_1.xlsx'
+        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
-        data.to_excel(writer, sheet_name="Hola", index=None)
+        data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
 
     for i in range(0,len(arregloDescarga)):
