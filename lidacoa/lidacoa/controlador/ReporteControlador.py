@@ -47,6 +47,7 @@ def CrearReporte(requets):
     a = a['users']
     a = a[0]
     a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']
     listaBD = database.child('bases_Datos').get()
 
     if requets.POST.get('seleccionarTodas') == "1":
@@ -160,11 +161,12 @@ def CrearReporte(requets):
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
             for i in arregloAux:
                 arregloConsultas.append(i)
+                arregloDescarga.append(i)
 
         if "PR_P" in formato:
-            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas})
+            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
         elif "TR_J" in formato:
-            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas})
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
     else:
         for BD in listaBD.each():
             arregloFaltantes=[]
@@ -187,6 +189,12 @@ def CrearReporte(requets):
                         fecha2 = str(k[0:5])+str(k[separador:-3])+diaFinMes
                         informacionUso = pedirInformacion(url, customer_id, requestor_id, api_key, fecha1, fecha2, platform, formato)
                         nombreBaseDatos = BD.val()['nameDataBase']
+
+                        totalItemRequest = 0
+                        uniqueTitleInvestigation = 0
+                        uniqueItemInvestigation = 0
+                        totalItemInvestigation = 0
+                        searchesPlatform = 0
 
                         if "PR_P" in formato:
                             for informacion in informacionUso['Report_Items']:
@@ -266,17 +274,31 @@ def CrearReporte(requets):
                             anexarFechasNombre)
                     except:
                         database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).push(anexarFechasNombre)
-                for i in range(0, len(arregloAux)):
-                    for j in range(i + 1, len(arregloAux)-1):
-                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
-                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+                if "PR_P" in formato:
+                    for i in range(0, len(arregloAux) - 1):
+                        for j in range(i + 1, len(arregloAux)):
+                            if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                                arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+                elif "TR_J" in formato:
+                    for i in range(0, len(arregloAux) - 1):
+                        for j in range(i + 1, len(arregloAux)):
+                            if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
+                                arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+                    for i in range(0, len(arregloAux) - 1):
+                        for j in range(i + 1, len(arregloAux)):
+                            if arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']:
+                                arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
                 for i in arregloAux:
                     arregloConsultas.append(i)
+                    arregloDescarga.append(i)
 
-    if "PR_P" in formato:
-        return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas})
-    elif "TR_J" in formato:
-        return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas})
+        if "PR_P" in formato:
+            return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
+        elif "TR_J" in formato:
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
     formato = str(formato.lower())
@@ -301,6 +323,12 @@ def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,pl
     return decoded
 
 def descargar(request):
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']
     formatoConsulta = request.GET.get('formato')
     nombre_BaseDatos = []
     titulo = []
@@ -350,10 +378,17 @@ def descargar(request):
 
     for i in range(0,len(arregloDescarga)):
         arregloDescarga.pop()
-    return render(request, 'welcome.html')
+    mensaje = "Se descargo correctamente el archivo. Busca en tu escritorio el archivo con Nombre: Resultado_1.xlsx"
+    return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
 
 def verReporte(request):
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']
     arreglodeConsultas = []
     fechaInicial = datetime.strptime(str(request.POST.get('fechaInicial')), '%Y-%m-%d')
     yearInicial = fechaInicial.year
@@ -405,6 +440,7 @@ def verReporte(request):
                                         "Total": total
                                     }
                                 arregloAux.append(visualizacionConsulta)
+
             if "PR_P" in formato:
                 for i in range(0, len(arregloAux) - 1):
                     for j in range(i + 1, len(arregloAux)):
@@ -414,15 +450,23 @@ def verReporte(request):
             elif "TR_J" in formato:
                 for i in range(0, len(arregloAux) - 1):
                     for j in range(i + 1, len(arregloAux)):
-                        if (arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']) and (arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']):
+                        if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+                for i in range(0, len(arregloAux) - 1):
+                    for j in range(i + 1, len(arregloAux)):
+                        if arregloAux[j]['Titulo'] < arregloAux[i]['Titulo']:
+                            arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
+
+
+
             for i in arregloAux:
                 arreglodeConsultas.append(i)
                 arregloDescarga.append(i)
         if "PR_P" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
 
     else:
         nombreBasesDatos = database.child('bases_Datos').get()
@@ -474,6 +518,7 @@ def verReporte(request):
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
 
             elif "TR_J" in formato:
+                print("Entra ordenar")
                 for i in range(0, len(arregloAux) - 1):
                     for j in range(i + 1, len(arregloAux)):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
@@ -488,6 +533,6 @@ def verReporte(request):
                 arregloDescarga.append(i)
 
         if "PR_P" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})

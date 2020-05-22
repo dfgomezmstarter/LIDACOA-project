@@ -42,6 +42,7 @@ def verBaseDatosConsulta(request):
     return render(request, "verBaseDatosConsulta.html", {"nombreBaseDatos": nombre, "idBaseDatos": idBaseDatos})
 
 def actualizar(request):
+    actualizarBD = request.GET.get('id')
     arregloFormatos = []
     formatos = database.child('formatos').get()
     for formato in formatos.each():
@@ -59,8 +60,9 @@ def actualizar(request):
         "user":request.POST.get('user'),
         "formatos": arregloFormatos,
     }
-    database.child("bases_Datos").child(request.POST.get('id')).update(nuevaInformacion)
-    return render(request, 'welcome.html')
+    database.child("bases_Datos").child(actualizarBD).update(nuevaInformacion)
+    mensaje = "Se actualizó correctamente la Base de Datos " + str(request.POST.get('nameDataBase'))
+    return render(request, 'menuBaseDatosBibliografica.html', {"mensaje": mensaje})
 
 def eliminarBaseDatos(request):
     dataBaseSelected = request.GET.get('bbd')
@@ -80,9 +82,11 @@ def eliminarBaseDatos(request):
     try:
         for i in consultas2.each():
             agregarConfiguracion(arregloFaltantes,diccionario, i.val()['Base de Datos'], i.val()['Fecha de Inicio'], i.val()['Fecha de Fin'],i.val()['Formato'])
-        return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+        mensaje = "Se Elimino correctamente la Base de Datos "
+        return render(request, 'menuBaseDatosBibliografica.html', {"mensaje": mensaje})
     except:
-        return render(request, 'eliminarBaseDatos.html', {"nombre": dataBaseSelected})
+        mensaje = "Se Elimino correctamente la Base de Datos "
+        return render(request, 'menuBaseDatosBibliografica.html', {"mensaje": mensaje})
 
 def eliminarReportesDiccionario (nombreBD):
     for i in diccionario:
@@ -141,4 +145,5 @@ def agregarBaseDatosFormulario(request):
 
     database.child('bases_Datos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'menuBaseDatosBibliografica.html',{"e":email})
+    mensaje = "Se agrego correctamente la Base de Datos "
+    return render(request,'menuBaseDatosBibliografica.html', {"mensaje": mensaje, "e":email})

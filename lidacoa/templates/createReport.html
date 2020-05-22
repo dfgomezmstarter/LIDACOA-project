@@ -12,6 +12,7 @@
     <script>
         function openNav() {
           document.getElementById("opciones").style.width = "400px";
+          document.getElementById("abrir").style.display = "none";
         }
 
         function mostrarFormulario() {
@@ -21,6 +22,7 @@
 
         function closeNav() {
           document.getElementById("opciones").style.width = "0";
+          document.getElementById("abrir").style.display = "block";
         }
 
         function buscarBaseDatos(){
@@ -35,18 +37,20 @@
         }
 
         #abrir{
-            display: block;
+            display: none;
         }
 
         #opciones{
             width: 400px;
+            margin-top: 0%;
         }
 
         #crearReporteForm{
             display: none;
             wight: auto;
             height: auto;
-            margin-left: 45%;
+            margin-left: 35%;
+            margin-right: 15%;
         }
 
         #reporteBusqueda{
@@ -92,7 +96,7 @@
             font-size: 25px;
             color: black;
             display: block;
-            margin-top: 7%;
+            margin-top: 4%;
             border: solid 1px #CCCECE;
         }
 
@@ -128,7 +132,7 @@
             font-size: 36px;
             color: black;
             display: block;
-            margin-top: 8%;
+            margin-top: 5%;
             background: orange;
             border-radius: 0px 5px 5px 0px;
         }
@@ -164,12 +168,18 @@
     </style>
 </head>
 <body>
+{% csrf_token %}
+{% if mensaje %}
+    <script>
+        alert('{{mensaje}}');
+    </script>
+{% endif %}
 <div style="width: 100%; height: 100px;" id="barra_de_logo">
     <div style="width: 180px; height: 100%; margin-left: 15%; float: left" id="logo">
         <img src="img/logoEAFIT.jpg">
     </div>
     <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
-        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px"> Usuario {{e}}</h6>
+        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
     </div>
     <div style="width: 180px; height: 100%; margin-right: 15%; float: right" id="salir">
         <button type="button" class="btn btn-primary" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
@@ -214,15 +224,13 @@
     </div>
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a class="opcion1" href="#" onclick="mostrarFormulario()">Crear Reporte</a>
-    <a class="opcion2" href="#" onclick="buscarBaseDatos()">Reporte por Busqueda de Base de Datos</a>
 </div>
 
-<span class="desplegarMenu" onclick="openNav()">&#10132;</span>
+<span class="desplegarMenu" onclick="openNav()" id="abrir">&#10132;</span>
 
 
-<div id="crearReporteForm">
+<div id="crearReporteForm" style="margin-bottom: 10%">
     <form action="/postcreateReport/" method="post">
-    <!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
         <div>
             <h6 style="font-family: Arial; color: #00C1FF; font-size:40px" class="card-title text-center">Generar reporte</h6>
             <br>
@@ -235,13 +243,14 @@
                 {% for post in arregloBasesDatos %}
                     <input type="checkbox" name="{{post}}" value="1"> {{post}}<br><br>
                 {% endfor %}
+                    <br><br>
                     <input type="checkbox" name="seleccionarTodas" value="1"> Seleccionar Todas las Bases de Datos<br><br>
                 </div>
             </div>
         </div>
 
         <div class="form-group"> <br><br>
-            <label for="no_conformidad">Selecciona una Opcion</label>
+            <label for="no_conformidad">Formato Consulta</label>
             <select class="form-control" name="formato" id="no_conformidad">
                 <option class="form-control" value="">Selecciona una Opcion</option>
                 {% for formato in arregloFormatos %}
@@ -262,27 +271,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mb-2y">Realizar consulta</button>
-    </form>
-</div>
-
-<div id="reporteBusqueda">
-    <form action="/reporteBaseDatosEspecifica/" method="post">
-    <!--<input type="text" name="aux" value="{{arregloBasesDatos}}" style="border:none; color:white"><br><br>-->
-        <label> Seleccione la BDB que desea </label><br><br>
-        <input type="text" name ="baseDatos" required><br><br>
-        <br>
-        <br>
-        <select name="formato">
-            <option value="">Selecciona una Opcion</option>
-            <option value="tr_j1">Solicitudes de diario	</option>
-        </select>
-        <br><br>
-        Fecha inicial
-        <input type="text" name ="fechaInicial" required><br><br>
-        Fecha final
-        <input type="text" name ="fechaFinal" required><br><br>
-        <input type="submit" value = "Submit">
+        <button type="submit" class="btn btn-primary mb-2y" >Realizar consulta</button>
     </form>
 </div>
 </body>

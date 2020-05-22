@@ -9,25 +9,56 @@
 </head>
 <body>
 {% block content %}
-<table border="1">
-    <thead>
-        <tr>
-            <th>Nombre Base de datos</th>
-            <th>Formato de Consulta</th>
-            <th>Fecha Inicial Consulta</th>
-            <th>Fecha Final Consulta</th>
-            <th>Total de reporte</th>
-        </tr>
-    </thead>
-    {% for consulta in consultaRealizada %}
-        <tr>
-            {% for key, value in consulta.items %}
-                <th>{{value}}</th>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-</table>
-<a button type="submit" href="/downloadInformacion?informacion={{consultaRealizada}}&formato={{formato}}" class="btn btn-primary mb-2" >Descargar</a>
+<div style="width: 100%; height: 100px;" id="barra_de_logo">
+    <div style="width: 180px; height: 100%; margin-left: 15%; float: left" id="logo">
+        <img src="img/logoEAFIT.jpg">
+    </div>
+    <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
+        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
+    </div>
+    <div style="width: 180px; height: 100%; margin-right: 15%; float: right" id="salir">
+        <button type="button" class="btn btn-primary" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
+    </div>
+
+</div>
+
+<div style="width: 100%; height: 100px; float: left; background: #000066" id="nombre_software">
+    <h6 style="font-family: Arial; color: white; margin-left: 15%; margin-top: 30px; font-size:40px">LIDACOA Library Data Collection Analytic</h6>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+<h6 style="font-family: Arial; color: #00C1FF; font-size:40px; text-align: center; margin-top: 2%" class="card-title">Consulta Realizada</h6>
+<br>
+
+<div style="margin-left: 10%; margin-right: 10%">
+    <table class="table table-striped" style="text-align: center">
+        <thead>
+            <tr>
+                <th>Nombre Base de datos</th>
+                <th>Formato de Consulta</th>
+                <th>Fecha Inicial Consulta</th>
+                <th>Fecha Final Consulta</th>
+                <th>Total de reporte</th>
+            </tr>
+        </thead>
+        {% for consulta in consultaRealizada %}
+            <tr>
+                {% for key, value in consulta.items %}
+                    <th>{{value}}</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<a button type="submit" href="/downloadInformacion?formato={{formato}}" class="btn btn-primary mb-2" style="margin-left: 10%">Descargar</a>
+<a button type="submit" href="#" onclick="location.href='{% url 'createReport' %}'" class="btn btn-primary mb-2">Volver</a>
+
+
 {% endblock %}
 </body>
 </html>

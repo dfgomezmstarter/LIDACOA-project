@@ -13,10 +13,12 @@
         }
 
         function mostrarFormulario() {
-          document.getElementById("BuscarFormato").style.display = "none";
-          document.getElementById("verFormatos").style.display = "none";
-          document.getElementById("agregarNuevoFormato").style.display = "block";
+            document.getElementById("BuscarFormato").style.display = "none";
+            document.getElementById("verFormatos").style.display = "none";
+            document.getElementById("agregarNuevoFormato").style.display = "block";
+            $("#agregarNuevoFormato").load("/agregarFormato");
         }
+
        function verFormato() {
           document.getElementById("BuscarFormato").style.display = "none";
           document.getElementById("agregarNuevoFormato").style.display = "none";
@@ -56,9 +58,10 @@
 
         #agregarNuevoFormato{
             display: none;
-            wight: 100px;
+            wight: 50px;
             height: 100px;
-            margin-left: 30%;
+            margin-left: 25%;
+            margin-right: 10%;
         }
         #verFormatos{
             display: none;
@@ -139,7 +142,7 @@
             font-size: 36px;
             color: black;
             display: block;
-            margin-top: 9%;
+            margin-top: 11%;
             background: orange;
             border-radius: 0px 5px 5px 0px;
         }
@@ -176,12 +179,18 @@
 
 </head>
 <body>
+{% csrf_token %}
+{% if mensaje %}
+    <script>
+        alert('{{mensaje}}');
+    </script>
+{% endif %}
 <div style="width: 100%; height: 100px;" id="barra_de_logo">
     <div style="width: 180px; height: 100%; margin-left: 15%; float: left" id="logo">
         <img src="img/logoEAFIT.jpg">
     </div>
     <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
-        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px"> Usuario {{e}}</h6>
+        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
     </div>
     <div style="width: 180px; height: 100%; margin-right: 15%; float: right" id="salir">
         <button type="button" class="btn btn-primary" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
@@ -233,7 +242,6 @@
 <span class="desplegarMenu" onclick="openNav()">&#10132;</span>
 
 <div id="agregarNuevoFormato">
-    {% include 'agregarFormato.html' %}
 </div>
 
 <div id="verFormatos">

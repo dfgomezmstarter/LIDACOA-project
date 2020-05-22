@@ -40,7 +40,7 @@
         <img src="img/logoEAFIT.jpg">
     </div>
     <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
-        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px"> Usuario {{e}}</h6>
+        <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
     </div>
     <div style="width: 180px; height: 100%; margin-right: 15%; float: right" id="salir">
         <button type="button" class="btn btn-primary" onclick ="location.href='{% url 'log' %}'" style="border: solid 1px; margin-top: 18%; width: 150px">Salir</button>
@@ -49,13 +49,12 @@
 </div>
 
 <div style="width: 100%; height: 100px; float: left; background: #000066" id="nombre_software">
-    <h6 style="font-family: Arial; color: white; margin-left: 2%; margin-top: 30px; font-size:40px">LIDACOA Library Data Collection Analytic</h6>
+    <h6 style="font-family: Arial; color: white; margin-left: 15%; margin-top: 30px; font-size:40px">LIDACOA Library Data Collection Analytic</h6>
 </div>
 <br>
-
 <nav class="navbar navbar-expand-lg" style="background-color: #000066; wight: 100%; height: 80px">
   <div class="collapse navbar-collapse" id="navbarNav" style="height: 100%">
-    <ul class="navbar-nav" style="height: 100%; width: 97%">
+    <ul class="navbar-nav" style="margin-left: 14.5%; height: 100%; margin-right: 13%; width: 100%">
       <li style="height: 80%; width: 300px; background: #169BD5;"></li>
       <li class="nav-item active buttonMenu" style="height: 80%; width: 100%;">
         <button type="button" class="btn" style="border-radius:0%; height: 80%; width: 100%;" onclick="location.href='{% url 'createReport' %}'"><p style="font-family: Arial; font-size: auto">Reporte</p></button>
@@ -87,14 +86,35 @@
                   <h6 style="font-family: Arial; color: #00C1FF; font-size:40px" class="card-title text-center">Registrar usario</h6>
                   <br>
               </div>
+
              <form action="/postsignup/" method="post">
               {% csrf_token %}
               <div class="form-label-group">
                   <h3 for="inputName" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Nombre(*)</h3>
-                <input type="text" id="inputName" class="form-control" name="name"  placeholder="Nombre completa" required autofocus>
+                <input type="text" id="inputName" class="form-control" name="name"  placeholder="Nombre" required autofocus>
                   <br>
               </div>
-                 <div class="form-label-group">
+              <!--<div class="form-label-group">
+                  <h3 for="inputName" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Apellido(*)</h3>
+                <input type="text" class="form-control" name="apellido"  placeholder="Apellido" required autofocus>
+                  <br>
+              </div>
+              <div class="form-label-group">
+                  <h3 for="inputName" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Cargo(*)</h3>
+                <input type="text" class="form-control" name="cargo"  placeholder="Cargo" required autofocus>
+                  <br>
+              </div>
+              <div class="form-label-group">
+                  <h3 for="inputName" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Contacto(*)</h3>
+                <input type="text" class="form-control" name="contacto"  placeholder="Contacto" required autofocus>
+                  <br>
+              </div>
+              <div class="form-label-group">
+                  <h3 for="inputName" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Agregado por(*)</h3>
+                <input type="text" class="form-control" name="agregadoPor"  placeholder="Agregado por" required autofocus>
+                  <br>
+              </div>-->
+              <div class="form-label-group">
                      <h3 for="inputEmail" style="font-family: Arial; color: #00C1FF; font-size:25px" class="card-title text-center">Correo(*)</h3>
                 <input type="email" id="inputEmail" class="form-control" name="email"  placeholder="Correo electrónico" required autofocus>
                   <br>
@@ -106,6 +126,9 @@
               </div>
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"> Registrarse  </button>
             </form>
+
+
+
           </div>
         </div>
       </div>

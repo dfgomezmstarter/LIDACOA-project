@@ -16,17 +16,22 @@ def agregarFormulario(request):
 
     database.child('formatos').push(data)
     email=database.child('users').child(a).child('details').get().val()['name']
-    return render(request,'welcome.html',{"e":email})
+    mensaje = "Se agrego correctamente el formato"
+    return render(request,'menuFormatos.html',{"e":email, "mensaje":mensaje})
 
 def actualizar(request):
+    actualizar = request.GET.get('id')
     nuevaInformacion={
         "Report_Id":request.POST.get('reporteID'),
         "descripcion":request.POST.get('details'),
         "nombre":request.POST.get('name'),
     }
+    print("valor: ")
+    print(str(actualizar))
     print("id: " + str(request.POST.get('id')))
-    database.child("formatos").child(request.POST.get('id')).update(nuevaInformacion)
-    return render(request, 'welcome.html')
+    database.child("formatos").child(actualizar).update(nuevaInformacion)
+    mensaje = "Se actualizó correctamente el formato " + str(request.POST.get('reporteID'))
+    return render(request, 'menuFormatos.html',{"mensaje":mensaje})
 
 def eliminarFormato(request):
     formatoSelected = request.GET.get('idFormato')
@@ -35,7 +40,8 @@ def eliminarFormato(request):
         if str(formato.val()['Report_Id']) == str(formatoSelected):
             idFormatoDelete = formato.key()
             database.child("formatos").child(idFormatoDelete).remove()
-            return render(request, 'eliminarFormato.html', {"nombre": formatoSelected})
+            mensaje = "Se Elimino correctamente el formato " + str(formatoSelected)
+            return render(request, 'menuFormatos.html', {"mensaje": mensaje})
         else:
             None
 

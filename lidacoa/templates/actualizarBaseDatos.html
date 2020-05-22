@@ -13,7 +13,7 @@
 
 <H1 class="text-primary">Actualizar Base de Datos Bibliográfica</H1>
 
-<form action="/confirmarActualizacion/" method="post">
+<form action="/confirmarActualizacion/?id={{idDataBase}}" method="post">
     {% csrf_token %}
 
     <div class="form-row">
@@ -60,12 +60,6 @@
     </div>
   </div>
 
-   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>Id</label>
-      <input type="text" name="id" value="{{idDataBase}}" class="form-control" disabled>
-    </div>
-  </div>
 
     <div class="form-group row">
     <div class="col-sm-2">Formatos de Base de datos</div>

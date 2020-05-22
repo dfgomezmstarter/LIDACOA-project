@@ -10,9 +10,21 @@ def logout(request):
     return render(request,'signIn.html')
 
 def signUp(request):
-    return render(request,"signUp.html")
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']
+    return render(request,"signUp.html",{"e":name})
 
 def postsign(requets):
+    """idToken = requets.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']"""
     email = requets.POST.get('email')
     passw = requets.POST.get("pass")
     consultas = database.child('Consulta').get()
@@ -28,7 +40,7 @@ def postsign(requets):
             return render(requets,"signIn.html",{"messg":message})
     session_id=user['idToken']
     requets.session['uid']=str(session_id)
-    return render(requets, "welcome.html",{"e":email})
+    return render(requets, "welcome.html")
 
 
 def postsignup(request):
