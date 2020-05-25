@@ -67,7 +67,8 @@ urlpatterns = [
     url(r'^postcreateReport/', ReporteControlador.AntesCrearReporte, name='postcreateReport'),
     url(r'^formularioDescargar/', ReporteControlador.verReporte, name='formularioDescargar'),
     url(r'^downloadInformacion/', ReporteControlador.descargar, name='downloadInformacion'),
-
+    url(r'^viewGraphic/', ReporteControlador.vistaGrafica, name='viewGraphic'),
+    url(r'^graficosRealizados/', ReporteControlador.generarGrafico, name='graficosRealizados'),
     #url(r'^post_create/',añadirBDModelo.post_create,name='pos_create'),
 
 

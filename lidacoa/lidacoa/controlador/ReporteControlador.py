@@ -3,6 +3,11 @@ from urllib.request import Request, urlopen
 import json
 import pandas as pd
 from datetime import datetime
+import matplotlib.pyplot as plt
+import io
+from django.http import HttpResponse
+from django.shortcuts import render
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 def create_report(request):
     idToken = request.session['uid']
@@ -378,9 +383,84 @@ def descargar(request):
 
     for i in range(0,len(arregloDescarga)):
         arregloDescarga.pop()
-    mensaje = "Se descargo correctamente el archivo. Busca en tu escritorio el archivo con Nombre: Resultado_1.xlsx"
+    mensaje = "Se descargo correctamente el archivo. Busca en tu escritorio el archivo con Nombre: Resultado_Consulta.xlsx"
     return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
+def generarGrafico(request):
+    idToken = request.session['uid']
+    a = authe.get_account_info(idToken)
+    a = a['users']
+    a = a[0]
+    a = a['localId']
+    name = database.child('users').child(a).child('details').get().val()['name']
+    nombre_BaseDatos = []
+    titulo = []
+    fechaInicial = []
+    fechaFinal = []
+    formato = []
+    Total = []
+
+    if "PR_P" in formatoConsulta:
+        for i in arregloDescarga:
+            nombre_BaseDatos.append(i['Base de Datos'])
+            fechaInicial.append(i['Fecha de Inicio'])
+            fechaFinal.append(i['Fecha de Fin'])
+            formato.append(i['Formato'])
+            Total.append(i['Total'])
+        data = pd.DataFrame({
+            'Base de Datos': nombre_BaseDatos,
+            'Formato': formato,
+            'Fecha de Inicio': fechaInicial,
+            'Fecha de Fin': fechaFinal,
+            'Total': Total
+        })
+    elif "TR_J" in formatoConsulta:
+        for i in arregloDescarga:
+            nombre_BaseDatos.append(i['Base de Datos'])
+            fechaInicial.append(i['Fecha de Inicio'])
+            fechaFinal.append(i['Fecha de Fin'])
+            formato.append(i['Formato'])
+            Total.append(i['Total'])
+            titulo.append(i['Titulo'])
+        data = pd.DataFrame({
+            'Base de Datos': nombre_BaseDatos,
+            'Titulo': titulo,
+            'Formato': formato,
+            'Fecha de Inicio': fechaInicial,
+            'Fecha de Fin': fechaFinal,
+            'Total': Total
+        })
+
+    agrupar = data.groupby(['Base de Datos'])['Total'].sum().reset_index()
+    print(agrupar)
+    name_DB = []
+    total_DB = []
+    for index, row in agrupar.iterrows():
+        name_DB.append(row['Base de Datos'])
+        total_DB.append(row['Total'])
+
+    f = plt.figure()
+    ejeXGrafica = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    ejeYGrafica = [1, 2, 3, 4, 5, 6, 9, 7, 8]
+    axes = f.add_axes([0.15, 0.15, 0.75, 0.75])
+    axes.plot(ejeXGrafica, ejeYGrafica, lw=5, c='y', marker='o', ms=10,mfc='red')  # lw: ancho de la linea; c: color de la linea; marker: detalle punto; ms: tamaño (grosor) del detalle; mfc: color del detalle
+    axes.set_xlabel("t (seg)")
+    axes.set_ylabel("x (m)")
+
+    buf = io.BytesIO()
+    canvas = FigureCanvasAgg(f)
+    canvas.print_png(buf)
+    # Creamos la respuesta enviando los bytes en tipo imagen png
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
+    # Limpiamos la figura para liberar memoria
+    f.clear()
+    # Añadimos la cabecera de longitud de fichero para más estabilidad
+    response['Content-Length'] = str(len(response.content))
+    # Devolvemos la response
+    return response
+
+def vistaGrafica(request):
+    return render(request, 'visualizarGrafica.html')
 
 def verReporte(request):
     idToken = request.session['uid']
