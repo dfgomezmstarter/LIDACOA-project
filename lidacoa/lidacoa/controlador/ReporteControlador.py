@@ -387,7 +387,7 @@ def descargar(request):
     return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
 def generarGrafico(request):
-    idToken = request.session['uid']
+    """idToken = request.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']
     a = a[0]
@@ -437,15 +437,17 @@ def generarGrafico(request):
     total_DB = []
     for index, row in agrupar.iterrows():
         name_DB.append(row['Base de Datos'])
-        total_DB.append(row['Total'])
+        total_DB.append(row['Total'])"""
 
     f = plt.figure()
-    ejeXGrafica = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    ejeYGrafica = [1, 2, 3, 4, 5, 6, 9, 7, 8]
     axes = f.add_axes([0.15, 0.15, 0.75, 0.75])
-    axes.plot(ejeXGrafica, ejeYGrafica, lw=5, c='y', marker='o', ms=10,mfc='red')  # lw: ancho de la linea; c: color de la linea; marker: detalle punto; ms: tamaño (grosor) del detalle; mfc: color del detalle
-    axes.set_xlabel("t (seg)")
-    axes.set_ylabel("x (m)")
+    nombres = ['Juan', 'Ana', 'Pablo', 'Ximena', 'Jorge']
+    datos = [90, 88, 78, 94, 93]
+    xx = range(len(datos))
+
+    axes.bar(xx, datos, width=0.8, align='center')
+    axes.set_xticks(xx)
+    axes.set_xticklabels(nombres)
 
     buf = io.BytesIO()
     canvas = FigureCanvasAgg(f)
