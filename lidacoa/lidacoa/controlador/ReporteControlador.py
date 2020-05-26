@@ -90,7 +90,6 @@ def CrearReporte(requets):
                                 fechaInicio = i['Period']['Begin_Date']
                                 fechaFinal = i['Period']['End_Date']
                                 for j in i['Instance']:
-                                    print(j)
                                     if j['Metric_Type'] == "Total_Item_Requests":
                                         totalItemRequest = j['Count']
                                     if j['Metric_Type'] and j['Metric_Type'] == "Unique_Title_Investigations":
@@ -137,8 +136,6 @@ def CrearReporte(requets):
             for consulta in Consultas.each():
                 if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
                     if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
-                        print("################################################")
-                        print(consulta)
                         consultaTotalItemRequest = 0
                         cunsoltaUniqueTitleInvestigation = 0
                         consultaUniqueItemInvestigation = 0
@@ -198,12 +195,10 @@ def CrearReporte(requets):
                     database.child('Fechas').child(nombreBD).child(formato2).child(fecha4).push(anexarFechasNombre)
 
             if "PR" in formato:
-                print(arregloAux)
                 for i in range(0, len(arregloAux)):
                     for j in range(i + 1, len(arregloAux) - 1):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
-                print(arregloAux)
             elif "TR_J" in formato:
                 for i in range(0, len(arregloAux)):
                     for j in range(i + 1, len(arregloAux) - 1):
@@ -212,10 +207,6 @@ def CrearReporte(requets):
             for i in arregloAux:
                 arregloConsultas.append(i)
                 arregloDescarga.append(i)
-        print("????????????????????????????????????????????????")
-        print(arregloConsultas)
-        print(arregloDescarga)
-
         if "PR" in formato:
             return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
         elif "TR_J" in formato:
@@ -252,7 +243,6 @@ def CrearReporte(requets):
                                     fechaInicio = i['Period']['Begin_Date']
                                     fechaFinal = i['Period']['End_Date']
                                     for j in i['Instance']:
-                                        print(j)
                                         if j['Metric_Type'] == "Total_Item_Requests":
                                             totalItemRequest = j['Count']
                                         if j['Metric_Type'] and j['Metric_Type'] == "Unique_Title_Investigations":
@@ -294,32 +284,28 @@ def CrearReporte(requets):
                                                 "Fecha de Fin": fechaFinal,
                                                 "Total": totalMes
                                             }
-                                            print("Puta")
                                             database.child('Consulta').push(consultaRealizada)
                 Consultas = database.child('Consulta').get()
                 for consulta in Consultas.each():
                     if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
                         if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
-                            print("################################################-------------------------")
-                            print(consulta)
-                            consultaTotalItemRequest = 0
-                            cunsoltaUniqueTitleInvestigation = 0
-                            consultaUniqueItemInvestigation = 0
-                            consultaTotalItemInvestigation = 0
-                            consultaSearchesPlatform = 0
-
-                            if consulta.val()['Total Item Requests']:
-                                consultaTotalItemRequest = consulta.val()['Total Item Requests']
-                            if consulta.val()['Unique Titile Investigations']:
-                                cunsoltaUniqueTitleInvestigation = consulta.val()['Unique Titile Investigations']
-                            if consulta.val()['Unique Item Investigation']:
-                                consultaUniqueItemInvestigation = consulta.val()['Unique Item Investigation']
-                            if consulta.val()['Total Item Investigation']:
-                                consultaTotalItemInvestigation = consulta.val()['Total Item Investigation']
-                            if consulta.val()['Searches Platform']:
-                                consultaSearchesPlatform = consulta.val()['Searches Platform']
-
                             if "PR" in formato:
+                                consultaTotalItemRequest = 0
+                                cunsoltaUniqueTitleInvestigation = 0
+                                consultaUniqueItemInvestigation = 0
+                                consultaTotalItemInvestigation = 0
+                                consultaSearchesPlatform = 0
+
+                                if consulta.val()['Total Item Requests']:
+                                    consultaTotalItemRequest = consulta.val()['Total Item Requests']
+                                if consulta.val()['Unique Titile Investigations']:
+                                    cunsoltaUniqueTitleInvestigation = consulta.val()['Unique Titile Investigations']
+                                if consulta.val()['Unique Item Investigation']:
+                                    consultaUniqueItemInvestigation = consulta.val()['Unique Item Investigation']
+                                if consulta.val()['Total Item Investigation']:
+                                    consultaTotalItemInvestigation = consulta.val()['Total Item Investigation']
+                                if consulta.val()['Searches Platform']:
+                                    consultaSearchesPlatform = consulta.val()['Searches Platform']
                                 consultaRealizada = {
                                     "Base de Datos": consulta.val()['Base de Datos'],
                                     "Formato": consulta.val()['Formato'],
@@ -422,6 +408,11 @@ def descargar(request):
     fechaFinal = []
     formato = []
     Total = []
+    TotalItemRequest = []
+    UniqueTitleInvestigation = []
+    UniqueItemInvestigation = []
+    TotalItemInvestigation = []
+    SearchesPlatform = []
 
     if "PR" in formatoConsulta:
         for i in arregloDescarga:
@@ -429,13 +420,21 @@ def descargar(request):
             fechaInicial.append(i['Fecha de Inicio'])
             fechaFinal.append(i['Fecha de Fin'])
             formato.append(i['Formato'])
-            Total.append(i['Total'])
+            TotalItemRequest.append(i['Total Item Requests'])
+            UniqueTitleInvestigation.append(i['Unique Titile Investigations'])
+            UniqueItemInvestigation.append(i['Unique Item Investigation'])
+            TotalItemInvestigation.append(i['Total Item Investigation'])
+            SearchesPlatform.append(i['Searches Platform'])
         data = pd.DataFrame({
             'Base de Datos': nombre_BaseDatos,
             'Formato': formato,
             'Fecha de Inicio': fechaInicial,
             'Fecha de Fin': fechaFinal,
-            'Total': Total
+            "Total Item Requests": TotalItemRequest,
+            "Unique Titile Investigations": UniqueTitleInvestigation,
+            "Unique Item Investigation": UniqueItemInvestigation,
+            "Total Item Investigation": TotalItemInvestigation,
+            "Searches Platform": SearchesPlatform,
         })
         outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
@@ -509,13 +508,12 @@ def generarGrafico(request):
         'Total Item Requests': Total
     })
 
-    agrupar = data.groupby(['Base de Datos'])['Total'].sum().reset_index()
-    print(agrupar)
+    agrupar = data.groupby(['Base de Datos'])['Total Item Requests'].sum().reset_index()
     name_DB = []
     total_DB = []
     for index, row in agrupar.iterrows():
         name_DB.append(row['Base de Datos'])
-        total_DB.append(row['Total'])
+        total_DB.append(row['Total Item Requests'])
 
     f = plt.figure()
     axes = f.add_axes([0.15, 0.15, 0.75, 0.75])
@@ -577,14 +575,33 @@ def verReporte(request):
                         if mesInicioConsulta >= mesInical and mesFinalConsulta <= mesFinal:
                             if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
                                 if "PR" in formato:
-                                    baseDatos = i.val()['Base de Datos']
-                                    total = i.val()['Total']
+                                    consultaTotalItemRequest = 0
+                                    cunsoltaUniqueTitleInvestigation = 0
+                                    consultaUniqueItemInvestigation = 0
+                                    consultaTotalItemInvestigation = 0
+                                    consultaSearchesPlatform = 0
+
+                                    if i.val()['Total Item Requests']:
+                                        consultaTotalItemRequest = i.val()['Total Item Requests']
+                                    if i.val()['Unique Titile Investigations']:
+                                        cunsoltaUniqueTitleInvestigation = i.val()['Unique Titile Investigations']
+                                    if i.val()['Unique Item Investigation']:
+                                        consultaUniqueItemInvestigation = i.val()['Unique Item Investigation']
+                                    if i.val()['Total Item Investigation']:
+                                        consultaTotalItemInvestigation = i.val()['Total Item Investigation']
+                                    if i.val()['Searches Platform']:
+                                        consultaSearchesPlatform = i.val()['Searches Platform']
+
                                     visualizacionConsulta = {
-                                        "Base de Datos": baseDatos,
-                                        "Formato": formato,
+                                        "Base de Datos": i.val()['Base de Datos'],
+                                        "Formato": i.val()['Formato'],
                                         "Fecha de Inicio": i.val()['Fecha de Inicio'],
                                         "Fecha de Fin": i.val()['Fecha de Fin'],
-                                        "Total": total
+                                        "Total Item Requests": consultaTotalItemRequest,
+                                        "Unique Titile Investigations": cunsoltaUniqueTitleInvestigation,
+                                        "Unique Item Investigation": consultaUniqueItemInvestigation,
+                                        "Total Item Investigation": consultaTotalItemInvestigation,
+                                        "Searches Platform": consultaSearchesPlatform,
                                     }
                                 elif "TR_J" in formato:
                                     baseDatos = i.val()['Base de Datos']
@@ -648,18 +665,40 @@ def verReporte(request):
                             if yearInicioConsulta >= yearInicial and yearFinalConsulta <= yearFinal:
                                 if mesInicioConsulta >= mesInical and mesFinalConsulta <= mesFinal:
                                     if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
-                                        baseDatos = i.val()['Base de Datos']
-                                        total = i.val()['Total']
 
                                         if "PR" in formato:
+                                            consultaTotalItemRequest = 0
+                                            cunsoltaUniqueTitleInvestigation = 0
+                                            consultaUniqueItemInvestigation = 0
+                                            consultaTotalItemInvestigation = 0
+                                            consultaSearchesPlatform = 0
+
+                                            if i.val()['Total Item Requests']:
+                                                consultaTotalItemRequest = i.val()['Total Item Requests']
+                                            if i.val()['Unique Titile Investigations']:
+                                                cunsoltaUniqueTitleInvestigation = i.val()[
+                                                    'Unique Titile Investigations']
+                                            if i.val()['Unique Item Investigation']:
+                                                consultaUniqueItemInvestigation = i.val()['Unique Item Investigation']
+                                            if i.val()['Total Item Investigation']:
+                                                consultaTotalItemInvestigation = i.val()['Total Item Investigation']
+                                            if i.val()['Searches Platform']:
+                                                consultaSearchesPlatform = i.val()['Searches Platform']
+
                                             visualizacionConsulta = {
-                                                "Base de Datos": baseDatos,
-                                                "Formato": formato,
+                                                "Base de Datos": i.val()['Base de Datos'],
+                                                "Formato": i.val()['Formato'],
                                                 "Fecha de Inicio": i.val()['Fecha de Inicio'],
                                                 "Fecha de Fin": i.val()['Fecha de Fin'],
-                                                "Total": total
+                                                "Total Item Requests": consultaTotalItemRequest,
+                                                "Unique Titile Investigations": cunsoltaUniqueTitleInvestigation,
+                                                "Unique Item Investigation": consultaUniqueItemInvestigation,
+                                                "Total Item Investigation": consultaTotalItemInvestigation,
+                                                "Searches Platform": consultaSearchesPlatform,
                                             }
                                         elif "TR_J" in formato:
+                                            baseDatos = i.val()['Base de Datos']
+                                            total = i.val()['Total']
                                             visualizacionConsulta = {
                                                 "Base de Datos": baseDatos,
                                                 "Titulo": i.val()['Titulo'],
@@ -676,7 +715,6 @@ def verReporte(request):
                             arregloAux[i], arregloAux[j] = arregloAux[j], arregloAux[i]
 
             elif "TR_J" in formato:
-                print("Entra ordenar")
                 for i in range(0, len(arregloAux) - 1):
                     for j in range(i + 1, len(arregloAux)):
                         if arregloAux[j]['Fecha de Inicio'] < arregloAux[i]['Fecha de Inicio']:
