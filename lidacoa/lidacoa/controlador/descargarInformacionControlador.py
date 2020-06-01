@@ -1,6 +1,8 @@
 from ..configuracion import *
 
 def descargar(request):
+    for i in range(0,len(arregloDescarga)):
+        arregloDescarga.pop()
     baseDatos = database.child('bases_Datos').get()
     nombreBaseDatos = []
     for i in baseDatos.each():

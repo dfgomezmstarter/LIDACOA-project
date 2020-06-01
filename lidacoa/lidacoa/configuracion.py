@@ -116,6 +116,4 @@ arregloDescarga=[]
 
 def limpiarArregloDescargar():
     arregloDescarga = []
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print(arregloDescarga)
 

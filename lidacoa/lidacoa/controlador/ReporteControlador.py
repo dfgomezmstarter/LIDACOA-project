@@ -10,6 +10,8 @@ from django.shortcuts import render
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 def create_report(request):
+    for i in range(0,len(arregloDescarga)):
+        arregloDescarga.pop()
     idToken = request.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']
@@ -487,19 +489,6 @@ def generarGrafico(request):
     fechaInicio = request.GET.get('fechaInicio')
     fechaFin = request.GET.get('fechaFin')
     tituloGrafico = str(fechaInicio) + " / " + str(fechaFin)
-    """for i in arregloDescarga: 
-        nombre_BaseDatos.append(i['Base de Datos'])
-        fechaInicial.append(i['Fecha de Inicio'])
-        fechaFinal.append(i['Fecha de Fin'])
-        formato.append(i['Formato'])
-        Total.append(i['Total'])
-    data = pd.DataFrame({
-        'Base de Datos': nombre_BaseDatos,
-        'Formato': formato,
-        'Fecha de Inicio': fechaInicial,
-        'Fecha de Fin': fechaFinal,
-        'Total': Total
-    })"""
 
     for i in arregloDescarga:
         nombre_BaseDatos.append(i['Base de Datos'])
