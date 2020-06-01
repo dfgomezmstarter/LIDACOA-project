@@ -47,6 +47,7 @@ def CrearReporte(requets):
     arregloFechas=[]
     arregloConsultas = []
     formato = requets.POST.get('formato')
+    direccion = requets.POST.get('direccion')
     idToken = requets.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']
@@ -136,24 +137,26 @@ def CrearReporte(requets):
             for consulta in Consultas.each():
                 if consulta.val()['Base de Datos'] == nombreBaseDatos and consulta.val()['Formato'] == formato:
                     if consulta.val()['Fecha de Inicio'] >= requets.POST.get('fechaInicial') and consulta.val()['Fecha de Fin'] <= requets.POST.get('fechaFinal'):
-                        consultaTotalItemRequest = 0
-                        cunsoltaUniqueTitleInvestigation = 0
-                        consultaUniqueItemInvestigation = 0
-                        consultaTotalItemInvestigation = 0
-                        consultaSearchesPlatform = 0
 
-                        if consulta.val()['Total Item Requests']:
-                            consultaTotalItemRequest = consulta.val()['Total Item Requests']
-                        if consulta.val()['Unique Titile Investigations']:
-                            cunsoltaUniqueTitleInvestigation = consulta.val()['Unique Titile Investigations']
-                        if consulta.val()['Unique Item Investigation']:
-                            consultaUniqueItemInvestigation = consulta.val()['Unique Item Investigation']
-                        if consulta.val()['Total Item Investigation']:
-                            consultaTotalItemInvestigation = consulta.val()['Total Item Investigation']
-                        if consulta.val()['Searches Platform']:
-                            consultaSearchesPlatform = consulta.val()['Searches Platform']
 
                         if "PR" in formato:
+                            consultaTotalItemRequest = 0
+                            cunsoltaUniqueTitleInvestigation = 0
+                            consultaUniqueItemInvestigation = 0
+                            consultaTotalItemInvestigation = 0
+                            consultaSearchesPlatform = 0
+
+                            if consulta.val()['Total Item Requests']:
+                                consultaTotalItemRequest = consulta.val()['Total Item Requests']
+                            if consulta.val()['Unique Titile Investigations']:
+                                cunsoltaUniqueTitleInvestigation = consulta.val()['Unique Titile Investigations']
+                            if consulta.val()['Unique Item Investigation']:
+                                consultaUniqueItemInvestigation = consulta.val()['Unique Item Investigation']
+                            if consulta.val()['Total Item Investigation']:
+                                consultaTotalItemInvestigation = consulta.val()['Total Item Investigation']
+                            if consulta.val()['Searches Platform']:
+                                consultaSearchesPlatform = consulta.val()['Searches Platform']
+
                             consultaRealizada = {
                                 "Base de Datos": consulta.val()['Base de Datos'],
                                 "Formato": consulta.val()['Formato'],
@@ -208,9 +211,9 @@ def CrearReporte(requets):
                 arregloConsultas.append(i)
                 arregloDescarga.append(i)
         if "PR" in formato:
-            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
+            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name, "direccion":direccion,"fechaInicio":begin_date,"fechaFin":end_date})
         elif "TR_J" in formato:
-            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion})
     else:
         for BD in listaBD.each():
             arregloFaltantes=[]
@@ -368,9 +371,9 @@ def CrearReporte(requets):
                     arregloDescarga.append(i)
 
         if "PR" in formato:
-            return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
+            return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion,"fechaInicio":begin_date,"fechaFin":end_date})
         elif "TR_J" in formato:
-            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
     formato = str(formato.lower())
@@ -402,6 +405,8 @@ def descargar(request):
     a = a['localId']
     name = database.child('users').child(a).child('details').get().val()['name']
     formatoConsulta = request.GET.get('formato')
+    direccion = request.GET.get('direccion')
+    direccion = str(direccion)
     nombre_BaseDatos = []
     titulo = []
     fechaInicial = []
@@ -436,7 +441,7 @@ def descargar(request):
             "Total Item Investigation": TotalItemInvestigation,
             "Searches Platform": SearchesPlatform,
         })
-        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_Consulta.xlsx'
+        outfile = r''+direccion+'Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
         data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
@@ -456,14 +461,14 @@ def descargar(request):
             'Fecha de Fin': fechaFinal,
             'Total': Total
         })
-        outfile = r'C:\Users\CESAR GARCIA\Desktop\Resultado_Consulta.xlsx'
+        outfile = r''+direccion+'Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
         data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
 
     for i in range(0,len(arregloDescarga)):
         arregloDescarga.pop()
-    mensaje = "Se descargo correctamente el archivo. Busca en tu escritorio el archivo con Nombre: Resultado_Consulta.xlsx"
+    mensaje = "Se descargo correctamente el archivo. Busca en la ruta ingresada el archivo con Nombre: Resultado_Consulta.xlsx"
     return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
 def generarGrafico(request):
@@ -479,7 +484,9 @@ def generarGrafico(request):
     fechaFinal = []
     formato = []
     Total = []
-
+    fechaInicio = request.GET.get('fechaInicio')
+    fechaFin = request.GET.get('fechaFin')
+    tituloGrafico = str(fechaInicio) + " / " + str(fechaFin)
     """for i in arregloDescarga: 
         nombre_BaseDatos.append(i['Base de Datos'])
         fechaInicial.append(i['Fecha de Inicio'])
@@ -522,6 +529,9 @@ def generarGrafico(request):
     axes.bar(xx, total_DB, width=0.8, align='center')
     axes.set_xticks(xx)
     axes.set_xticklabels(name_DB)
+    axes.set_title(tituloGrafico)
+    axes.set_xlabel('Base de Datos')
+    axes.set_ylabel('Total Items Request')
 
     buf = io.BytesIO()
     canvas = FigureCanvasAgg(f)
@@ -536,7 +546,11 @@ def generarGrafico(request):
     return response
 
 def vistaGrafica(request):
-    return render(request, 'visualizarGrafica.html')
+    fechaInicial = request.GET.get('fechaInicio')
+    fechaFin = request.GET.get('fechaFin')
+    if(fechaInicial!='' and len(fechaInicial)>10):fechaInicial = fechaInicial[0:len(fechaInicial) - 10]
+    if(fechaFin!='' and len(fechaFin)>10):fechaFin = fechaFin[0:len(fechaFin) - 10]
+    return render(request, 'visualizarGrafica.html',context={"fechaInicio":fechaInicial,"fechaFin":fechaFin})
 
 def verReporte(request):
     idToken = request.session['uid']
@@ -547,6 +561,7 @@ def verReporte(request):
     name = database.child('users').child(a).child('details').get().val()['name']
     arreglodeConsultas = []
     fechaInicial = datetime.strptime(str(request.POST.get('fechaInicial')), '%Y-%m-%d')
+    direccion= request.POST.get('direccion')
     yearInicial = fechaInicial.year
     mesInical = fechaInicial.month
     diaInicial = fechaInicial.day
@@ -560,61 +575,62 @@ def verReporte(request):
         for baseDatos in basesDatos.each():
             arregloAux = []
             nombreBaseDatos = baseDatos.val()['nameDataBase']
-            consultas = database.child('Consulta').order_by_child("Base de Datos").equal_to(str(nombreBaseDatos)).get()
+            consultas = database.child('Consulta').get()
             for i in consultas.each():
-                fechaInicioConsulta = datetime.strptime(i.val()['Fecha de Inicio'], '%Y-%m-%d').date()
-                yearInicioConsulta = fechaInicioConsulta.year
-                mesInicioConsulta = fechaInicioConsulta.month
-                diaInicioConsulta = fechaInicioConsulta.day
-                fechaFinalConsulta = datetime.strptime(i.val()['Fecha de Fin'], '%Y-%m-%d').date()
-                yearFinalConsulta = fechaFinalConsulta.year
-                mesFinalConsulta = fechaFinalConsulta.month
-                diaFinalConsulta = fechaFinalConsulta.day
-                if i.val()['Formato'] == formato:
-                    if yearInicioConsulta >= yearInicial and yearFinalConsulta <= yearFinal:
-                        if mesInicioConsulta >= mesInical and mesFinalConsulta <= mesFinal:
-                            if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
-                                if "PR" in formato:
-                                    consultaTotalItemRequest = 0
-                                    cunsoltaUniqueTitleInvestigation = 0
-                                    consultaUniqueItemInvestigation = 0
-                                    consultaTotalItemInvestigation = 0
-                                    consultaSearchesPlatform = 0
+                if (i.val()['Base de Datos']==nombreBaseDatos):
+                    fechaInicioConsulta = datetime.strptime(i.val()['Fecha de Inicio'], '%Y-%m-%d').date()
+                    yearInicioConsulta = fechaInicioConsulta.year
+                    mesInicioConsulta = fechaInicioConsulta.month
+                    diaInicioConsulta = fechaInicioConsulta.day
+                    fechaFinalConsulta = datetime.strptime(i.val()['Fecha de Fin'], '%Y-%m-%d').date()
+                    yearFinalConsulta = fechaFinalConsulta.year
+                    mesFinalConsulta = fechaFinalConsulta.month
+                    diaFinalConsulta = fechaFinalConsulta.day
+                    if i.val()['Formato'] == formato:
+                        if yearInicioConsulta >= yearInicial and yearFinalConsulta <= yearFinal:
+                            if mesInicioConsulta >= mesInical and mesFinalConsulta <= mesFinal:
+                                if diaInicioConsulta >= diaInicial and diaFinalConsulta <= diaFinal:
+                                    if "PR" in formato:
+                                        consultaTotalItemRequest = 0
+                                        cunsoltaUniqueTitleInvestigation = 0
+                                        consultaUniqueItemInvestigation = 0
+                                        consultaTotalItemInvestigation = 0
+                                        consultaSearchesPlatform = 0
 
-                                    if i.val()['Total Item Requests']:
-                                        consultaTotalItemRequest = i.val()['Total Item Requests']
-                                    if i.val()['Unique Titile Investigations']:
-                                        cunsoltaUniqueTitleInvestigation = i.val()['Unique Titile Investigations']
-                                    if i.val()['Unique Item Investigation']:
-                                        consultaUniqueItemInvestigation = i.val()['Unique Item Investigation']
-                                    if i.val()['Total Item Investigation']:
-                                        consultaTotalItemInvestigation = i.val()['Total Item Investigation']
-                                    if i.val()['Searches Platform']:
-                                        consultaSearchesPlatform = i.val()['Searches Platform']
+                                        if i.val()['Total Item Requests']:
+                                            consultaTotalItemRequest = i.val()['Total Item Requests']
+                                        if i.val()['Unique Titile Investigations']:
+                                            cunsoltaUniqueTitleInvestigation = i.val()['Unique Titile Investigations']
+                                        if i.val()['Unique Item Investigation']:
+                                            consultaUniqueItemInvestigation = i.val()['Unique Item Investigation']
+                                        if i.val()['Total Item Investigation']:
+                                            consultaTotalItemInvestigation = i.val()['Total Item Investigation']
+                                        if i.val()['Searches Platform']:
+                                            consultaSearchesPlatform = i.val()['Searches Platform']
 
-                                    visualizacionConsulta = {
-                                        "Base de Datos": i.val()['Base de Datos'],
-                                        "Formato": i.val()['Formato'],
-                                        "Fecha de Inicio": i.val()['Fecha de Inicio'],
-                                        "Fecha de Fin": i.val()['Fecha de Fin'],
-                                        "Total Item Requests": consultaTotalItemRequest,
-                                        "Unique Titile Investigations": cunsoltaUniqueTitleInvestigation,
-                                        "Unique Item Investigation": consultaUniqueItemInvestigation,
-                                        "Total Item Investigation": consultaTotalItemInvestigation,
-                                        "Searches Platform": consultaSearchesPlatform,
-                                    }
-                                elif "TR_J" in formato:
-                                    baseDatos = i.val()['Base de Datos']
-                                    total = i.val()['Total']
-                                    visualizacionConsulta = {
-                                        "Base de Datos": baseDatos,
-                                        "Titulo": i.val()['Titulo'],
-                                        "Formato": formato,
-                                        "Fecha de Inicio": i.val()['Fecha de Inicio'],
-                                        "Fecha de Fin": i.val()['Fecha de Fin'],
-                                        "Total": total
-                                    }
-                                arregloAux.append(visualizacionConsulta)
+                                        visualizacionConsulta = {
+                                            "Base de Datos": i.val()['Base de Datos'],
+                                            "Formato": i.val()['Formato'],
+                                            "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                            "Fecha de Fin": i.val()['Fecha de Fin'],
+                                            "Total Item Requests": consultaTotalItemRequest,
+                                            "Unique Titile Investigations": cunsoltaUniqueTitleInvestigation,
+                                            "Unique Item Investigation": consultaUniqueItemInvestigation,
+                                            "Total Item Investigation": consultaTotalItemInvestigation,
+                                            "Searches Platform": consultaSearchesPlatform,
+                                        }
+                                    elif "TR_J" in formato:
+                                        baseDatos = i.val()['Base de Datos']
+                                        total = i.val()['Total']
+                                        visualizacionConsulta = {
+                                            "Base de Datos": baseDatos,
+                                            "Titulo": i.val()['Titulo'],
+                                            "Formato": formato,
+                                            "Fecha de Inicio": i.val()['Fecha de Inicio'],
+                                            "Fecha de Fin": i.val()['Fecha de Fin'],
+                                            "Total": total
+                                        }
+                                    arregloAux.append(visualizacionConsulta)
 
             if "PR" in formato:
                 for i in range(0, len(arregloAux) - 1):
@@ -639,9 +655,9 @@ def verReporte(request):
                 arreglodeConsultas.append(i)
                 arregloDescarga.append(i)
         if "PR" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion})
 
     else:
         nombreBasesDatos = database.child('bases_Datos').get()
@@ -649,8 +665,7 @@ def verReporte(request):
             arregloAux = []
             nameDataBase = baseDatos.val()['nameDataBase']
             if request.POST.get(nameDataBase) == "1":
-                consultas = database.child('Consulta').order_by_child("Base de Datos").equal_to(
-                    str(nameDataBase)).get()
+                consultas = database.child('Consulta').get()
                 for i in consultas.each():
                     fechaInicioConsulta = datetime.strptime(i.val()['Fecha de Inicio'], '%Y-%m-%d').date()
                     yearInicioConsulta = fechaInicioConsulta.year
@@ -729,6 +744,6 @@ def verReporte(request):
                 arregloDescarga.append(i)
 
         if "PR" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion})

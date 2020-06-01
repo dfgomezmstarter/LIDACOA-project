@@ -36,7 +36,7 @@ def actualizar(request):
 def eliminarFormato(request):
     formatoSelected = request.GET.get('idFormato')
     formatos = database.child("formatos").get()
-    for formato in formatos:
+    for formato in formatos.each():
         if str(formato.val()['Report_Id']) == str(formatoSelected):
             idFormatoDelete = formato.key()
             database.child("formatos").child(idFormatoDelete).remove()
@@ -48,7 +48,7 @@ def eliminarFormato(request):
 def agregar(request):
     formatoSelected=request.GET.get('idFormato')
     formatos = database.child("formatos").get()
-    for formato in formatos:
+    for formato in formatos.each():
         if str(formato.val()['Report_Id']) == str(formatoSelected):
             idFormatoBD = formato.key()
             idFormatoActualizar = formato.val()['Report_Id']

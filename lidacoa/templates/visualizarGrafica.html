@@ -76,7 +76,7 @@
   </div>
 </nav>
 {% csrf_token %}
-<img src="/graficosRealizados" width="1000px"/>
+<img src="/graficosRealizados?fechaInicio={{fechaInicio}}&fechaFin={{fechaFin}}" width="1000px"/>
 <br>
 <a button type="submit" href="#" onclick="location.href='{% url 'createReport' %}'" class="btn btn-primary mb-2">Volver</a>
 </body>

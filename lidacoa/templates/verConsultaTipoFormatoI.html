@@ -58,8 +58,8 @@
     </table>
 </div>
 
-<a button type="submit" href="/downloadInformacion?formato={{formato}}" class="btn btn-primary mb-2" style="margin-left: 10%">Descargar</a>
-<a button type="submit" href="/viewGraphic" class="btn btn-primary mb-2">Generar Grafico</a>
+<a button type="submit" href="/downloadInformacion?formato={{formato}}&direccion={{direccion}}" class="btn btn-primary mb-2" style="margin-left: 10%">Descargar</a>
+<a button type="submit" href="/viewGraphic?fechaInicio={{fechaInicio}}&fechaFin={{fechaFin}}" class="btn btn-primary mb-2">Generar Grafico</a>
 <a button type="submit" href="#" onclick="location.href='{% url 'createReport' %}'" class="btn btn-primary mb-2">Volver</a>
 
 
