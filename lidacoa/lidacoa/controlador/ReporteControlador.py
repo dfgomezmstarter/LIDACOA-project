@@ -8,6 +8,11 @@ import io
 from django.http import HttpResponse
 from django.shortcuts import render
 from matplotlib.backends.backend_agg import FigureCanvasAgg
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 def create_report(request):
     for i in range(0,len(arregloDescarga)):
@@ -406,6 +411,8 @@ def descargar(request):
     a = a[0]
     a = a['localId']
     name = database.child('users').child(a).child('details').get().val()['name']
+    correo = database.child('users').child(a).child('details').get().val()['Correo']
+    correo = str(correo)
     formatoConsulta = request.GET.get('formato')
     direccion = request.GET.get('direccion')
     direccion = str(direccion)
@@ -443,7 +450,7 @@ def descargar(request):
             "Total Item Investigation": TotalItemInvestigation,
             "Searches Platform": SearchesPlatform,
         })
-        outfile = r''+direccion+'Resultado_Consulta.xlsx'
+        outfile = r'templates/Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
         data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
@@ -463,14 +470,66 @@ def descargar(request):
             'Fecha de Fin': fechaFinal,
             'Total': Total
         })
-        outfile = r''+direccion+'Resultado_Consulta.xlsx'
+        outfile = r'templates/Resultado_Consulta.xlsx'
         writer = pd.ExcelWriter(outfile, engine="xlsxwriter", )
         data.to_excel(writer, sheet_name="Consulta", index=None)
         writer.save()
 
+    if(correo!=''):
+        # Iniciamos los parámetros del script
+        remitente = 'lidacoacompany@gmail.com'
+        destinatarios = [correo]
+        asunto = 'Consulta de la base de datos'
+        cuerpo = 'El archivo excel contine la informacion solicitada proveniente de la pagina web de LIDACOA'
+        ruta_adjunto = 'templates/Resultado_Consulta.xlsx'
+        nombre_adjunto = 'Resultado_Consulta.xlsx'
+
+        # Creamos el objeto mensaje
+        mensaje = MIMEMultipart()
+
+        # Establecemos los atributos del mensaje
+        mensaje['From'] = remitente
+        mensaje['To'] = ", ".join(destinatarios)
+        mensaje['Subject'] = asunto
+
+        # Agregamos el cuerpo del mensaje como objeto MIME de tipo texto
+        mensaje.attach(MIMEText(cuerpo, 'plain'))
+
+        # Abrimos el archivo que vamos a adjuntar
+        archivo_adjunto = open(ruta_adjunto, 'rb')
+
+        # Creamos un objeto MIME base
+        adjunto_MIME = MIMEBase('application', 'octet-stream')
+        # Y le cargamos el archivo adjunto
+        adjunto_MIME.set_payload((archivo_adjunto).read())
+        # Codificamos el objeto en BASE64
+        encoders.encode_base64(adjunto_MIME)
+        # Agregamos una cabecera al objeto
+        adjunto_MIME.add_header('Content-Disposition', "attachment; filename= %s" % nombre_adjunto)
+        # Y finalmente lo agregamos al mensaje
+        mensaje.attach(adjunto_MIME)
+
+        # Creamos la conexión con el servidor
+        sesion_smtp = smtplib.SMTP('smtp.gmail.com', 587)
+
+        # Ciframos la conexión
+        sesion_smtp.starttls()
+
+        # Iniciamos sesión en el servidor
+        sesion_smtp.login('lidacoacompany@gmail.com', 'Lidacoa123*')
+
+        # Convertimos el objeto mensaje a texto
+        texto = mensaje.as_string()
+
+        # Enviamos el mensaje
+        sesion_smtp.sendmail(remitente, destinatarios, texto)
+
+        # Cerramos la conexión
+        sesion_smtp.quit()
+
     for i in range(0,len(arregloDescarga)):
         arregloDescarga.pop()
-    mensaje = "Se descargo correctamente el archivo. Busca en la ruta ingresada el archivo con Nombre: Resultado_Consulta.xlsx"
+    mensaje = "Se descargo correctamente el archivo. Se te enviará la informacion a tu correo "+ correo +" Resultado_Consulta.xlsx"
     return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
 def generarGrafico(request):
