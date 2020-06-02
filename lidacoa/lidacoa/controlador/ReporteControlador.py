@@ -54,7 +54,7 @@ def CrearReporte(requets):
     arregloFechas=[]
     arregloConsultas = []
     formato = requets.POST.get('formato')
-    direccion = requets.POST.get('direccion')
+    #direccion = requets.POST.get('direccion')
     idToken = requets.session['uid']
     a = authe.get_account_info(idToken)
     a = a['users']
@@ -218,9 +218,9 @@ def CrearReporte(requets):
                 arregloConsultas.append(i)
                 arregloDescarga.append(i)
         if "PR" in formato:
-            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name, "direccion":direccion,"fechaInicio":begin_date,"fechaFin":end_date})
+            return render(requets, 'verConsultaTipoFormatoI.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"fechaInicio":begin_date,"fechaFin":end_date})
         elif "TR_J" in formato:
-            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion})
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
     else:
         for BD in listaBD.each():
             arregloFaltantes=[]
@@ -378,9 +378,9 @@ def CrearReporte(requets):
                     arregloDescarga.append(i)
 
         if "PR" in formato:
-            return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion,"fechaInicio":begin_date,"fechaFin":end_date})
+            return render(requets, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"fechaInicio":begin_date,"fechaFin":end_date})
         elif "TR_J" in formato:
-            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name,"direccion":direccion})
+            return render(requets, 'verConsultaTipoFormatoII.html', context={"consultaRealizada": arregloConsultas, "formato":formato, "e":name})
 
 def pedirInformacion(url,customer_id,requestor_id,api_key,begin_date,end_date,platform,formato):
     formato = str(formato.lower())
@@ -414,8 +414,8 @@ def descargar(request):
     correo = database.child('users').child(a).child('details').get().val()['Correo']
     correo = str(correo)
     formatoConsulta = request.GET.get('formato')
-    direccion = request.GET.get('direccion')
-    direccion = str(direccion)
+    #direccion = request.GET.get('direccion') para futuro trabajo
+    #direccion = str(direccion)
     nombre_BaseDatos = []
     titulo = []
     fechaInicial = []
@@ -529,7 +529,7 @@ def descargar(request):
 
     for i in range(0,len(arregloDescarga)):
         arregloDescarga.pop()
-    mensaje = "Se descargo correctamente el archivo. Se te enviará la informacion a tu correo "+ correo +" Resultado_Consulta.xlsx"
+    mensaje = "Se te enviará la informacion a tu correo "+ correo +" Resultado_Consulta.xlsx"
     return render(request, 'createReport.html',{"mensaje":mensaje,"e":name})
 
 def generarGrafico(request):
@@ -609,7 +609,7 @@ def verReporte(request):
     name = database.child('users').child(a).child('details').get().val()['name']
     arreglodeConsultas = []
     fechaInicial = datetime.strptime(str(request.POST.get('fechaInicial')), '%Y-%m-%d')
-    direccion= request.POST.get('direccion')
+    #direccion= request.POST.get('direccion')
     yearInicial = fechaInicial.year
     mesInical = fechaInicial.month
     diaInicial = fechaInicial.day
@@ -703,9 +703,9 @@ def verReporte(request):
                 arreglodeConsultas.append(i)
                 arregloDescarga.append(i)
         if "PR" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})
 
     else:
         nombreBasesDatos = database.child('bases_Datos').get()
@@ -792,6 +792,6 @@ def verReporte(request):
                 arregloDescarga.append(i)
 
         if "PR" in formato:
-            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
+            return render(request, 'verConsultaTipoFormatoI.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"fechaInicio":fechaInicial,"fechaFin":fechaFinal})
         elif "TR_J" in formato:
-            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name,"direccion":direccion})
+            return render(request, 'verConsultaTipoFormatoII.html',context={"consultaRealizada": arreglodeConsultas,"formato": formato, "e":name})

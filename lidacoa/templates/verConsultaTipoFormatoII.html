@@ -49,7 +49,7 @@
         {% endfor %}
     </table>
 </div>
-<a button type="submit" href="/downloadInformacion?formato={{formato}}&direccion={{direccion}}" class="btn btn-primary mb-2" style="margin-left: 10%">Descargar</a>
+<a button type="submit" href="/downloadInformacion?formato={{formato}}" class="btn btn-primary mb-2" style="margin-left: 10%">Enviar archivo al correo electronico</a>
 <a button type="submit" href="#" onclick="location.href='{% url 'createReport' %}'" class="btn btn-primary mb-2">Volver</a>
 {% endblock %}
 </body>
