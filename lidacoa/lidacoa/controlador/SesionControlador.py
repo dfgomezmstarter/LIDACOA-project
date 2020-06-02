@@ -10,12 +10,12 @@ def signIn(request):
 
 def buscarImagen(request):
     try:
-        with open("logo.png", "rb") as f:
+        with open("templates\logo.png", "rb") as f:
             return HttpResponse(f.read(), content_type="image/jpeg")
     except IOError:
         red = Image.new('RGBA', (1, 1), (255, 0, 0, 0))
         response = HttpResponse(content_type="image/jpeg")
-        red.save(response, "JPEG")
+        red.save(response, "PNG")
         return response
 
 
