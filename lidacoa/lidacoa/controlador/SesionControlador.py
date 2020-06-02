@@ -1,9 +1,23 @@
 from ..configuracion import *
 from django.shortcuts import render
 from ..configuracion import authe
+from django.http import HttpResponse
+from django.shortcuts import render
+from PIL import Image
 
 def signIn(request):
     return render(request, "signIn.html")
+
+def buscarImagen(request):
+    try:
+        with open("logo.png", "rb") as f:
+            return HttpResponse(f.read(), content_type="image/jpeg")
+    except IOError:
+        red = Image.new('RGBA', (1, 1), (255, 0, 0, 0))
+        response = HttpResponse(content_type="image/jpeg")
+        red.save(response, "JPEG")
+        return response
+
 
 def logout(request):
     auth.logout(request)
@@ -67,6 +81,7 @@ def postsignup(request):
             "Correo":email,
             "Contrasena":passw
             }
-    database.child("users").child(uid).child("details").push(data)
+    """data = {"name": name}"""
+    database.child("users").child(uid).child("details").set(data)
 
     return render(request, "welcome.html")

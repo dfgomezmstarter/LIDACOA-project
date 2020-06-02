@@ -174,9 +174,9 @@
         alert('{{mensaje}}');
     </script>
 {% endif %}
-<div style="width: 100%; height: 100px;" id="barra_de_logo">
+<div style="width: 100%; height: 200px;" id="barra_de_logo">
     <div style="width: 180px; height: 100%; margin-left: 15%; float: left" id="logo">
-        <img src="img/logoEAFIT.jpg">
+        <img src="/imagenLogo" width="500px" height="400" class="img-fluid"/>
     </div>
     <div style="width: 250px; height: 100%; margin-left: 33%; float: left" id="usuario">
         <h6 style="margin-top: 17%; text-align: right; font-family:Arial; font-size: 20px">{{e}}</h6>
@@ -251,7 +251,7 @@
 
         <div class="form-group"> <br><br>
             <label for="no_conformidad">Formato Consulta</label>
-            <select class="form-control" name="formato" id="no_conformidad">
+            <select required class="form-control" name="formato" id="no_conformidad">
                 <option class="form-control" value="">Selecciona una Opcion</option>
                 {% for formato in arregloFormatos %}
                 <option class="form-control" value="{{formato}}" name="{{formato}}">{{formato}}</option>
@@ -263,18 +263,18 @@
             {% csrf_token %}
             <div class="form-group col-md-6">
                 <label>Fecha inicial</label>
-                <input type="text" name="fechaInicial" class="form-control">
+                <input required type="text" name="fechaInicial" class="form-control">
             </div>
             <div class="form-group col-md-6">
                 <label>Fecha final</label>
-                <input type="text" name="fechaFinal" class="form-control">
+                <input required type="text" name="fechaFinal" class="form-control">
             </div>
         </div>
 
         <div class="form-group"> <br><br>
             <div class="form-group col-md-6">
                 <label>Direccion de descarga</label>
-                <input type="text" id="direccion" name="direccion" class="form-control">
+                <input required type="text" id="direccion" name="direccion" class="form-control">
             </div>
         </div>
 
